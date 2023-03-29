@@ -537,11 +537,23 @@ const DeleteProduct = async (req,res)=>{
         // if(productData){
         //     res.redirect('/admin/product')
         // }
-        const proId = req.query.id
-        const productdelete = await Product.updateOne({_id:proId},{$set:{list:true}})
-        if(productdelete){
+        const id = req.query.id
+        const productData = await Product.findOne({_id:id},{list:1,_id:id})
+        // const productData = await Product.find
+        if(productData.list == false){
+            const wait = await Product.updateOne({_id:id},{$set:{list:true}})
+            req.session.user_id=false
             res.redirect('/admin/product')
+        }else{
+            const wait = await Product.updateOne({_id:id},{$set:{list:false}})
+            req.session.user_id=true
+            res.redirect('/admin/product')
+
         }
+        // const productdelete = await Product.updateOne({_id:proId},{$set:{list:true}})
+        // if(productdelete){
+        //     res.redirect('/admin/product')
+        // }
 //         const imgId =req.query.id
 //    fs.unlink(path.join(__dirname,'../public/products',imgId),()=>{})
 //     Product.deleteOne({_id:req.query.id}).then(()=>{

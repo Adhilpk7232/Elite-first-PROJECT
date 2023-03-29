@@ -41,7 +41,7 @@ const productSchema = new mongoose.Schema({
     list:{
         type:Boolean,
         require:true,
-        default:false,
+        default:true,
     },
     createdAt:{
         type:Date
