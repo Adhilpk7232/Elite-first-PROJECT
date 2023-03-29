@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- Mirrored from smartshop.websitelayout.net/home-shop-4.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 03 Jan 2023 16:00:07 GMT -->
+<head>
+
+    <!-- metas -->
+    <meta charset="utf-8">
+    <meta name="author" content="Chitrakoot Web" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="keywords" content="Multipurpose eCommerce Template + Admin" />
+    <meta name="description" content="Smartshop - Multipurpose eCommerce Template + Admin" />
+
+    <!-- title  -->
+    <title>ELITE SHOPIE</title>
+
+    <!-- favicon -->
+    <link rel="shortcut icon" href="/user/img/logos/favicon.png">
+    <link rel="apple-touch-icon" href="/user/img/logos/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/user/img/logos/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/user/img/logos/apple-touch-icon-114x114.png">
+
+    <!-- plugins -->
+    <link rel="stylesheet" href="/user/css/plugins.css">
+
+    <!-- revolution slider css -->
+    <link rel="stylesheet" href="/user/css/rev_slider/settings.css">
+    <link rel="stylesheet" href="/user/css/rev_slider/layers.css">
+    <link rel="stylesheet" href="/user/css/rev_slider/navigation.css">
+
+    <!-- theme core css -->
+    <link href="/user/css/styles-3.css" rel="stylesheet">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+
+<body>
+
+    <!-- PAGE LOADING
+    ================================================== -->
+    <div id="preloader"></div>
+
+    <!-- MAIN WRAPPER
+    ================================================== -->
+    <div class="main-wrapper mp-pusher" id="mp-pusher">
+
+        <!-- HEADER
+        ================================================== -->
+        <header class="menu_area-light header-light-nav header-02">
+
+            <div class="navbar-default">
+
+                <!-- top search -->
+                <div class="top-search bg-primary">
+                    <div class="container-fluid">
+                        <form class="search-form" action="#" method="GET">
+                            <div class="input-group">
+                                <span class="input-group-addon cursor-pointer">
+                                    <button class="search-form_submit fas fa-search display-27 text-white" type="submit"></button>
+                                </span>
+                                <input type="text" class="search-form_input form-control" name="s" autocomplete="off" placeholder="Type & hit enter...">
+                                <span class="input-group-addon close-search"><i class="fas fa-times display-27 mt-2"></i></span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- end top search -->
+
+                <div class="container">
+                    <div class="row align-items-center g-0">
+                        <div class="col-12 col-lg-12">
+                            <div class="menu_area alt-font">
+                                <nav class="navbar navbar-expand-lg navbar-light p-0">
+
+                                    <div class="navbar-header navbar-header-custom">
+                                        <!-- logo -->
+                                        <a href="/" class="navbar-brand logodefault"><img id="logo" src="/user/img/logos/logo-color3.png" alt="logo"></a>
+                                        <!-- end logo -->
+                                    </div>
+
+                                    <!-- menu toggler -->
+                                    <div class="navbar-toggler"></div>
+                                    <!-- end menu toggler -->
+
+                                    <!-- menu area -->
+                                    <ul class="navbar-nav mx-auto" id="nav" style="display: none;">
+
+                                        <li><a href="/">Home</a>
+                                            
+                                        </li>
+                                        <li><a href="/shop">Shop</a>
+                                            
+                                        </li>
+                                        <li><a href="/wishlist">Wishlist</a>
+                                            
+                                        </li>
+                                        <li><a href="#">Profile</a>
+                                            <ul>
+                                                
+                                                <li><a href="/profile">User Details</a></li>
+                                                <%if(user == true){ %>
+                                                    <li><a href="/logout">Log OUT</a></li>
+                                                    <% }else{ %>
+                                                        <li><a href="/login">Log In</a></li>
+                    
+                                                        <% } %>
+                                                
+                                                
+                                            </ul>
+                                        </li>
+                                                
+                                                
+                                            
+                                        
+                                    </ul>
+                                    <!-- end menu area -->
+
+                                    <!-- attribute navigation -->
+                                    <div class="attr-nav" id="cartCount">
+                                        <ul>
+                                            <%if(user == true){ %>
+                                            <li class="dropdown me-3 me-lg-0" >
+                                                <a href="/cart" class="" data-bs-toggle="">
+                                                    <i class="ti-bag"></i>
+                                                    <span class="badge bg-primary" ><%= userData.cart.length %> </span>
+                                                </a>
+                                                
+                                            </li>
+                                            <% }else{ %>
+                                                <li class="dropdown me-3 me-lg-0">
+                                                    <a href="/login" class="" data-bs-toggle="">
+                                                        <i class="ti-bag"></i>
+                                                        <span class="badge bg-primary"></span>
+                                                    </a>
+                                                </li>
+                                                <% } %>
+                                            <li class="search"><a href="#"><i class="ti-search"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <!-- end attribute navigation -->
+
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- BANNER
+        ================================================== -->
+        <section class="full-screen p-0 top-position">
+            <div class="slider-fade2 owl-carousel owl-theme w-100">
+                <div class="item bg-img h-100 w-100 cover-background" data-overlay-dark="0" data-background="/user/img/slider/slide-10.jpg">
+                    <div class="container h-100 d-table">
+                        <div class="row d-table-cell align-middle h-100">
+                            <div class="col-lg-5">
+                                <h3 class="alt-font mb-2 h6 text-uppercase">New Arrivals</h3>
+                                <h1 class="display-16 display-sm-8 display-md-5 display-lg-3 mb-1-6 mb-lg-2-9">Decor Inspiration</h1>
+                                <a href="/shop" class="butn-style4">Shop Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item bg-img h-100 w-100 cover-background" data-overlay-dark="0" data-background="/user/img/slider/slide-11.jpg">
+                    <div class="container h-100 d-table">
+                        <div class="row d-table-cell align-middle h-100">
+                            <div class="col-lg-5">
+                                <h3 class="alt-font mb-2 h6 text-uppercase">Offer</h3>
+                                <h1 class="display-16 display-sm-8 display-md-5 display-lg-3 mb-1-6 mb-lg-2-9">Sofa Up to 50% OFF</h1>
+                                <a href="/shop" class="butn-style4">Shop Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item bg-img h-100 w-100 cover-background" data-overlay-dark="0" data-background="/user/img/slider/slide-13.jpg">
+                    <div class="container h-100 d-table">
+                        <div class="row d-table-cell align-middle h-100">
+                            <div class="col-lg-5">
+                                <h3 class="alt-font mb-2 h6 text-uppercase">Collection</h3>
+                                <h1 class="display-16 display-sm-8 display-md-5 display-lg-3 mb-1-6 mb-lg-2-9">Special Collection</h1>
+                                <a href="/shop" class="butn-style4">Shop Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CATEGORY
+        ================================================== -->
+        <section>
+            <div class="container">
+                <div class="row mt-n1-9 text-center">
+                    <% materialData.forEach((material) => { %>
+                    <div class="col-sm-6 col-md-4 col-lg-2 mt-1-9">
+                        <a href="/material-shop/<%= material._id %>" class="categoty-style2">
+                            <div class="category-icon mb-4">
+                                <img src="/category-img/<%= material.image %>" alt="...">
+                            </div>
+                            <h3 class="font-weight-500 mb-0"><%= material.materialName %></h3>
+                        </a>
+                    </div>
+                    <%})%>
+                    
+                </div>
+            </div>
+        </section>
+
+        <!-- BY STYLE
+        ================================================== -->
+        <section class="bg-trend">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-3 mb-1-9 mb-lg-0">
+                        <div class="pe-xl-6">
+                            <h2 class="h1 mb-1-6 mb-lg-1-9">Shop <br>By Style</h2>
+                            <p class="mb-1-6 mb-lg-1-9">Style any open air region with a few cautious review and cool headed choices.</p>
+                            <a href="shop-categories.html" class="text-uppercase small font-weight-600 border-bottom border-color-black text-dark">All Categories</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-9">
+                        <div class="owl-carousel owl-theme by-trend-carousel text-center">
+                            <% categoryData.forEach((category) => { %>  
+                            <a href="/shopCategory/<%= category._id %>">
+                                <img src="/category-img/<%= category.image %>" alt="..." style="width: 668px; height: 451px;">
+                                <h3 class="h5 mb-0 mt-3"><%=category.categoryName %></h3>
+                            </a>
+                            <%})%>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURED PRODUCTS
+        ================================================== -->
+        <section>
+            <div class="container">
+                <div class="text-center mb-1-9 mb-lg-2-3">
+                    <h2 class="mb-0">Featured Products</h2>
+                </div>
+                <div class="row mt-n1-9">
+                    <% productData.forEach((product) => { %> 
+                    <div class="col-sm-6 col-lg-3 mt-1-9">
+                        <div class="product-grid-four">
+                            <div class="product-img">
+                                <a href="/single-product/<%= product._id %> "><img src="/products/<%= product.image[0] %>" alt="..."></a>
+                                <div class="action-butn">
+                                    <a onclick="addToCart('<%=product._id%>')"><i class="ti-shopping-cart"></i></a>
+                                    <a href="/single-product/<%= product._id %> "><i class="ti-eye"></i></a>
+                                    <a onclick="addToWishlist('<%=product._id%>')"><i class="ti-heart"></i></a>
+                                </div>
+                            </div>
+                            <h3 class="h6"><a href="shop-product-detail.html"><%=product.product_name %></a></h3>
+                            <span class="font-weight-600 display-29 text-muted">₹<%=product.price %></span>
+                        </div>
+                    </div>
+                    <%})%>
+                    
+                </div>
+            </div>
+        </section>
+
+        <!-- OFFER BANNER
+        ================================================== -->
+        
+
+
+        <!-- banner mangement -->
+        <section class="md">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-9 mx-auto">
+
+                        <div class="position-relative elements-block">
+
+                            
+
+                            <div class="owl-carousel owl-theme text-center">
+                                <%bannerData.forEach((bannerData)=>{%>
+                                <div class="item"> <div class="offer-style02">
+                                    <img src="/banner-img/<%= bannerData.bannerImage %>" alt="...">
+                                    <div class="text-center position-absolute top-10 start-0 end-0">
+                                        <span class="text-uppercase font-weight-600 text-white letter-spacing-2 d-block mb-2 mb-sm-3"><%= bannerData.subTitle %></span>
+                                        <h2 class="h1 mb-2 text-white"><%= bannerData.offerName %> </h2>
+                                        <p class="text-white font-weight-600 display-29 d-none d-sm-block"><%= bannerData.description %></p>
+                                        <a href="/shop" class="butn-style4 sm">Shop Now<span></span></a>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                            <%})%>
+                            
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- end of banner management -->
+        <!-- SERVICES
+        ================================================== -->
+        <section class="p-0">
+            <div class="container">
+                <div class="row mt-n4">
+                    <div class="col-sm-6 col-lg-3 mt-4">
+                        <div class="text-center">
+                            <img src="/user/img/icons/icon-10.png" class="mb-3" alt="...">
+                            <h3 class="h5">Free Shipping</h3>
+                            <p class="mb-0">Free shipping over $100</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-3 mt-4">
+                        <div class="text-center">
+                            <img src="/user/img/icons/icon-11.png" class="mb-3" alt="...">
+                            <h3 class="h5">Money Return</h3>
+                            <p class="mb-0">Guarantee under 7 days</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-3 mt-4">
+                        <div class="text-center">
+                            <img src="/user/img/icons/icon-12.png" class="mb-3" alt="...">
+                            <h3 class="h5">Gift Voucher</h3>
+                            <p class="mb-0">Get $15 off your order</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-3 mt-4">
+                        <div class="text-center">
+                            <img src="/user/img/icons/icon-13.png" class="mb-3" alt="...">
+                            <h3 class="h5">Support 24 / 7</h3>
+                            <p class="mb-0">Support online 24 hours a day</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LOOKBOOk
+        ================================================== -->
+        <section>
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-7 mb-1-9 mb-lg-0">
+                        <div class="pe-xl-1-9 position-relative">
+                            <img src="/user/img/content/01.jpg" alt="...">
+                            <div class="lookbook d-none d-sm-block">
+                                <span class="lookbook-icon"><i class="fa-solid fa-plus"></i></span>
+                                <div class="lookbook-content">
+                                    <div class="d-flex">
+                                        <img src="/user/img/content/lookbook-01.jpg" alt="...">
+                                        <div class="ms-3">
+                                            <h3 class="h6 mb-0"><a href="shop-product-detail.html">Light Lamp</a></h3>
+                                            <p class="mb-0">$100.00</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="lookbook second">
+                                <span class="lookbook-icon"><i class="fa-solid fa-plus"></i></span>
+                                <div class="lookbook-content">
+                                    <div class="d-flex">
+                                        <img src="/user/img/content/lookbook-02.jpg" alt="...">
+                                        <div class="ms-3">
+                                            <h3 class="h6 mb-0"><a href="shop-product-detail.html">Dining Chair</a></h3>
+                                            <p class="mb-0">$200.00</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="ps-xl-6">
+                            <h2 class="h1 w-xl-80 mb-1-6 mb-lg-1-9">Discover the furniture design of your dreams</h2>
+                            <p class="mb-1-6 mb-lg-1-9">From curvaceous armchairs finished in sumptuous soft velvet, to statement art deco inspired console tables, bar trolleys and stylish side tables</p>
+                            <a href="shop-product-detail.html" class="text-uppercase small border-bottom border-color-black text-dark">shop the look</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INSTAGRAM IMAGES
+        ================================================== -->
+        <section class="p-0">
+            <div class="container-fluid px-0">
+                <div class="row g-0 portfolio-gallery">
+                    <div class="col-sm-4 col-lg" data-src="/user/img/gallery/06.jpg" data-sub-html="<h4 class='text-white'>#01</h4>">
+                        <div class="instagram-block rounded-0">
+                            <img src="/user/img/gallery/06.jpg" alt="...">
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-lg" data-src="/user/img/gallery/07.jpg" data-sub-html="<h4 class='text-white'>#02</h4>">
+                        <div class="instagram-block rounded-0">
+                            <img src="/user/img/gallery/07.jpg" alt="...">
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-lg" data-src="/user/img/gallery/08.jpg" data-sub-html="<h4 class='text-white'>#03</h4>">
+                        <div class="instagram-block rounded-0">
+                            <img src="/user/img/gallery/08.jpg" alt="...">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg" data-src="/user/img/gallery/09.jpg" data-sub-html="<h4 class='text-white'>#04</h4>">
+                        <div class="instagram-block rounded-0">
+                            <img src="/user/img/gallery/09.jpg" alt="...">
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg" data-src="/user/img/gallery/10.jpg" data-sub-html="<h4 class='text-white'>#05</h4>">
+                        <div class="instagram-block rounded-0">
+                            <img src="/user/img/gallery/10.jpg" alt="...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER
+        ================================================== -->
+        <footer class="pb-0 pt-6 pt-md-10 pt-lg-13 classic-footer">
+            <div class="container">
+                <div class="row mb-6 mb-md-10">
+                    <div class="col-lg-6 mb-4 mb-lg-0">
+                        <h2>Newsletter</h2>
+                        <p class="mb-0">Get timely updates from your favorite products</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="subscribe-style3">
+                            <form>
+                                <div class="form-group">
+                                    <input type="email" placeholder="Enter your email..." id="email" class="form-control">
+                                    <a href="#" class="subscribe-butn">Subscribe<span></span></a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-center border-top py-1-9">
+                    <div class="col-md-5 col-lg-4 col-xl-3 mb-4 mb-lg-0 text-center text-md-start">
+                        <div>
+                            <ul class="list-style-17">
+                                <li><img src="/user/img/content/payment-options/visa.png" alt="..."></li>
+                                <li><img src="/user/img/content/payment-options/mastercard.png" alt="..."></li>
+                                <li><img src="/user/img/content/payment-options/paypal.png" alt="..."></li>
+                                <li><img src="/user/img/content/payment-options/amex.png" alt="..."></li>
+                                <li><img src="/user/img/content/payment-options/discover.png" alt="..."></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-7 col-lg-5 col-xl-6 text-center text-md-end text-lg-center mb-4 mb-lg-0">
+                        <p class="mb-0 font-weight-600">&copy; <span class="current-year"></span> Smartshop is Powered by <a href="" target="">Chitrakoot Web</a></p>
+                    </div>
+                    <div class="col-lg-3 text-center text-lg-end">
+                        <ul class="social-icon-style2 mb-0 ps-0">
+                            <li>
+                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fab fa-instagram"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+        </footer>
+
+    </div>
+
+    
+    <!-- SCROLL TO TOP
+    ================================================== -->
+    <a href="#" class="scroll-to-top"><i class="fas fa-angle-up" aria-hidden="true"></i></a>
+
+    <!-- all js include start -->
+    <script>
+        function addToCart(prodId) {
+
+            // let count = document.querySelector('.cart-count')
+            // let val = parseInt(count.textContent)
+            $.ajax({
+                url: '/add-to-cart',
+                data: {
+                    productId: prodId
+                },
+                method: 'post',
+                success: (res) => {
+                    console.log(res)
+                    if(res){
+                        $('#cartCount').load('/home #cartCount')
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Your product added to cart',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+
+                    
+                    }else{
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Item already exist!',
+                           
+                        })
+                    }
+
+                }
+            })
+        }
+
+    </script>
+    <script>
+        function addToWishlist(prodId) {
+            $.ajax({
+                url: '/add-to-wishlist',
+                data: {
+                    productId: prodId
+                },
+                method: 'post',
+                success: (res) => {
+                    if(res.status){
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Your product added to wishlist',
+                            showConfirmButton: false,
+                            timer: 1000
+                        })
+
+                    }else {
+                        
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Item already exist!',
+                           
+                        })
+                        
+                    }  
+                }
+            })
+        }
+
+    </script>
+
+    <!-- jQuery -->
+    <script src="/user/js/jquery.min.js"></script>
+
+    <!-- popper js -->
+    <script src="/user/js/popper.min.js"></script>
+
+    <!-- bootstrap -->
+    <script src="/user/js/bootstrap.min.js"></script>
+
+    <!-- core.min.js -->
+    <script src="/user/js/core.min.js"></script>
+
+    <!-- custom scripts -->
+    <script src="/user/js/main.js"></script>
+	
+	<!-- all js include end -->
+
+</body>
+
+
+<!-- Mirrored from smartshop.websitelayout.net/home-shop-4.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 03 Jan 2023 16:00:16 GMT -->
+</html>

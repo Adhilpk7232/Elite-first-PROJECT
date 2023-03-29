@@ -1,0 +1,305 @@
+<%-include('../layouts/adminHeader') %>
+<body class="g-sidenav-show  bg-gray-200">
+  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
+    <div class="sidenav-header">
+      <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+      <a class="navbar-brand m-0" href="" target="_blank">
+        <img src="/assets/img/logo-ct.png" class="navbar-brand-img h-100" alt="main_logo">
+        <span class="ms-1 font-weight-bold text-white">Admin Panel</span>
+      </a>
+    </div>
+    <hr class="horizontal light mt-0 mb-2">
+    <div class="collapse navbar-collapse  w-auto  max-height-vh-100" id="sidenav-collapse-main">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link text-white " href="/admin/home">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">dashboard</i>
+            </div>
+            <span class="nav-link-text ms-1">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="/admin/sales-report">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">receipt_long</i>
+            </div>
+            <span class="nav-link-text ms-1">Sales report</span>
+          </a>
+        </li>
+        <li class="nav-item">
+
+          <!-- <a href="/hi">ividey amarthu</a> -->
+          <a class="nav-link text-white " href="/admin/user">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">table_view</i>
+            </div>
+            <span class="nav-link-text ms-1">User Managment</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="/admin/brand">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">receipt_long</i>
+            </div>
+            <span class="nav-link-text ms-1">Brand Mangement</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="/admin/category">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">receipt_long</i>
+            </div>
+            <span class="nav-link-text ms-1">Catagory Mangement</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white active bg-gradient-primary" href="/admin/product">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">view_in_ar</i>
+            </div>
+            <span class="nav-link-text ms-1">Product Mangement</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="/admin/order">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
+            </div>
+            <span class="nav-link-text ms-1">Order Mangement</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="/admin/coupon">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
+            </div>
+            <span class="nav-link-text ms-1">Coupen Management</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="/admin/offer-banner">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">receipt_long</i>
+            </div>
+            <span class="nav-link-text ms-1">Banner Mangement</span>
+          </a>
+        </li>
+        <li class="nav-item mt-3">
+          <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="./pages/profile.html">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">person</i>
+            </div>
+            <span class="nav-link-text ms-1">Profile</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="./pages/sign-in.html">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">login</i>
+            </div>
+            <span class="nav-link-text ms-1">Sign In</span>
+          </a>
+        </li>
+        
+      </ul>
+    </div>
+  </aside>
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
+      <div class="container-fluid py-1 px-3">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Product Management</li>
+          </ol>
+          <h6 class="font-weight-bolder mb-0">Product Management</h6>
+        </nav>
+        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+          <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+            <div class="input-group input-group-outline">
+              <label class="form-label">Type here...</label>
+              <input type="text" class="form-control">
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- End Navbar -->
+    <!-- product table -->
+    <a href="/admin/addProduct"> <button class="btn btn-primary mr-3">Add Product</button></a>
+<table class="table table-bordered my-3" id="myTable">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">PRODUCT NAME</th>
+        <th scope="col">CATEGORY</th>
+        <th scope="col">PRICE</th>
+        <th scope="col">STOCK</th>
+        <th scope="col">STATUS</th>
+        <th scope="col">IMAGE</th>
+        <th scope="col">QUANTITY</th>
+        <th scope="col">MORE</th>
+      </tr>
+    </thead>
+    <tbody>
+       <% productData.forEach((value,index)=>{ %>
+      <tr>
+        <th scope="row"><%= index +1 %></th> 
+        <td> <%= value.product_name %></td>
+        <td> <%= value.category.categoryName %></td>
+        <td> <%= value.price %></td>
+        <td> <% if(value.quantity > 5){ %>
+                <p style="color: green">in stock</p>
+                 <% }else if(value.quantity <= 0){ %>
+                  <p style="color: red;">out of stock </p>
+                  <% }else{ %>
+                    <p style="color: rgb(255, 106, 0);">few more left</p>
+                    <% } %>
+        </td>
+        <td> <%=value.list %></td>
+        <td> <img src="/products/<%= value.image[0] %>" alt="" style="width: 80px; height: 80px;"> </td>
+         <td> <%= value.quantity %></td>
+        <td style="padding: 0;width: 50px;"> 
+          <div class="btn-group dropstart" style="width: 100%;height: 100px;" >
+         <a href=""   data-bs-toggle="dropdown" aria-expanded="false" class="m-auto " style="width: 100%;" >
+          <i style="font-size:24px" class="fa m-4">&#xf142;</i>
+         </a>
+            <ul class="dropdown-menu">
+              <li> <a href="/admin/view-product?id=<%= value._id %>" class="btn btn-secondary d-block my-1">View</a></li>
+              <li> <a href="/admin/edit-product/<%= value._id %>" class="btn btn-primary d-block my-1" >EDIT</a></li>
+              <li> <a href="/admin/delete-product?id=<%= value._id %>"  class="btn btn-danger d-block my-1">DELETE</a></li>
+            </ul>
+          </div>
+        </td>
+      </tr>
+
+      <% }) %>
+     
+  
+    </tbody>
+  </table>
+  <!-- <div id="pagination" >
+    <ul>
+      <li><a href="#" class="prev">Prev</a></li>
+      <li><a href="#" class="page active">1</a></li>
+      <li><a href="#" class="page">2</a></li>
+      <li><a href="#" class="page">3</a></li>
+      <li><a href="#" class="page">4</a></li>
+      <li><a href="#" class="page">5</a></li>
+      <li><a href="#" class="next">Next</a></li>
+    </ul>
+  </div> -->
+  <!-- <script>
+    const deleteBtn = document.querySelector('.btn-danger');
+
+    deleteBtn.addEventListener('click', (event) => {
+      event.preventDefault(); // prevent the default behavior of the button
+
+      const confirmDelete = confirm('Are you sure you want to delete this product?');
+
+      if (confirmDelete) {
+        window.location.href = event.target.href; // if the user confirms, go ahead with the deletion
+      }
+    });
+
+  </script> -->
+
+  
+  <script>
+    $(document).ready(function(){
+  var table = $('#myTable');
+  var maxRows = 10; // Maximum number of rows per page
+  var totalRows = table.find('tbody tr').length; // Total number of rows in the table
+  var totalPages = Math.ceil(totalRows / maxRows); // Total number of pages
+  var currentPage = 1; // Current page number
+  var startRow = 0; // Starting row index for the current page
+  var endRow = maxRows - 1; // Ending row index for the current page
+  
+  // Hide all rows except for the first page
+  table.find('tbody tr').hide();
+  table.find('tbody tr').slice(startRow, endRow+1).show();
+  
+  // Handle click event for pagination links
+  $('#pagination').on('click', 'a', function(e){
+    e.preventDefault();
+    var targetPage = $(this).text(); // Get the target page number
+    var targetClass = $(this).attr('class'); // Get the class of the clicked link
+    
+    // Update the current page number and starting/ending row indices
+    if (targetClass == 'page') {
+      currentPage = targetPage;
+      startRow = (currentPage - 1) * maxRows;
+      endRow = startRow + maxRows - 1;
+    }
+    else if (targetClass == 'prev') {
+      if (currentPage > 1) {
+        currentPage--;
+        startRow = (currentPage - 1) * maxRows;
+        endRow = startRow + maxRows - 1;
+      }
+    }
+    else if (targetClass == 'next') {
+      if (currentPage < totalPages) {
+        currentPage++;
+        startRow = (currentPage - 1) * maxRows;
+        endRow = startRow + maxRows - 1;
+      }
+    }
+    
+    // Show/hide the appropriate rows
+    table.find('tbody tr').hide();
+    table.find('tbody tr').slice(startRow, endRow+1).show();
+    
+    // Update the pagination links
+    $('#pagination .page').removeClass('active');
+    $('#pagination .page').eq(currentPage-1).addClass('active');
+  });
+  
+  // Add pagination links to the page
+  var paginationLinks = '';
+  paginationLinks += '<li><a href="#" class="prev">Prev</a></li>';
+  for (var i = 1; i <= totalPages;
+
+  </script>
+
+  <script>
+    $(document).ready(function() {
+        $('#tables').DataTable();
+    });
+    </script>
+    
+
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+
+
+
+ 
+    
+  <!--   Core JS Files   -->
+  <script src="/assets/js/core/popper.min.js"></script>
+  <script src="/assets/js/core/bootstrap.min.js"></script>
+  <script src="/assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="/assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <script src="/assets/js/plugins/chartjs.min.js"></script>
+  <script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+      var options = {
+        damping: '0.5'
+      }
+      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+  </script>
+  <!-- Github buttons -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="/assets/js/material-dashboard.min.js?v=3.0.0"></script>
+</body>
+
+</html>
