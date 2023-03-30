@@ -869,26 +869,24 @@ const loadShopCategory = async (req,res) =>{
     try{
         if(req.session.user_id){
             const user = true
+            
             const catId=req.params.id
-            console.log(catId);
             const productCate =await Product.find({category:catId})
-            console.log(productCate);
             const categoryData = await Category.find()
             const materialData = await Material.find()
-            res.render('categoryShop',{productCate,categoryData,materialData,user})
-            // res.send("hello")
-            console.log("itti");
+            // res.render('categoryShop',{user,categoryData,materialData})
+            res.render('category',{productCate,categoryData,materialData,user})
+
         }else{
             const user = false
+            
             const catId=req.params.id
-        console.log(catId);
         const productCate =await Product.find({category:catId})
-        console.log(productCate);
         const categoryData = await Category.find()
         const materialData = await Material.find()
+        // res.render('categoryShop',{user,categoryData,materialData})
         res.render('categoryShop',{productCate,categoryData,materialData,user})
-        // res.send("hello")
-        console.log("itti");
+
         }
         
 
