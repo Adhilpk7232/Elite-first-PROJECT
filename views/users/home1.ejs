@@ -55,15 +55,18 @@
                 <!-- top search -->
                 <div class="top-search bg-primary">
                     <div class="container-fluid">
-                        <form class="search-form" action="#" method="GET">
+                        
                             <div class="input-group">
                                 <span class="input-group-addon cursor-pointer">
                                     <button class="search-form_submit fas fa-search display-27 text-white" type="submit"></button>
                                 </span>
-                                <input type="text" class="search-form_input form-control" name="s" autocomplete="off" placeholder="Type & hit enter...">
+                                <input onkeyup="sendData(this)" type="text" class="search-form_input form-control" name="s" autocomplete="off" placeholder="Type here...">
                                 <span class="input-group-addon close-search"><i class="fas fa-times display-27 mt-2"></i></span>
                             </div>
-                        </form>
+                            <section id="searchResults" style="width: fit-content; height: fit-content;">
+
+                            </section>
+                        
                     </div>
                 </div>
                 <!-- end top search -->
@@ -76,7 +79,7 @@
 
                                     <div class="navbar-header navbar-header-custom">
                                         <!-- logo -->
-                                        <a href="/" class="navbar-brand logodefault"><img id="logo" src="/user/img/logos/logo-color3.png" alt="logo"></a>
+                                        <a href="/" class="navbar-brand logodefault"><img id="logo" src="/img/elite logo2.png" alt="logo"></a>
                                         <!-- end logo -->
                                     </div>
 
@@ -251,14 +254,14 @@
                     <div class="col-sm-6 col-lg-3 mt-1-9">
                         <div class="product-grid-four">
                             <div class="product-img">
-                                <a href="/single-product/<%= product._id %> "><img src="/products/<%= product.image[0] %>" alt="..."></a>
+                                <a href="/single-product/<%= product._id %> "><img src="/products/<%= product.image[0] %>" alt="..."  style="width: 306px; height: 306px;"></a>
                                 <div class="action-butn">
                                     <a onclick="addToCart('<%=product._id%>')"><i class="ti-shopping-cart"></i></a>
                                     <a href="/single-product/<%= product._id %> "><i class="ti-eye"></i></a>
                                     <a onclick="addToWishlist('<%=product._id%>')"><i class="ti-heart"></i></a>
                                 </div>
                             </div>
-                            <h3 class="h6"><a href="shop-product-detail.html"><%=product.product_name %></a></h3>
+                            <h3 class="h6"><a href="/single-product/<%= product._id %> "><%=product.product_name %></a></h3>
                             <span class="font-weight-600 display-29 text-muted">₹<%=product.price %></span>
                         </div>
                     </div>
@@ -490,6 +493,48 @@
     <a href="#" class="scroll-to-top"><i class="fas fa-angle-up" aria-hidden="true"></i></a>
 
     <!-- all js include start -->
+    
+
+<script>
+    function sendData(e){
+        const searchResults=document.getElementById('searchResults')
+        let match = e.value.match(/^[a-zA-Z]*/)
+        let match2= e.value.match(/\s*/)
+        if(match2[0]==e.value){
+            searchResults.innerHTML='';
+            return
+        }
+        if(match[0]==e.value){
+            fetch('getProducts',{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({payload:e.value})
+        }).then(res => res.json()).then(data => {
+            let search=data.search;
+            
+            searchResults.innerHTML='';
+
+            if(search.length < 1){
+
+                searchResults.innerHTML='<p>sorry item not found<p>';
+                    return;
+            }
+            search.forEach((item,index)=>{
+
+                if(index > 0)searchResults.innerHTML += '<hr>';
+                searchResults.innerHTML += `<div onclick="window.location.href='/single-product/${item._id}'"class="d-flex"><img src="/products/${item.image[0]}" width="100px" alt=""><p>${item.product_name}</p></div>`
+
+            })
+
+        });
+        
+            return
+        }
+
+        searchResults.innerHTML='';
+
+    }
+</script>
     <script>
         function addToCart(prodId) {
 

@@ -532,33 +532,12 @@ const deleteImage = async(req,res) =>{
 }
 const DeleteProduct = async (req,res)=>{
     try{
-        // const id = req.query.id
-        // const productData=await Product.deleteOne({_id:id})
-        // if(productData){
-        //     res.redirect('/admin/product')
-        // }
-        const id = req.query.id
-        const productData = await Product.findOne({_id:id},{list:1,_id:id})
-        // const productData = await Product.find
-        if(productData.list == false){
-            const wait = await Product.updateOne({_id:id},{$set:{list:true}})
-            req.session.user_id=false
-            res.redirect('/admin/product')
-        }else{
-            const wait = await Product.updateOne({_id:id},{$set:{list:false}})
-            req.session.user_id=true
-            res.redirect('/admin/product')
-
-        }
-        // const productdelete = await Product.updateOne({_id:proId},{$set:{list:true}})
-        // if(productdelete){
-        //     res.redirect('/admin/product')
-        // }
-//         const imgId =req.query.id
-//    fs.unlink(path.join(__dirname,'../public/products',imgId),()=>{})
-//     Product.deleteOne({_id:req.query.id}).then(()=>{
-//         res.redirect('/admin/product')
-//     })
+        
+        const imgId =req.query.id
+   fs.unlink(path.join(__dirname,'../public/products',imgId),()=>{})
+    Product.deleteOne({_id:req.query.id}).then(()=>{
+        res.redirect('/admin/product')
+    })
    
     }catch(error){
         console.log(error.message);

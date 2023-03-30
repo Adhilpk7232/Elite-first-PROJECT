@@ -14,7 +14,7 @@
     <meta name="description" content="Smartshop - Multipurpose eCommerce Template + Admin" />
 
     <!-- title  -->
-    <title>Smartshop - Multipurpose eCommerce Template + Admin</title>
+    <title>ELITE SHOPIE</title>
 
     <!-- favicon -->
     <link rel="shortcut icon" href="/user/img/logos/favicon.png">
@@ -108,15 +108,17 @@
                 <!-- top search -->
                 <div class="top-search bg-primary">
                     <div class="container-fluid">
-                        <form class="search-form" action="#" method="GET">
+                        
                             <div class="input-group">
                                 <span class="input-group-addon cursor-pointer">
                                     <button class="search-form_submit fas fa-search display-27 text-white" type="submit"></button>
                                 </span>
-                                <input type="text" class="search-form_input form-control" name="s" autocomplete="off" placeholder="Type & hit enter...">
+                                <input type="text" onkeyup="sendData(this)" class="search-form_input form-control" name="s" autocomplete="off" placeholder="Type & hit enter...">
                                 <span class="input-group-addon close-search"><i class="fas fa-times display-27 mt-2"></i></span>
                             </div>
-                        </form>
+                            <section id="searchResults" style="width: fit-content; height: fit-content;">
+
+                            </section>
                     </div>
                 </div>
                 <!-- end top search -->
@@ -133,7 +135,7 @@
 
                                     <div class="navbar-header navbar-header-custom">
                                         <!-- logo -->
-                                        <a href="index.html" class="navbar-brand logodefault"><img id="logo" src="/user/img/logos/logo.png" alt="logo"></a>
+                                        <a href="/" class="navbar-brand logodefault"><img id="logo" src="/img/elite logo2.png" alt="logo"></a>
                                         <!-- end logo -->
                                     </div>
 
@@ -641,11 +643,13 @@
                         <!-- pagination -->
                         <div class="pagination text-small text-uppercase text-extra-dark-gray mt-4">
                             <ul>
-                                <li><a href="#"><i class="fas fa-long-arrow-alt-left me-1 d-none d-sm-inline-block"></i> Prev</a></li>
-                                <li class="active"><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">Next <i class="fas fa-long-arrow-alt-right ms-1 d-none d-sm-inline-block"></i></a></li>
+                                
+                                <% for(let i=1;i<=countProduct;i++){%>
+                                    <li class="active"><a href="?page=<%=i%>">
+                                            <%=i%>
+                                        </a></li>
+                                    <% }%>
+                                        
                             </ul>
                         </div>
                         <!-- end pagination -->
@@ -789,18 +793,53 @@
         </footer>
         
     </div>
-    
-    <!-- BUY TEMPLATE
-    ================================================== -->
-    <div class="buy-theme alt-font d-none d-lg-inline-block"><a href="https://wrapbootstrap.com/theme/smartshop-multipurpose-ecommerce-template-WB0N7CT4D" target="_blank"><i class="fas fa-cart-plus"></i><span>Buy Template</span></a></div>
-
-    <div class="all-demo alt-font d-none d-lg-inline-block"><a href="https://www.chitrakootweb.com/contact.html" target="_blank"><i class="far fa-envelope"></i><span>Quick Question?</span></a></div>
-    
+  
     <!-- SCROLL TO TOP
     ================================================== -->
     <a href="#" class="scroll-to-top"><i class="fas fa-angle-up" aria-hidden="true"></i></a>
     
     <!-- all js include start -->
+    
+<script>
+    function sendData(e){
+        const searchResults=document.getElementById('searchResults')
+        let match = e.value.match(/^[a-zA-Z]*/)
+        let match2= e.value.match(/\s*/)
+        if(match2[0]==e.value){
+            searchResults.innerHTML='';
+            return
+        }
+        if(match[0]==e.value){
+            fetch('getProducts',{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({payload:e.value})
+        }).then(res => res.json()).then(data => {
+            let search=data.search;
+            
+            searchResults.innerHTML='';
+
+            if(search.length < 1){
+
+                searchResults.innerHTML='<p>sorry item not found<p>';
+                    return;
+            }
+            search.forEach((item,index)=>{
+
+                if(index > 0)searchResults.innerHTML += '<hr>';
+                searchResults.innerHTML += `<div onclick="window.location.href='/single-product/${item._id}'"class="d-flex"><img src="/products/${item.image[0]}" width="100px" alt=""><p>${item.product_name}</p></div>`
+
+            })
+
+        });
+        
+            return
+        }
+
+        searchResults.innerHTML='';
+
+    }
+</script>
     <script>
         function addToCart(prodId) {
 

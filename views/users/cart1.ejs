@@ -14,7 +14,7 @@
     <meta name="description" content="Smartshop - Multipurpose eCommerce Template + Admin" />
 
     <!-- title  -->
-    <title>Smartshop - Multipurpose eCommerce Template + Admin</title>
+    <title>ELITE SHOPIE</title>
 
     <!-- favicon -->
     <link rel="shortcut icon" href="/user/img/logos/favicon.png">
@@ -80,7 +80,7 @@
 
                                     <div class="navbar-header navbar-header-custom">
                                         <!-- logo -->
-                                        <a href="index.html" class="navbar-brand logodefault"><img id="logo" src="/user/img/logos/logo.png" alt="logo"></a>
+                                        <a href="/" class="navbar-brand logodefault"><img id="logo" src="/img/elite logo2.png" alt="logo"></a>
                                         <!-- end logo -->
                                     </div>
 
@@ -307,7 +307,7 @@
                             <tbody>
                                 <% userData.cart.forEach((cart,index) => {   %>
                                     <%console.log( cart.productId.quantity)%>
-                                    <input type="hidden" class="<%= cart.productId._id %>" value="<%= cart.productId.quantity %>">
+                                    <!-- <input type="hidden" class="stock" value="<%= cart.productId.quantity %>"> -->
                                 <tr>
                                     <td class="product-thumbnail text-start">
                                         <a href="#"><img src="/products/<%= cart.productId.image[0] %>" alt="..." ></a>
@@ -521,22 +521,25 @@
 
         function changeQuantity(userId, productId, count, proPrice) {  
             let quantity = parseInt(document.getElementById(productId).innerHTML)
-            let stock = parseInt(document.getElementsByClassName(productId)[0].value)
+            // let stock = parseInt(document.getElementsByClassName(productId)[0].value)
             let procount = parseInt(count)
-            if(quantity <= 1 && procount === -1 ){
-                Swal.fire({
-                    title: 'Invalid Quantity!',
-                    text: 'Quantity should be more than zero',
-                    icon: 'warning',
-                    timer: 1500,
-                })
-            }else if(quantity >= stock && procount === 1){
-                Swal.fire({
-                    title: 'Out of stock!',
-                    text: 'Quantity should be more than zero',
-                    icon: 'warning',
-                    timer: 1500,
-                })
+            //  if(quantity >= stock && procount === 1){
+            //     Swal.fire({
+            //         title: 'Out of stock!',
+            //         text: 'Quantity should be more than zero',
+            //         icon: 'warning',
+            //         timer: 1500,
+            //     })
+            // }else
+            console.log(quantity,"qty");
+            console.log(procount,"+/-");
+             if(quantity <= 1 && procount === -1 ){
+                // Swal.fire({
+                //     title: 'Invalid Quantity!',
+                //     text: 'Quantity should be more than zero',
+                //     icon: 'warning',
+                //     timer: 1500,
+                // })
             }else{
               $.ajax({
                 url: '/change-quantity',
@@ -549,8 +552,10 @@
                 },
                 method: 'post',
                 success: (response) => {
+                    console.log(quantity+count);
+                    $('#table').load('/cart #table')
                   document.getElementById(productId).innerHTML = quantity+count
-                  document.getElementsByClassName(productId)[1].innerHTML = response.productSinglePrice
+                  document.getElementsByClassName(productId)[0].innerHTML = response.productSinglePrice
                   document.getElementById('total').innerHTML = response.sum
                 
                 }

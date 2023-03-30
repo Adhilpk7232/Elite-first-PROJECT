@@ -53,6 +53,8 @@ route.get('/forget-password',auth.isLogout,userController.forgetPasswordLoad)
 route.post('/forget-password',userController.resetPassword)
 // Render Home Page dynamically
 route.get('/home',auth.isLogin,userController.loadHome)
+
+route.post('/getProducts',userController.searchProducts)
 ///Cart
 route.post('/add-to-cart',auth.isLogin,userController.AddToCart)
 route.get('/cart',auth.isLogin,userController.loadCart)
