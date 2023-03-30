@@ -159,9 +159,12 @@
                                             <ul>
                                                 
                                                 <li><a href="/profile">User Details</a></li>
-                                                
+                                                <%if(user == true){ %>
                                                     <li><a href="/logout">Log OUT</a></li>
-                                                    
+                                                    <% }else{ %>
+                                                        <li><a href="/login">Log In</a></li>
+                    
+                                                        <% } %>
                                                 
                                                 
                                             </ul>

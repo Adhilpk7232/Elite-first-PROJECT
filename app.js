@@ -21,8 +21,8 @@ const adminRoute = require('./routes/adminRoute')
 app.use('/admin',adminRoute)
 const { sessionSecret } = require('./config/config')
 require('dotenv').config()
-app.listen(5000,function(){
-    console.log("server is running on 5000");
+app.listen(3000,function(){
+    console.log("server is running on 3000");
 })
 
 module.exports ={

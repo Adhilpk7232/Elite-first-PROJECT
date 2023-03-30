@@ -765,8 +765,9 @@ const addAddressCheckout = async(req,res) => {
 }
 const loadShop = async(req,res) => { 
     try{
-
-        let page = 1
+        if(req.session.user_id){
+            const user = true
+            let page = 1
         if(req.query.page){
             page = req.query.page
         }
@@ -782,7 +783,28 @@ const loadShop = async(req,res) => {
         let countProduct = Math.ceil(productCount/limit)
         // console.log(countProduct);
         const materialData = await Material.find()
-        res.render('shop1',{categoryData,productData,materialData,countProduct})
+        res.render('shop1',{categoryData,productData,materialData,countProduct,user})
+        }else{
+            const user = false
+            let page = 1
+        if(req.query.page){
+            page = req.query.page
+        }
+        let limit = 3
+
+        const categoryData = await Category.find()
+        const productData = await Product.find()
+            .limit(limit*1)
+            .skip((page - 1)* limit)
+            .exec()
+        const productCount = await Product.find().countDocuments()
+        // console.log(productCount);
+        let countProduct = Math.ceil(productCount/limit)
+        // console.log(countProduct);
+        const materialData = await Material.find()
+        res.render('shop1',{categoryData,productData,materialData,countProduct,user})
+        }
+        
 
     }catch(error){
         console.log(error.mesage);
@@ -790,7 +812,9 @@ const loadShop = async(req,res) => {
 }
 const loadMaterialShop= async (req,res) =>{
     try{
-        const materialId=req.params.id
+        if(req.session.user_id){
+            const user = true
+            const materialId=req.params.id
         let page = 1
         if(req.query.page){
             page = req.query.page
@@ -810,7 +834,32 @@ const loadMaterialShop= async (req,res) =>{
         // const productMaterial =await Product.find({material:materialId})
         const categoryData = await Category.find()
         const materialData = await Material.find()
-        res.render('materialShop',{productMaterial,categoryData,materialData,countProduct})
+        res.render('materialShop',{productMaterial,categoryData,materialData,countProduct,user})
+        }else{
+            const user = false
+            const materialId=req.params.id
+        let page = 1
+        if(req.query.page){
+            page = req.query.page
+        }
+        let limit = 3
+
+        
+        const productMaterial = await Product.find({material:materialId})
+            .limit(limit*1)
+            .skip((page - 1)* limit)
+            .exec()
+        const productCount = await Product.find({material:materialId}).countDocuments()
+        // console.log(productCount);
+        let countProduct = Math.ceil(productCount/limit)
+        // console.log(countProduct);
+        
+        // const productMaterial =await Product.find({material:materialId})
+        const categoryData = await Category.find()
+        const materialData = await Material.find()
+        res.render('materialShop',{productMaterial,categoryData,materialData,countProduct,user})
+        }
+        
 
     }catch(error){
         console.log(error.message);
@@ -818,15 +867,30 @@ const loadMaterialShop= async (req,res) =>{
 }
 const loadShopCategory = async (req,res) =>{
     try{
-        const catId=req.params.id
+        if(req.session.user_id){
+            const user = true
+            const catId=req.params.id
+            console.log(catId);
+            const productCate =await Product.find({category:catId})
+            console.log(productCate);
+            const categoryData = await Category.find()
+            const materialData = await Material.find()
+            res.render('categoryShop',{productCate,categoryData,materialData,user})
+            // res.send("hello")
+            console.log("itti");
+        }else{
+            const user = false
+            const catId=req.params.id
         console.log(catId);
         const productCate =await Product.find({category:catId})
         console.log(productCate);
         const categoryData = await Category.find()
         const materialData = await Material.find()
-        res.render('categoryShop',{productCate,categoryData,materialData})
+        res.render('categoryShop',{productCate,categoryData,materialData,user})
         // res.send("hello")
         console.log("itti");
+        }
+        
 
     }catch(error){
         console.log(error.message);
@@ -1030,12 +1094,24 @@ const loadOrderHistory = async(req,res) => {
 }
 const loadSingleProduct = async(req,res) => {
     try{
-        const id=req.params.id
+        if(req.session.user_id){
+            const user = true
+            const id=req.params.id
+            const product = await Product.findOne({_id:id}).populate('category').exec()
+            const categoryId = product.category
+            const relatedProduct = await Product.find({category:categoryId})
+            console.log(relatedProduct);
+            res.render('singleProductView',{product,relatedProduct,user})
+        }else{
+            const user = false
+            const id=req.params.id
         const product = await Product.findOne({_id:id}).populate('category').exec()
         const categoryId = product.category
         const relatedProduct = await Product.find({category:categoryId})
         console.log(relatedProduct);
-        res.render('singleProductView',{product,relatedProduct})
+        res.render('singleProductView',{product,relatedProduct,user})
+        }
+        
 
     }catch(error){
         console.log(error.message); 
