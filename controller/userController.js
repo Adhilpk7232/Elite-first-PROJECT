@@ -54,7 +54,7 @@ const sendVerifyMail = async(name,email,user_id)=>{
             from: emailUser,
             to: email,
             subject:'for verification mail',
-            html:'<h1>ELITE SHOPIE</h1><p>Hii '+name+',please click here to <a href ="http://localhost:3000/verify?id='+user_id+'">verify</a>your mail .</p>'
+            html:'<h1>ELITE SHOPIE</h1><p>Hii '+name+',please click here to <a href ="https://eliteshopie.online/verify?id='+user_id+'">verify</a>your mail .</p>'
         
         }
         transporter.sendMail(mailOptions,function(error,info){
@@ -92,7 +92,7 @@ const sendResetMail = async(name, email,token)=>{
             from: emailUser,
             to:email,
             subject:'For reset Password',
-            html:'<h1>ELITE SHOPIE</h1> <p>Hii '+name+',please click here to <a href ="http://localhost:3000/forget-password?token='+token+'">reset</a>your password .</p>'
+            html:'<h1>ELITE SHOPIE</h1> <p>Hii '+name+',please click here to <a href ="https://eliteshopie.online/forget-password?token='+token+'">reset</a>your password .</p>'
 
         }
         transporter.sendMail(mailOptions,function(error,info){
