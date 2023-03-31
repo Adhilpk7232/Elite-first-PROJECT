@@ -14,7 +14,7 @@
     <meta name="description" content="Smartshop - Multipurpose eCommerce Template + Admin" />
 
     <!-- title  -->
-    <title>ELITE SHOPIE
+    <title>ELITE SHOPIE </title>
     <!-- favicon -->
     <link rel="shortcut icon" href="/user/img/logos/favicon.png">
     <link rel="apple-touch-icon" href="/user/img/logos/apple-touch-icon-57x57.png">
@@ -113,6 +113,7 @@
                                                 
                                             </ul>
                                         </li>
+                                        
                                                 
                                                 
                                             
@@ -217,7 +218,7 @@
                             </div>
                         </div>
 
-                        <div class="widget">
+                        <!-- <div class="widget">
 
                             <div class="widget-title">
                                 <h5>Products</h5>
@@ -253,11 +254,11 @@
                                 </div>
                             </div>
 
-                        </div>
+                        </div> -->
 
                         
 
-                        <div class="offer-slider owl-carousel owl-theme">
+                        <!-- <div class="offer-slider owl-carousel owl-theme">
 
                             <div class="offer-banner-slider" style="background-image:url(/user/img/offer-banner/offer-slide-01.jpg);">
                                 <div class="offer-text">
@@ -286,7 +287,7 @@
                                 </div>
                             </div>
 
-                        </div>
+                        </div> -->
 
                     </div>
                     <!-- end sidebar panel -->
@@ -302,7 +303,7 @@
 
                                 <div class="row justify-content-center">
 
-                                    <div class="col-auto my-1 my-md-0">
+                                    <!-- <div class="col-auto my-1 my-md-0">
                                         <label class="m-0">Show:</label>
                                         <select class="w-auto d-inline-block form-select">
                                             <option value="#?limit=24" selected="selected">24</option>
@@ -311,20 +312,15 @@
                                             <option value="#?limit=75">75</option>
                                             <option value="#?limit=100">100</option>
                                         </select>
-                                    </div>
+                                    </div> -->
 
                                     <div class="col-auto my-1 my-md-0">
                                         <label class="m-0">Sort By:</label>
                                         <select class="w-auto d-inline-block form-select">
-                                            <option value="#?sort=p.sort_order&amp;order=ASC">Default</option>
-                                            <option value="#?sort=pd.name&amp;order=ASC">Name (A - Z)</option>
-                                            <option value="#?sort=pd.name&amp;order=DESC">Name (Z - A)</option>
+                                            
                                             <option value="#?sort=p.price&amp;order=ASC" selected="">Price (Low &gt; High)</option>
                                             <option value="#?sort=p.price&amp;order=DESC">Price (High &gt; Low)</option>
-                                            <option value="#?sort=rating&amp;order=DESC">Rating (Highest)</option>
-                                            <option value="#?sort=rating&amp;order=ASC">Rating (Lowest)</option>
-                                            <option value="#?sort=p.model&amp;order=ASC">Model (A - Z)</option>
-                                            <option value="#?sort=p.model&amp;order=DESC">Model (Z - A)</option>
+                                            
                                         </select>
                                     </div>
 
@@ -367,17 +363,20 @@
 
                         </div>
 
-                        <!-- pagination -->
-                        <div class="pagination text-small text-uppercase text-extra-dark-gray mt-4">
+                         <!-- pagination -->
+                         <div class="pagination text-small text-uppercase text-extra-dark-gray mt-4">
                             <ul>
-                                <li><a href="#"><i class="fas fa-long-arrow-alt-left me-1 d-none d-sm-inline-block"></i> Prev</a></li>
-                                <li class="active"><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">Next <i class="fas fa-long-arrow-alt-right ms-1 d-none d-sm-inline-block"></i></a></li>
+                                
+                                <% for(let i=1;i<=countProduct;i++){%>
+                                    <li class="active"><a href="?page=<%=i%>">
+                                            <%=i%>
+                                        </a></li>
+                                    <% }%>
+                                        
                             </ul>
                         </div>
                         <!-- end pagination -->
+
 
                     </div>
                     <!-- end right panel section -->
@@ -499,7 +498,7 @@
                     <div class="row align-items-center">
                         <div class="col-md-6 mb-3 mb-md-0">
                             <div class="text-center text-md-start">
-                                <p class="mb-0">&copy; <span class="current-year"></span> Smartshop is Powered by <a href="https://www.chitrakootweb.com/" target="_blank" class="text-dark">Chitrakoot Web</a></p>
+                                <p class="mb-0">&copy; <span class="current-year"></span> Smartshop is Powered by <a href="" target="_blank" class="text-dark">Chitrakoot Web</a></p>
                             </div>
                         </div>
                         <div class="col-md-6">

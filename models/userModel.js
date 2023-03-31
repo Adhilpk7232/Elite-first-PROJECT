@@ -73,7 +73,7 @@ const userSchema = new mongoose.Schema({
     }],
     wallet:{
         type:Number,
-        required:true
+        
     }
 })
 

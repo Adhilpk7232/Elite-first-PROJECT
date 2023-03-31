@@ -54,7 +54,7 @@ const sendVerifyMail = async(name,email,user_id)=>{
             from: emailUser,
             to: email,
             subject:'for verification mail',
-            html:'<h1>ELITE SHOPIE</h1><p>Hii '+name+',please click here to <a href ="http://localhost:5000/verify?id='+user_id+'">verify</a>your mail .</p>'
+            html:'<h1>ELITE SHOPIE</h1><p>Hii '+name+',please click here to <a href ="http://localhost:3000/verify?id='+user_id+'">verify</a>your mail .</p>'
         
         }
         transporter.sendMail(mailOptions,function(error,info){
@@ -92,7 +92,7 @@ const sendResetMail = async(name, email,token)=>{
             from: emailUser,
             to:email,
             subject:'For reset Password',
-            html:'<h1>ELITE SHOPIE</h1> <p>Hii '+name+',please click here to <a href ="http://localhost:5000/forget-password?token='+token+'">reset</a>your password .</p>'
+            html:'<h1>ELITE SHOPIE</h1> <p>Hii '+name+',please click here to <a href ="http://localhost:3000/forget-password?token='+token+'">reset</a>your password .</p>'
 
         }
         transporter.sendMail(mailOptions,function(error,info){
@@ -737,7 +737,6 @@ const addAddressCheckout = async(req,res) => {
             if(userAddress){
                 console.log("addred to exist address");
                 const userAdrs=await Address.findOne({userId:userId}).populate('userId').exec()
-                // console.log(userAdrs);
                 userAdrs.userAddresses.push(AddressObj)
                 await userAdrs .save().then((resp)=>{
                     res.redirect('/checkout')
@@ -779,9 +778,7 @@ const loadShop = async(req,res) => {
             .skip((page - 1)* limit)
             .exec()
         const productCount = await Product.find().countDocuments()
-        // console.log(productCount);
         let countProduct = Math.ceil(productCount/limit)
-        // console.log(countProduct);
         const materialData = await Material.find()
         res.render('shop1',{categoryData,productData,materialData,countProduct,user})
         }else{
@@ -798,9 +795,7 @@ const loadShop = async(req,res) => {
             .skip((page - 1)* limit)
             .exec()
         const productCount = await Product.find().countDocuments()
-        // console.log(productCount);
         let countProduct = Math.ceil(productCount/limit)
-        // console.log(countProduct);
         const materialData = await Material.find()
         res.render('shop1',{categoryData,productData,materialData,countProduct,user})
         }
@@ -827,11 +822,7 @@ const loadMaterialShop= async (req,res) =>{
             .skip((page - 1)* limit)
             .exec()
         const productCount = await Product.find({material:materialId}).countDocuments()
-        // console.log(productCount);
         let countProduct = Math.ceil(productCount/limit)
-        // console.log(countProduct);
-        
-        // const productMaterial =await Product.find({material:materialId})
         const categoryData = await Category.find()
         const materialData = await Material.find()
         res.render('materialShop',{productMaterial,categoryData,materialData,countProduct,user})
@@ -850,11 +841,7 @@ const loadMaterialShop= async (req,res) =>{
             .skip((page - 1)* limit)
             .exec()
         const productCount = await Product.find({material:materialId}).countDocuments()
-        // console.log(productCount);
         let countProduct = Math.ceil(productCount/limit)
-        // console.log(countProduct);
-        
-        // const productMaterial =await Product.find({material:materialId})
         const categoryData = await Category.find()
         const materialData = await Material.find()
         res.render('materialShop',{productMaterial,categoryData,materialData,countProduct,user})
@@ -869,23 +856,43 @@ const loadShopCategory = async (req,res) =>{
     try{
         if(req.session.user_id){
             const user = true
-            
             const catId=req.params.id
-            const productCate =await Product.find({category:catId})
+                let page = 1
+            if(req.query.page){
+                page = req.query.page
+            }
+            let limit = 3
+
+            
+            const productCate = await Product.find({category:catId})
+                .limit(limit*1)
+                .skip((page - 1)* limit)
+                .exec()
+            const productCount = await Product.find({category:catId}).countDocuments()
+            let countProduct = Math.ceil(productCount/limit)
             const categoryData = await Category.find()
             const materialData = await Material.find()
-            // res.render('categoryShop',{user,categoryData,materialData})
-            res.render('category',{productCate,categoryData,materialData,user})
+            res.render('categoryShop',{productCate,categoryData,materialData,user,countProduct})
 
         }else{
             const user = false
-            
             const catId=req.params.id
-        const productCate =await Product.find({category:catId})
+            let page = 1
+            if(req.query.page){
+                page = req.query.page
+            }
+            let limit = 3
+
+            
+            const productCate = await Product.find({category:catId})
+                .limit(limit*1)
+                .skip((page - 1)* limit)
+                .exec()
+            const productCount = await Product.find({category:catId}).countDocuments()
+            let countProduct = Math.ceil(productCount/limit)
         const categoryData = await Category.find()
         const materialData = await Material.find()
-        // res.render('categoryShop',{user,categoryData,materialData})
-        res.render('categoryShop',{productCate,categoryData,materialData,user})
+        res.render('categoryShop',{productCate,categoryData,materialData,user,countProduct})
 
         }
         
@@ -980,7 +987,6 @@ const insertAddress = async(req,res) => {
     try{
         if(req.session.user_id){
             const userId =req.session.user_id
-            // console.log(req.body.fullname);
             let AddressObj ={
                 fullname:req.body.fullname,
                 mobileNumber:req.body.number,
@@ -995,7 +1001,6 @@ const insertAddress = async(req,res) => {
             if(userAddress){
                 console.log("addred to exist address");
                 const newAddress=await Address.findOne({userId:userId}).populate('userId').exec()
-                // console.log(newAddress);
                 newAddress.userAddresses.push(AddressObj)
                 await newAddress .save().then((resp)=>{
                     res.redirect('/profile')
@@ -1026,15 +1031,9 @@ const editAddress = async(req,res) => {
         const adrsId = req.params.adrsId
         const address=mongoose.Types.ObjectId(adrsSchemaId)
         const addresses=mongoose.Types.ObjectId(adrsId)
-        // console.log(address);
-        // console.log(addresses);
         const addressData = await Address.findOne({address})
-        // console.log(addressData);
         const addressIndex = await addressData.userAddresses.findIndex(data=> data.id == addresses)
-        
-        // console.log(addressIndex);
         const editAddress = addressData.userAddresses[addressIndex]
-        // console.log(editAddress);
         res.render('profileAddressEdit',{editAddress,addressIndex})
 
 
@@ -1064,12 +1063,8 @@ const DeleteAddress = async(req,res)=>{
         const adrsId = req.params.adrsId
         const addressId=mongoose.Types.ObjectId(adrsSchemaId)
         const addresses=mongoose.Types.ObjectId(adrsId)
-        // console.log(addressId);
-        // console.log(addresses);
         const addressData = await Address.findOne({addressId})
-        // console.log(addressData);
         const addressIndex = await addressData.userAddresses.findIndex(data=> data.id == addresses)
-        // console.log(addressIndex);
         addressData.userAddresses.splice(addressIndex,1)
         await addressData.save()
         res.redirect('/profile')
@@ -1134,12 +1129,9 @@ const placeOrder = async(req,res) => {
         
         const address= await Address.findOne({userId:userId})
         const userAddress = address.userAddresses[index]
-        // console.log(userAddress);
         const cartData = await User.findOne({_id:userId}).populate('cart.productId')
         const total = cartData.cartTotalPrice
-        // console.log(cartData);
         const payment = req.body.payment
-        // console.log(payment);
         let status  =payment === 'COD'?'placed':'pending'
         let orderObj = { 
             userId:userId,
