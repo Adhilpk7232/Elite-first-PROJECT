@@ -460,7 +460,7 @@ const loadProduct = async (req,res)=>{
 }
 const EditProduct = async (req,res)=>{
     try{
-        const productData = await  Product.findOne({_id:req.params.id})
+        const productData = await  Product.findOne({_id:req.params.id}).populate('category')
         const categoryData = await  Category.find()
         res.render("edit-product",{productData,categoryData})
    
