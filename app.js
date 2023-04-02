@@ -10,10 +10,8 @@ const adminRoute = require('./routes/adminRoute')
 const userRoute = require('./routes/userRoute')
 const nocache = require('nocache')
 
-
 require('dotenv').config()
 config.mongooseconnection()
-
 
 app.set('views')
 app.set('view engine','ejs')
@@ -28,13 +26,11 @@ app.use(session({secret:config.sessionSecret,
     cookie:{maxAge:60000*1000},
     resave:false    
 }))
-
 // remove cache 
 app.use(nocache())
 ///for user route
 app.use('/',userRoute)
 app.use('/admin',adminRoute)
-
 
 app.use((req,res)=>{
     res.status(404).render("404")

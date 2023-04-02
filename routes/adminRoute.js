@@ -1,20 +1,17 @@
 const express = require("express")
-const router = express()
+const router = express.Router()
 const path = require('path')
 const auth = require('../middleware/adminAuth')
 const config = require("../config/config")
 const multer =require('multer')
 const{upload,categoryMulter,bannerMult}=require('../multers/multer')
 const fs = require('fs')
-
-
-
 const adminController = require("../controller/adminController")
-
 
 router.get('/',auth.isLogout,adminController.loadLogin)
 router.post('/',adminController.verifyLogin)
 router.get('/home',auth.isLogin,adminController.loadDashboard)
+router.get('/logout',adminController.adminLogout)
 /////brand
 router.get('/brand',auth.isLogin,adminController.loadBrand)
 router.get('/addBrand',auth.isLogin,adminController.addBrand)

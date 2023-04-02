@@ -1,11 +1,9 @@
 const express= require('express')
-const route = express()
+const route = express.Router()
 const path = require('path')
 const auth = require('../middleware/auth')
 const config = require('../config/config')
 const userController = require('../controller/userController')
-
-
 //Landing Page
 route.get('/',auth.isLogout,userController.loadLandingPage)
 //user registeration
@@ -72,8 +70,12 @@ route.post('/place-order',auth.isLogin,userController.placeOrder)
 route.post('/verify-payment',auth.isLogin,userController.verifyPayment)
 route.get('/ordersuccess',auth.isLogin,userController.orderSuccess)
 
+// route.get('/500',(req,res) => { 
+//     res.render('users/500')
+// })
+
 route.get('/img',function(req,res){
-    res.render('img')
+    res.render('users/img')
 })
 
 

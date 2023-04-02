@@ -34,6 +34,7 @@ const securePassword = async (password) => {
         return passwordHash
 
     }catch(error){
+        res.render('uses/500')
         console.log(error.message);
     }
 }
@@ -69,6 +70,7 @@ const sendVerifyMail = async(name,email,user_id)=>{
         console.log(user_id);
         console.log(email);
     }catch(error){
+        res.render('uses/500')
         console.log(error.message);
         console.log("send mail section");
     }
@@ -105,6 +107,8 @@ const sendResetMail = async(name, email,token)=>{
 
     }catch(error){
         console.log(error.message);
+        res.render('uses/500')
+
     }
 
 }
@@ -114,6 +118,8 @@ const loadSignup = async(req,res)=>{
 
     }catch(error){
         console.log(error.message);
+        res.render('uses/500')
+
     }
 }
 const insertUser = async(req,res)=>{
@@ -151,6 +157,8 @@ const verifyMail = async(req,res)=>{
         res.render('users/email-verified')
     }catch(error){
         console.log(error.message);
+        res.render('uses/500')
+
     }
     
 }
@@ -167,6 +175,8 @@ const loadLandingPage = async(req,res)=>{
         res.render('users/home',{categoryData,productData,user,bannerData,materialData})
     }catch(error){
         console.log(error.message);
+        res.render('uses/500')
+
     }
 }
 
@@ -185,6 +195,8 @@ const loadHome = async (req,res)=>{
         }
     }catch(error){
         console.log(error.message);
+        res.render('uses/500')
+
     }
 }
 
@@ -202,6 +214,8 @@ const searchProducts  = async (req,res) => {
 
     }catch(error){
         console.log(error.message);
+        res.render('uses/500')
+
     }
 }
 //LOGIN USER METHOD STARTED
@@ -211,6 +225,8 @@ const loginLoad = async (req,res)=>{
         res.render('users/login')
     }catch(error){
         console.log(error.message);
+        res.render('uses/500')
+
     }
 }
 
@@ -247,6 +263,8 @@ const verifyLogin = async(req,res)=>{
     }
     }catch(error){
         console.log(error.message);
+        res.render('uses/500')
+
     }
     
 }
@@ -256,6 +274,8 @@ const mobileCheck = async(req,res)=>{
         res.render('users/mobileCheck',{message:""})
     }catch(error){
         console.log(error.message);
+        res.render('uses/500')
+
     }
 }
 
@@ -280,6 +300,7 @@ const verifyPhone = async(req,res)=>{
             res.render('users/mobileCheck',{message:"Did not register this mobile number"})
         }
     }catch(error){
+        res.render('uses/500')
         console.log(error.message);
         console.log("from error of phone verify");
     }
@@ -308,6 +329,7 @@ const verifyOtp = async(req,res)=>{
                     console.log("false otp");
                 }
     }catch(error){
+        res.render('uses/500')
         console.log(error.message);
         console.log("veriftotp section");
     }
@@ -318,6 +340,8 @@ const loginOtp = async(req,res) => {
 
     }catch(error){
         console.log(error.message);
+        res.render('uses/500')
+
     }
 }
 const verifyNum = async(req,res) => {
@@ -340,6 +364,8 @@ const verifyNum = async(req,res) => {
 
     }catch(error){
         console.log(error.message);
+        res.render('uses/500')
+
     }
 }
 const loadOtp = async(req,res) => { 
@@ -348,6 +374,8 @@ const loadOtp = async(req,res) => {
 
     }catch(error){
         console.log(error.message);
+        res.render('uses/500')
+
     }
 }
 const verifyNumOtp = async(req,res)=>{
@@ -374,6 +402,7 @@ const verifyNumOtp = async(req,res)=>{
                 }
     }catch(error){
         console.log(error.message);
+        res.render('uses/500')
         console.log("veriftotp section");
     }
 }
@@ -384,6 +413,8 @@ const userLogout = async (req,res)=>{
 
     }catch(error){
         console.log(error.message);
+        res.render('uses/500')
+
     }
 }
 const forgetLoad = async(req,res)=>{
@@ -391,6 +422,7 @@ const forgetLoad = async(req,res)=>{
         res.render('users/forgotpassword')
     }catch(error){
         console.log(error.message);
+        res.render('uses/500')
     }
 }
 const forgetVerify = async(req,res)=>{
@@ -415,6 +447,7 @@ const forgetVerify = async(req,res)=>{
 
     }catch(error){
         console.log(error.message);
+        res.render('uses/500')
     }
 }
 
@@ -431,6 +464,7 @@ const forgetPasswordLoad = async(req,res)=>{
 
     }catch(error){
         console.log(error.message);
+        res.render('uses/500')
 
     }
 }
@@ -448,6 +482,7 @@ const resetPassword = async (req,res)=>{
 
     }catch(error){
         console.log(error.message);
+        res.render('uses/500')
     }
 }
 
@@ -472,6 +507,7 @@ const AddToCart = async(req,res) => {
         }
     }catch(error){
         console.log(error.message);
+        res.render('uses/500')
     }
 }
 
@@ -494,6 +530,7 @@ const loadCart = async(req,res) => {
 
     }catch(error){
         console.log(error.message);
+        res.render('uses/500')
     }
 }
 const deleteCartProduct = async(req,res) => { 
@@ -506,6 +543,7 @@ const deleteCartProduct = async(req,res) => {
         }
     }catch(error){
         console.log(error.message);
+        res.render('uses/500')
     }
 }
 const change_Quantities = async(req,res) => {
@@ -530,6 +568,7 @@ const change_Quantities = async(req,res) => {
                 
     }catch(error){
         console.log(error.message);
+        res.render('uses/500')
     }
 }
 const loadWhishlist = async(req,res) => { 
@@ -539,6 +578,7 @@ const loadWhishlist = async(req,res) => {
         res.render('users/wishlist',{userData})
 
     }catch(error){
+        res.render('uses/500')
         console.log(error.message);
     }
 }
@@ -564,6 +604,7 @@ const AddToWishlist  =async(req,res) => {
         }
 
     }catch(error){
+        res.render('uses/500')
         console.log(error.message);
     }
 }
@@ -593,6 +634,7 @@ const wishlistToCart = async(req,res)=>{
         }
 
     }catch(error){
+        res.render('uses/500')
         console.log(error.message);
     }
 }
@@ -605,6 +647,7 @@ const deleteWishlistProduct = async(req,res) => {
             res.json({success:true})
         }
     }catch(error){
+        res.render('uses/500')
         console.log(error.message);
     }
 }
@@ -616,6 +659,7 @@ const loadCheckout = async(req,res) => {
         res.render('users/checkout',{userData,addressData})
 
     }catch(error){
+        res.render('uses/500')
         console.log(error.message);
     }
 
@@ -684,6 +728,7 @@ const couponApply = async (req, res) => {
         }
       }
     } catch (error) {
+        res.render('uses/500')
       console.log(error.message);
     }
   };
@@ -729,6 +774,7 @@ const addAddressCheckout = async(req,res) => {
         }
 
     }catch(error){
+        res.render('uses/500')
         console.log(error.message);
     }
 }
@@ -776,6 +822,7 @@ const loadShop = async(req,res) => {
         
 
     }catch(error){
+        res.render('uses/500')
         console.log(error.mesage);
     }
 }
@@ -823,6 +870,7 @@ const loadMaterialShop= async (req,res) =>{
         
 
     }catch(error){
+        res.render('uses/500')
         console.log(error.message);
     }
 }
@@ -872,6 +920,7 @@ const loadShopCategory = async (req,res) =>{
         
 
     }catch(error){
+        res.render('uses/500')
         console.log(error.message);
     }
 }
@@ -883,6 +932,7 @@ const loadProfile = async (req,res) => {
         res.render('users/profile',{userData})
         
     }catch(error){
+        res.render('uses/500')
         console.log(error.message);
     }
 }
@@ -894,6 +944,7 @@ const loadProfileAddress = async (req,res) => {
         res.render('users/profileAdress',{address,userData})
         
     }catch(error){
+        res.render('uses/500')
         console.log(error.message);
     }
 }
@@ -907,6 +958,7 @@ const updateUserData = async(req,res) => {
         res.redirect('/profile')
 
     }catch(error){ 
+        res.render('uses/500')
         console.log(error.message);
     }
 }
@@ -916,6 +968,7 @@ const orderList = async (req,res) => {
         const orders = await Order.find({userId:id}).populate({path:'items',populate:{path:'productId',model:'Product'}})
         res.render('users/orderList',{orders})
     }catch(error){
+        res.render('uses/500')
         console.log(error.message);
     }
 }
@@ -926,6 +979,7 @@ const orderedProducts = async(req,res) => {
         res.render('users/orderedProductView',{orderProduct})
 
      }catch(error){
+        res.render('uses/500')
         console.log(error.message);
      }
 }
@@ -944,6 +998,7 @@ const cancelOrder =  async(req,res) => {
             res.redirect('/profile-order')
         }
      }catch(error){
+        res.render('uses/500')
         console.log(error.message);
      }
 }
@@ -956,6 +1011,7 @@ const returnOrder =  async(req,res) => {
        res.redirect('/profile-order')
 
     }catch(error){
+        res.render('uses/500')
        console.log(error.message);
     }
 }
@@ -996,6 +1052,7 @@ const insertAddress = async(req,res) => {
         
         }
     }catch(error){
+        res.render('uses/500')
         console.log(error.message);
     }
 }
@@ -1012,6 +1069,7 @@ const editAddress = async(req,res) => {
 
 
     }catch(error){
+        res.render('uses/500')
         console.log(error.message);
     }
 }
@@ -1027,6 +1085,7 @@ const updateAddress = async(req,res) =>{
 
     
     }catch(error){
+        res.render('uses/500')
         console.log(error.message);
     }
 }
@@ -1044,6 +1103,7 @@ const DeleteAddress = async(req,res)=>{
         
 
     }catch(error){
+        res.render('uses/500')
         console.log(error.message);
     }
 }
@@ -1055,6 +1115,7 @@ const loadOrderHistory = async(req,res) => {
         res.render('users/profileOrder',{orderData,userData})
 
     }catch(error){
+        res.render('uses/500')
         console.log(error.message);
     }
 }
@@ -1078,6 +1139,7 @@ const loadSingleProduct = async(req,res) => {
         
 
     }catch(error){
+        res.render('uses/500')
         console.log(error.message); 
     }
 }
@@ -1161,6 +1223,7 @@ const placeOrder = async(req,res) => {
         })
 
     }catch(error){
+        res.render('uses/500')
         console.log(error.message);
     }
 }
@@ -1193,6 +1256,7 @@ const verifyPayment = async(req,res)=>{
                 console.log('payment failed');
             }
     }catch(error){
+        res.render('uses/500')
         console.log(error.message);
     }
 }
@@ -1204,6 +1268,7 @@ const orderSuccess = async(req,res) => {
         const orderData = await Order.findOne({userId:userId}).populate({path:'items',populate:{path:'productId',model:'Product'}}).sort({createdAt:-1}).limit(1)
         res.render('users/orderSuccess',{orderData})
     }catch(error){
+        res.render('uses/500')
         console.log(error.message);
     }
 }

@@ -29,6 +29,7 @@ const loadLogin= async (req,res)=>{
     try{
         res.render('admin/login')
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -55,6 +56,16 @@ const verifyLogin = async (req,res)=>{
         }
 
     }catch(error){
+        res.render('admin/500')
+        console.log(error.message);
+    }
+}
+const adminLogout = async(req,res) => { 
+    try{
+        req.session.admin_id=null
+        res.redirect('/admin');
+    }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -144,6 +155,7 @@ const loadDashboard = async (req,res)=>{
             categorySaleCount:numbersOnly
         })
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -153,6 +165,7 @@ const loadUserManagement = async(req,res)=>{
         res.render('admin/userManagement',{users:userData})
 
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -173,6 +186,7 @@ const blockUser = async(req,res)=>{
         
 
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -183,7 +197,8 @@ const loadBrand  = async (req,res) => {
         res.render('admin/brandManagement',{materialData})
 
     }catch(error){
-        console.log(error.messaeg);
+        res.render('admin/500')
+        console.log(error.message);
     }
 }
 const addBrand  = async (req,res) => {
@@ -191,7 +206,8 @@ const addBrand  = async (req,res) => {
         res.render('admin/addBrand')
 
     }catch(error){
-        console.log(error.messaeg);
+        res.render('admin/500')
+        console.log(error.message);
     }
 }
 const insertBrand  = async (req,res) => {
@@ -222,7 +238,8 @@ const insertBrand  = async (req,res) => {
     }
 
     }catch(error){
-        console.log(error.messaeg);
+        res.render('admin/500')
+        console.log(error.message);
     }
 }
 const loadEditBrand  = async (req,res) => {
@@ -236,7 +253,8 @@ const loadEditBrand  = async (req,res) => {
         }
 
     }catch(error){
-        console.log(error.messaeg);
+        res.render('admin/500')
+        console.log(error.message);
     }
 }
 const UpdatedBrand  = async (req,res) => {
@@ -249,7 +267,8 @@ const UpdatedBrand  = async (req,res) => {
         }
 
     }catch(error){
-        console.log(error.messaeg);
+        res.render('admin/500')
+        console.log(error.message);
     }
 }
 const deleteBrand  = async (req,res) => {
@@ -259,7 +278,8 @@ const deleteBrand  = async (req,res) => {
         res.redirect('/admin/brand')
 
     }catch(error){
-        console.log(error.messaeg);
+        res.render('admin/500')
+        console.log(error.message);
     }
 }
 
@@ -269,6 +289,7 @@ const loadCategory = async(req,res)=>{
         res.render('admin/categoryManagement',{categoryData})
 
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -276,6 +297,7 @@ const AddCategorry =(req,res)=>{
     try{
         res.render('addCategory')
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -307,6 +329,7 @@ const insertCategory = async (req,res)=>{
         }
     }
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -316,6 +339,7 @@ const DeleteCategory = async (req,res)=>{
         await Category.deleteOne({_id:id})
         res.redirect('/admin/category')
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -330,6 +354,7 @@ const UpdateCategory = async(req,res)=>{
         }
 
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -342,6 +367,7 @@ const UpdatedCategory=async(req,res)=>{
             res.redirect('/admin/category')
         }
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -352,6 +378,7 @@ const AddProduct = async(req,res)=>{
         const materialData = await Material.find()
         res.render('admin/addProduct',{categoryData,materialData})
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -378,6 +405,7 @@ const InertProduct = async (req,res)=>{
         }
 
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -387,6 +415,7 @@ const loadProduct = async (req,res)=>{
     res.render("admin/products",{productData})
 
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -397,6 +426,7 @@ const EditProduct = async (req,res)=>{
         res.render("admin/edit-product",{productData,categoryData})
    
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -415,6 +445,7 @@ const UpdateProduct = async (req,res)=>{
         }
    
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -440,6 +471,7 @@ const updateImage = async(req,res)=>{
             res.redirect('/admin/edit-product/')
         }
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -450,6 +482,7 @@ const deleteImage = async(req,res) =>{
         fs.unlink(path.join(__dirname,'../public/products',imgid),()=>{})
         const productImg = await Product.updateOne({_id:prodid},{$pull:{image:imgid}})
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -463,6 +496,7 @@ const DeleteProduct = async (req,res)=>{
     })
    
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -473,6 +507,7 @@ const ViewProduct = async (req,res)=>{
         res.render('admin/view-product',{data})
    
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -482,6 +517,7 @@ const loadOrderlist = async(req,res) => {
         res.render('admin/order',{order})
 
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -491,7 +527,8 @@ const loadOrderProduct = async (req,res) => {
         const orderProduct = await Order.findOne({_id:orderId}).populate({path:'items',populate:{path:'productId',model:'Product'}})
         res.render('admin/orderProductView',{orderProduct})
     }catch(error){
-        console.log(error.messaeg);
+        res.render('admin/500')
+        console.log(error.message);
     }
 }
 const placedOrder  = async(req,res) => { 
@@ -501,6 +538,7 @@ const placedOrder  = async(req,res) => {
         res.redirect('/admin/order')
 
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -511,6 +549,7 @@ const shipedOrder  = async(req,res) => {
         res.redirect('/admin/order')
 
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -521,6 +560,7 @@ const deliveredOrder  = async(req,res) => {
         res.redirect('/admin/order')
 
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -539,6 +579,7 @@ const orderReturnSuccess  = async(req,res) => {
             }
 
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -549,6 +590,7 @@ const orderReturnCancelled  = async(req,res) => {
         res.redirect('/admin/order')
 
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -558,6 +600,7 @@ const loadcoupon = async(req,res) => {
         res.render('admin/coupon',{couponsData})
 
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -578,6 +621,7 @@ const addCoupon = async(req,res) => {
         res.redirect('/admin/coupon')
 
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -588,6 +632,7 @@ const editCoupon = async(req,res) => {
         res.render('admin/editCoupon',{couponData})
 
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -608,6 +653,7 @@ const updateCoupon = async(req,res) => {
         
 
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -618,6 +664,7 @@ const DeleteCoupon = async(req,res) => {
         res.redirect('/admin/coupon')
 
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
 }
@@ -627,6 +674,7 @@ const DeleteCoupon = async(req,res) => {
         res.render('admin/OfferBanner',{banner})
 
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
  }
@@ -647,6 +695,7 @@ const DeleteCoupon = async(req,res) => {
         }
 
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
  }
@@ -656,6 +705,7 @@ const DeleteCoupon = async(req,res) => {
         const banner  = await Banner.findOne({_id:bannerId})
         res.render('admin/edit-banner',{banner})
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
  }
@@ -674,6 +724,7 @@ const DeleteCoupon = async(req,res) => {
         }
 
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
  }
@@ -694,6 +745,7 @@ const DeleteCoupon = async(req,res) => {
         
 
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
  }
@@ -701,6 +753,7 @@ const DeleteCoupon = async(req,res) => {
     try{
         res.render('admin/salesReport')
     }catch(error){
+        res.render('admin/500')
         console.log(error.message);
     }
  }
@@ -722,7 +775,8 @@ const DeleteCoupon = async(req,res) => {
         }
 
     }catch(error){
-        console.log(error.messaeg);
+        res.render('admin/500')
+        console.log(error.message);
     }
  }
 module.exports={
@@ -770,5 +824,6 @@ module.exports={
     insertBrand,
     loadEditBrand,
     UpdatedBrand,
-    deleteBrand
+    deleteBrand,
+    adminLogout
 }    
