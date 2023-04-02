@@ -780,6 +780,10 @@ const loadShop = async(req,res) => {
         const productCount = await Product.find().countDocuments()
         let countProduct = Math.ceil(productCount/limit)
         const materialData = await Material.find()
+
+
+
+        
         res.render('shop1',{categoryData,productData,materialData,countProduct,user})
         }else{
             const user = false
@@ -963,10 +967,17 @@ const cancelOrder =  async(req,res) => {
      try{
         const orderId = req.query.id
         const order = await Order.findById(orderId)
-        order.orderStatus = 'cancelled'
-        order.save()
-        res.redirect('/profile-order')
-
+        if(order.paymentMethod == "Online Payment" && order.orderStatus == 'placed'){
+            const refund = await User.findOneAndUpdate({_id:order.userId},{$inc:{wallet:order.totalAmount}})
+            console.log(refund,"refund");
+            order.orderStatus = 'cancelled'
+            order.save()
+            res.redirect('/profile-order')
+        }else{
+            order.orderStatus = 'cancelled'
+            order.save()
+            res.redirect('/profile-order')
+        }
      }catch(error){
         console.log(error.message);
      }
@@ -1115,18 +1126,10 @@ const placeOrder = async(req,res) => {
         console.log("get place order");
         const userId = req.session.user_id
         const index = req.body.address
-        console.log(req.body.couponDiscount);
-        console.log(req.body.total1);
-        console.log(req.body.couponC);
-
         const discount = req.body.couponDiscount
         const totel = req.body.total1
         const coupon = req.body.couponC
-        const couponUpdate = await Coupon.updateOne({couponCode:coupon},{$push:{used:userId}})
-        console.log(couponUpdate);
-
-        console.log(index);
-        
+        const couponUpdate = await Coupon.updateOne({couponCode:coupon},{$push:{used:userId}})     
         const address= await Address.findOne({userId:userId})
         const userAddress = address.userAddresses[index]
         const cartData = await User.findOne({_id:userId}).populate('cart.productId')
@@ -1163,7 +1166,6 @@ const placeOrder = async(req,res) => {
                     productStock.quantity -= cartData[i].qty
                     await productStock.save()
                 }
-                // const productUpdate = await Product.update()
                 await User.updateOne({_id:userId},{$set:{cart:[],cartTotalPrice:0}})
                 console.log(data);
                 res.json({status:true})
@@ -1172,23 +1174,19 @@ const placeOrder = async(req,res) => {
                 const userData = await User.findOne({_id:userId})
                 if(userData.wallet >= total){
                     const cartData = userData.cart
-                console.log(cartData);
                 for(let i=0;i<cartData.length;i++){
                     const productStock = await Product.findById(cartData[i].productId)
                     productStock.quantity -= cartData[i].qty
                     await productStock.save()
                 }
-                // const productUpdate = await Product.update()
                 await User.updateOne({_id:userId},{$set:{cart:[],cartTotalPrice:0}})
-                await Order.updateOne({_id:orderId},{$set:{paymentMethod:'Wallet'}})
+                await Order.updateOne({_id:orderId},{$set:{paymentMethod:'Wallet',orderStatus:'placed'}})
                 console.log(data);
                 res.json({status:true})
 
                 }else{
                     res.json({walletBalance:true})
-
                 }
-
             }else{
                 var instance = new Razorpay({
                     key_id: process.env.KEY_ID,
@@ -1206,10 +1204,8 @@ const placeOrder = async(req,res) => {
             }
         })
 
-
     }catch(error){
         console.log(error.message);
-
     }
 }
 const verifyPayment = async(req,res)=>{
@@ -1221,12 +1217,10 @@ const verifyPayment = async(req,res)=>{
             console.log(details.payment); 
             let hmac = crypto.createHmac('sha256', process.env.KEY_SECRET);
             hmac.update(details.payment.razorpay_order_id + '|' + details.payment.razorpay_payment_id);
-            hmac = hmac.digest('hex')
-    
+            hmac = hmac.digest('hex')   
             const orderId = details.order.receipt
             console.log(orderId);
             if (hmac == details.payment.razorpay_signature) {
-    
                 console.log('order Successfull')
                 const userData = await User.findOne({_id:userId})
                 const cartData = userData.cart
@@ -1242,13 +1236,11 @@ const verifyPayment = async(req,res)=>{
                 }).catch((err) => {
                     console.log(err);
                     res.data({ status: false, err })
-                })
-    
+                })   
             } else {
                 res.json({ status: false })
                 console.log('payment failed');
             }
-
     }catch(error){
         console.log(error.message);
     }
@@ -1256,13 +1248,10 @@ const verifyPayment = async(req,res)=>{
 const orderSuccess = async(req,res) => {
     try{
         const userId = req.session.user_id
-        console.log(userId);
         const userData = await User.findOne({_id:userId})
         const catrData  = await User.findOne({_id:userId})
         const orderData = await Order.findOne({userId:userId}).populate({path:'items',populate:{path:'productId',model:'Product'}}).sort({createdAt:-1}).limit(1)
-        console.log("ahaui"+orderData);
         res.render('orderSuccess',{orderData})
-
     }catch(error){
         console.log(error.message);
     }

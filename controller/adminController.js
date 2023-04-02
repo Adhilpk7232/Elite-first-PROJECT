@@ -426,7 +426,7 @@ const InertProduct = async (req,res)=>{
         for(file of req.files){
             images.push(file.filename)
         }
-        console.log("haiii");
+        console.log(images,"haiii");
         const productData = new Product({
             product_name:req.body.product_name,
             category:req.body.category,

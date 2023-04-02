@@ -234,11 +234,15 @@
                             <div class="col-12 col-md-auto">
 
                                 <div class="row justify-content-center">
+                                    <div class="col-auto my-1 my-md-0">
+                                        <label class="m-0" id="searchField">Search</label>
+                                        <input type="text">
+                                    </div>
 
                                     
 
                                     <div class="col-auto my-1 my-md-0">
-                                        <label class="m-0">Sort By:</label>
+                                        <label class="m-0" id="sort">Sort By:</label>
                                         <select class="w-auto d-inline-block form-select">
                                             
                                             <option value="#?sort=p.price&amp;order=ASC" selected="">Price (Low &gt; High)</option>
@@ -253,7 +257,7 @@
 
                         </div>
 
-                        <div class="row justify-content-center">
+                        <div class="row justify-content-center" id="product">
                             <%=console.log(productData.length)%>
                             <%if(productData.length == 0){ %>
                                 
@@ -310,6 +314,89 @@
                 </div>
             </div>
         </section>
+        <script>
+            var categoryId;
+            var selectedValue;
+            let searchValue;
+        
+            // searching the products
+            const searchInput = document.querySelector("#searchField");
+            searchInput.addEventListener("input", (event) => {
+                event.preventDefault();
+                const search = event.target.value;
+                searchValue = search;
+                toAjax();
+            });
+        
+            // Filtering the products
+            // $("a.dropdown-item").click(function (e) {
+            //   e.preventDefault();
+            //   categoryId = $(this).data("category");
+        
+            //   toAjax();
+            // });
+        
+            $(document).ready(function () {
+                $("#button1").click(function () {
+                    categoryId = $("#category :selected").text();
+                    console.log(categoryId);
+                    toAjax();
+                });
+            });
+        
+            // sort Products
+            const sortSelect = document.getElementById("sort");
+            sortSelect.addEventListener("change", (event) => {
+                selectedValue = event.target.value;
+        
+                toAjax();
+            });
+        
+            function toAjax(page) {
+                $.ajax({
+                    url: "/shop",
+                    data: {
+                        categoryId: categoryId,
+                        sort: selectedValue,
+                        page: page,
+                        search: searchValue,
+                        isRender: "true",
+                    },
+                    method: "get",
+                    success: (response) => {
+                        if (response.product) {
+                            let html = "";
+                            for (let i = 0; i < response.pageProducts.length; i++) {
+                                html += `
+              <div class="col-12 col-md-4 col-lg-3">
+        <div class="box pt-3">
+        <div class="card" style="width: 18rem; ">
+          <img height="250px" width="100%" src="/productImage/${response.pageProducts[i].image[0]}" alt="">
+          <div class="card-body "> 
+            <div class="text-center">
+            <span><h6 class="card-title">
+              ${response.pageProducts[i].productName}
+            </h6>Rs.${response.pageProducts[i].price}</span>
+            <p class="card-text">
+              ${response.pageProducts[i].description}
+            </p>
+          </div>
+          
+          </div>
+        </div>
+        </div>
+        </div>
+              `;
+                            }
+                            document.getElementById("product").innerHTML = html;
+                        }
+                    },
+                });
+            }
+        
+        
+        
+        </script>
         
         <!-- FOOTER
         ================================================== -->

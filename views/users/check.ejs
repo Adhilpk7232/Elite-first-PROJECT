@@ -127,7 +127,7 @@
                                             <li class="dropdown me-3 me-lg-0">
                                                 <a href="/cart" class="" data-bs-toggle="">
                                                     <i class="ti-bag"></i>
-                                                    <span class="badge bg-primary">3</span>
+                                                    <span class="badge bg-primary"></span>
                                                 </a>
                                                 
                                             </li>
@@ -284,6 +284,11 @@
                                                     name="payment" id="shipping-method"
                                                     required><span><strong>
                                                         WALLET</strong> </span><br>
+                                                        wallet balance:  <% if(userData.wallet == 0){ %>
+                                                            <span style="color: red ;">₹<%= userData.wallet %></span>
+                                                        <% }else{ %>
+                                                            <span style="color: green;">₹<%= userData.wallet %></span>
+                                                        <% } %>
 
                                         </ul>
                                 </tbody>

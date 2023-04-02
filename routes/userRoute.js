@@ -77,15 +77,13 @@ route.post('/updateUserData',auth.isLogin,userController.updateUserData)
 //profile address
 route.get('/profile-address',auth.isLogin,userController.loadProfileAddress)
 route.post('/add-address',auth.isLogin,userController.insertAddress)
+route.post('/edit-update-address/:addressIndex',auth.isLogin,userController.updateAddress)
+route.get('/delete-address/:id/:adrsId',userController.DeleteAddress)
+
 route.get('/edit-address/:id/:adrsId',auth.isLogin,auth.isLogin,userController.editAddress)
 route.post('/add-address-checkOut',auth.isLogin,userController.addAddressCheckout)
 //profile order
 route.get('/profile-order',auth.isLogin,userController.loadOrderHistory)
-
-
-route.post('/edit-update-address/:addressIndex',auth.isLogin,userController.updateAddress)
-route.get('/delete-address/:id/:adrsId',userController.DeleteAddress)
-
 route.get('/orderlist',auth.isLogin,userController.orderList)
 route.get('/ordered-products',auth.isLogin,userController.orderedProducts)
 route.get("/cancel",auth.isLogin,userController.cancelOrder)
@@ -96,6 +94,10 @@ route.post('/coupon-apply',auth.isLogin,userController.couponApply)
 route.post('/place-order',auth.isLogin,userController.placeOrder)
 route.post('/verify-payment',auth.isLogin,userController.verifyPayment)
 route.get('/ordersuccess',auth.isLogin,userController.orderSuccess)
+
+route.get('/img',function(req,res){
+    res.render('img')
+})
 
 
 
