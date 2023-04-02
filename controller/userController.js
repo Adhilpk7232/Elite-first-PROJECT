@@ -109,7 +109,8 @@ const sendResetMail = async(name, email,token)=>{
 
 }
 const loadSignup = async(req,res)=>{
-    try{        res.render('register')
+    try{        
+        res.render('users/register')
 
     }catch(error){
         console.log(error.message);
@@ -122,7 +123,7 @@ const insertUser = async(req,res)=>{
         const usermobile =req.body.mno
         const checkData = await User.findOne({email:userEmail})
         if(checkData){
-             res.render('register',{message:'Email is already exist'})
+             res.render('users/register',{message:'Email is already exist'})
         }else{
         const user = new User({
             name:req.body.name,
@@ -134,9 +135,9 @@ const insertUser = async(req,res)=>{
         const userData = await user.save()
         if(userData){
             sendVerifyMail(req.body.name,req.body.email,userData._id);
-            res.render('register',{message:"your registration succseeful please verify your email"})
+            res.render('users/register',{message:"your registration succseeful please verify your email"})
         }else{
-            res.render('register',{message:"registration failed"})
+            res.render('users/register',{message:"registration failed"})
         }
         }
 
@@ -147,7 +148,7 @@ const insertUser = async(req,res)=>{
 const verifyMail = async(req,res)=>{
     try{
         const updateInfo = await User.updateOne({_id:req.query.id},{$set:{is_verified:1}})
-        res.render('email-verified')
+        res.render('users/email-verified')
     }catch(error){
         console.log(error.message);
     }
@@ -163,7 +164,7 @@ const loadLandingPage = async(req,res)=>{
         const bannerData = await Banner.find({status:true})
         const materialData = await Material.find()
         console.log(bannerData);
-        res.render('home1',{categoryData,productData,user,bannerData,materialData})
+        res.render('users/home',{categoryData,productData,user,bannerData,materialData})
     }catch(error){
         console.log(error.message);
     }
@@ -180,7 +181,7 @@ const loadHome = async (req,res)=>{
         const bannerData = await Banner.find({status:true})
         const materialData = await Material.find()
         console.log(bannerData);
-        res.render('home1',{categoryData,productData,user,bannerData,materialData,userData})
+        res.render('users/home',{categoryData,productData,user,bannerData,materialData,userData})
         }
     }catch(error){
         console.log(error.message);
@@ -207,7 +208,7 @@ const searchProducts  = async (req,res) => {
 
 const loginLoad = async (req,res)=>{
     try{
-        res.render('login1')
+        res.render('users/login')
     }catch(error){
         console.log(error.message);
     }
@@ -225,11 +226,11 @@ const verifyLogin = async(req,res)=>{
         if(passwordMatch){
             if(userData.is_verified === 0||userData.is_mobileVerified ===0){
                 if(userData.is_verified === 0){
-                    res.render('login1',{message:"Please verify your mail"})
+                    res.render('users/login',{message:"Please verify your mail"})
                     console.log("verified user zero");
 
                 }else{
-                    res.render('login1',{message:"Please verify your Mobile Number"})
+                    res.render('users/login',{message:"Please verify your Mobile Number"})
                     console.log("Mobile verified user zero");
                 }    
             }else{
@@ -238,11 +239,11 @@ const verifyLogin = async(req,res)=>{
                 res.redirect('/home') 
             }
         }else{
-            res.render('login1',{message:"Email and password id incorrect"})
+            res.render('users/login',{message:"Email and password id incorrect"})
         }
 
     }else{
-        res.render('login1',{message:"Email and Password is incorrect"})
+        res.render('users/login',{message:"Email and Password is incorrect"})
     }
     }catch(error){
         console.log(error.message);
@@ -252,7 +253,7 @@ const verifyLogin = async(req,res)=>{
 
 const mobileCheck = async(req,res)=>{
     try{
-        res.render('mobileCheck',{message:""})
+        res.render('users/mobileCheck',{message:""})
     }catch(error){
         console.log(error.message);
     }
@@ -273,10 +274,10 @@ const verifyPhone = async(req,res)=>{
                     channel:"sms"
                 })
                
-            res.render('loginMobileOtp',{message:num})
+            res.render('users/loginMobileOtp',{message:num})
 
         }else{
-            res.render('mobileCheck',{message:"Did not register this mobile number"})
+            res.render('users/mobileCheck',{message:"Did not register this mobile number"})
         }
     }catch(error){
         console.log(error.message);
@@ -303,7 +304,7 @@ const verifyOtp = async(req,res)=>{
                     res.redirect('/home')
                     console.log("true otp");
                 }else{
-                    res.render('loginMobileOtp',{message:'incorect otp'})
+                    res.render('users/loginMobileOtp',{message:'incorect otp'})
                     console.log("false otp");
                 }
     }catch(error){
@@ -313,7 +314,7 @@ const verifyOtp = async(req,res)=>{
 }
 const loginOtp = async(req,res) => {
     try{
-        res.render('loginMobile1')
+        res.render('users/loginMobile1')
 
     }catch(error){
         console.log(error.message);
@@ -331,10 +332,10 @@ const verifyNum = async(req,res) => {
                     channel:"sms"
                 })
                
-            res.render('loginMobileOtp',{message:num})
+            res.render('users/loginMobileOtp',{message:num})
 
         }else{
-            res.render('loginMobile1',{message:"Did not register this mobile number"})
+            res.render('users/loginMobile1',{message:"Did not register this mobile number"})
         }
 
     }catch(error){
@@ -343,7 +344,7 @@ const verifyNum = async(req,res) => {
 }
 const loadOtp = async(req,res) => { 
     try{
-        res.render('loginMobileOtp',{message:8086386842})
+        res.render('users/loginMobileOtp',{message:8086386842})
 
     }catch(error){
         console.log(error.message);
@@ -368,7 +369,7 @@ const verifyNumOtp = async(req,res)=>{
                     res.redirect('/home')
                     console.log("true otp");
                 }else{
-                    res.render('loginMobileOtp',{message2:'incorect otp',message:num})
+                    res.render('users/loginMobileOtp',{message2:'incorect otp',message:num})
                     console.log("false otp");
                 }
     }catch(error){
@@ -387,7 +388,7 @@ const userLogout = async (req,res)=>{
 }
 const forgetLoad = async(req,res)=>{
     try{
-        res.render('forgotpassword')
+        res.render('users/forgotpassword')
     }catch(error){
         console.log(error.message);
     }
@@ -400,16 +401,16 @@ const forgetVerify = async(req,res)=>{
         if(userData){
             
             if(userData.is_verified === 0){
-                res.render('forgotpassword',{message:"please verify your mail"})
+                res.render('users/forgotpassword',{message:"please verify your mail"})
             }else{
                 const randomstring = randormstring.generate()
                 const updatedData = await User.updateOne({email:email},{$set:{token:randomstring}})
                 sendResetMail(userData.name,userData.email,randomstring)
-                res.render('forgotpassword',{message2:'Please check your mail to rest your password'})
+                res.render('users/forgotpassword',{message2:'Please check your mail to rest your password'})
             }
 
         }else{
-            res.render('forgotpassword',{message:'User email is incorrect'})
+            res.render('users/forgotpassword',{message:'User email is incorrect'})
         }
 
     }catch(error){
@@ -422,7 +423,7 @@ const forgetPasswordLoad = async(req,res)=>{
         const token = req.query.token
         const tokenData = await User.findOne({token:token})
         if(tokenData){
-            res.render('resetPassword',{user_id:tokenData._id})
+            res.render('users/resetPassword',{user_id:tokenData._id})
 
         }else{
             res.render('404',{message:"token is invalid"})
@@ -456,18 +457,15 @@ const AddToCart = async(req,res) => {
         const productId = req.body.productId
         const _id = req.session.user_id
         let exist =await User.findOne({id:req.session.user_id,'cart.productId':productId})
-        console.log(exist);
         if(exist){
             
               res.send(false)
         }else{
-            const product =await Product.findOne({_id:req.body.productId})
-            
+            const product =await Product.findOne({_id:req.body.productId})        
             const userData = await User.findOne({_id})
             const result = await User.updateOne({_id},{$push:{cart:{productId:product._id,qty:1,price:product.price,productTotalPrice:product.price}}})
             if(result){
                 res.send(true)
-                console.log('added to cart');
             }else{
                 console.log('not addeed to cart');
             }
@@ -479,20 +477,18 @@ const AddToCart = async(req,res) => {
 
 const loadCart = async(req,res) => {
     try{
-        console.log("showing cart....");
         const userId = req.session.user_id
         const temp = mongoose.Types.ObjectId(req.session.user_id)
         const usercart =  await User.aggregate([ { $match: { _id: temp } }, { $unwind: '$cart' },{ $group: { _id: null, totalcart: { $sum: '$cart.productTotalPrice' } } }])
-        console.log(usercart);
         if(usercart.length >0){
             const cartTotal =usercart[0].totalcart
-        const cartTotalUpdate = await User.updateOne({_id:userId},{$set:{cartTotalPrice:cartTotal}})
-        const userData = await User.findOne({_id:userId}).populate('cart.productId').exec()
-        res.render('cart1',{userData})
+            const cartTotalUpdate = await User.updateOne({_id:userId},{$set:{cartTotalPrice:cartTotal}})
+            const userData = await User.findOne({_id:userId}).populate('cart.productId').exec()
+            res.render('users/cart',{userData})
 
         }else{
             const userData = await User.findOne({userId})
-            res.render('cart1',{userData})
+            res.render('users/cart',{userData})
         }
         
 
@@ -540,9 +536,7 @@ const loadWhishlist = async(req,res) => {
     try{
         const id = req.session.user_id
         const userData = await User.findOne({_id:id}).populate('whishlist.product').exec()
-        // console.log(userData);
-        // console.log(userData.whishlist);
-        res.render('wishlist1',{userData})
+        res.render('users/wishlist',{userData})
 
     }catch(error){
         console.log(error.message);
@@ -556,7 +550,6 @@ const AddToWishlist  =async(req,res) => {
         let exist =await User.findOne({id:req.session.user_id,'whishlist.product':productId})
         // console.log(exist);
         if(exist){
-            console.log("item allready exist in whishlist");
             res.json({status:false})
         }else{
             const product =await Product.findOne({_id:req.body.productId})
@@ -565,7 +558,6 @@ const AddToWishlist  =async(req,res) => {
             const result = await User.updateOne({_id},{$push:{whishlist:{product:product._id}}})
             if(result){
                 res.json({status:true})
-                console.log('added to whislist');
             }else{
                 console.log('not addeed to wishlist');
             }
@@ -578,30 +570,23 @@ const AddToWishlist  =async(req,res) => {
 const wishlistToCart = async(req,res)=>{
     try{
         const productId = req.body.productId
-        console.log(req.session.user_id);
         const _id = req.session.user_id
         let exist =await User.findOne({id:req.session.user_id,'cart.productId':productId})
-        console.log(exist);
         if(exist){
             const user = await User.findOne({_id:req.session.user_id})
             const index =await user.cart.findIndex(data=>data.productId._id == req.body.productId );
-            // console.log(index);
-                 user.cart[index].qty +=1;
+                user.cart[index].qty +=1;
                 user.cart[index].productTotalPrice= user.cart[index].qty * user.cart[index].price
                 await user.save();
                 const remove = await User.updateOne({_id},{$pull:{whishlist:{product:productId}}})
               res.send(true)
         }else{
             const product =await Product.findOne({_id:req.body.productId})
-            
-            // console.log(_id);
             const userData = await User.findOne({_id})
-            // console.log(userData);
             const result = await User.updateOne({_id},{$push:{cart:{productId:product._id,qty:1,price:product.price,productTotalPrice:product.price}}})
             if(result){
                 const remove = await User.updateOne({_id},{$pull:{whishlist:{product:productId}}})
                 res.redirect('/home')
-                console.log('added to cart');
             }else{
                 console.log('not addeed to cart');
             }
@@ -614,11 +599,8 @@ const wishlistToCart = async(req,res)=>{
 const deleteWishlistProduct = async(req,res) => { 
     try{
         const id = req.session.user_id
-        console.log("adhilp"+id);
         const deleteProId=req.body.productId
-        console.log(deleteProId);
         const deleteWishlist = await User.findByIdAndUpdate({_id:id},{$pull:{whishlist:{product:deleteProId}}})
-        console.log("deeehunf"+deleteWishlist);
         if(deleteWishlist){
             res.json({success:true})
         }
@@ -629,10 +611,9 @@ const deleteWishlistProduct = async(req,res) => {
 const loadCheckout = async(req,res) => {
     try{
         const userId = req.session.user_id
-        console.log(userId);
         const userData = await User.findOne({_id:userId}).populate('cart.productId').exec()
         const addressData = await Address.findOne({userId:userId})
-        res.render('check',{userData,addressData})
+        res.render('users/checkout',{userData,addressData})
 
     }catch(error){
         console.log(error.message);
@@ -642,21 +623,13 @@ const loadCheckout = async(req,res) => {
 
 const couponApply = async (req, res) => {
     try {
-        
-        
         const userId = req.session.user_id
-        console.log(userId);
         const user = await User.findOne({ _id:userId });
-        console.log(user);
         let cartTotal = user.cartTotalPrice;
-        console.log("cart");
-        console.log(cartTotal);
-        console.log(req.body.code);
     const exist = await Coupon.findOne(
         { couponCode: req.body.code, used: userId },
         { used: { $elemMatch: { $eq: userId } } }
       );
-        console.log(exist);
       if (exist) {
         console.log("ubhayokichu");
         return res.json({ used: true });
@@ -698,7 +671,6 @@ const couponApply = async (req, res) => {
                   }
                 }
               } else {
-                console.log(`must purchase above ${couponData.minCartAmount}`);
                 res.json({ minimum: true });
               }
             } else {
@@ -735,7 +707,6 @@ const addAddressCheckout = async(req,res) => {
             }
             const userAddress= await Address.findOne({userId:userId})
             if(userAddress){
-                console.log("addred to exist address");
                 const userAdrs=await Address.findOne({userId:userId}).populate('userId').exec()
                 userAdrs.userAddresses.push(AddressObj)
                 await userAdrs .save().then((resp)=>{
@@ -746,7 +717,6 @@ const addAddressCheckout = async(req,res) => {
                 console.log(userAdrs);
                 
             }else{
-                console.log("added to new address ");
                 let userAddressObj ={
                     userId:userId,
                     userAddresses:[AddressObj]
@@ -783,8 +753,8 @@ const loadShop = async(req,res) => {
 
 
 
-        
-        res.render('shop1',{categoryData,productData,materialData,countProduct,user})
+
+        res.render('users/shop',{categoryData,productData,materialData,countProduct,user})
         }else{
             const user = false
             let page = 1
@@ -801,7 +771,7 @@ const loadShop = async(req,res) => {
         const productCount = await Product.find().countDocuments()
         let countProduct = Math.ceil(productCount/limit)
         const materialData = await Material.find()
-        res.render('shop1',{categoryData,productData,materialData,countProduct,user})
+        res.render('users/shop',{categoryData,productData,materialData,countProduct,user})
         }
         
 
@@ -829,7 +799,7 @@ const loadMaterialShop= async (req,res) =>{
         let countProduct = Math.ceil(productCount/limit)
         const categoryData = await Category.find()
         const materialData = await Material.find()
-        res.render('materialShop',{productMaterial,categoryData,materialData,countProduct,user})
+        res.render('users/materialShop',{productMaterial,categoryData,materialData,countProduct,user})
         }else{
             const user = false
             const materialId=req.params.id
@@ -848,7 +818,7 @@ const loadMaterialShop= async (req,res) =>{
         let countProduct = Math.ceil(productCount/limit)
         const categoryData = await Category.find()
         const materialData = await Material.find()
-        res.render('materialShop',{productMaterial,categoryData,materialData,countProduct,user})
+        res.render('users/materialShop',{productMaterial,categoryData,materialData,countProduct,user})
         }
         
 
@@ -876,7 +846,7 @@ const loadShopCategory = async (req,res) =>{
             let countProduct = Math.ceil(productCount/limit)
             const categoryData = await Category.find()
             const materialData = await Material.find()
-            res.render('categoryShop',{productCate,categoryData,materialData,user,countProduct})
+            res.render('users/categoryShop',{productCate,categoryData,materialData,user,countProduct})
 
         }else{
             const user = false
@@ -896,7 +866,7 @@ const loadShopCategory = async (req,res) =>{
             let countProduct = Math.ceil(productCount/limit)
         const categoryData = await Category.find()
         const materialData = await Material.find()
-        res.render('categoryShop',{productCate,categoryData,materialData,user,countProduct})
+        res.render('users/categoryShop',{productCate,categoryData,materialData,user,countProduct})
 
         }
         
@@ -910,8 +880,7 @@ const loadProfile = async (req,res) => {
         const userId = req.session.user_id
         const userData = await User.findOne({_id:userId})
         const address = await Address.findOne({userId:req.session.user_id})
-        console.log(userData);
-        res.render('profile1',{userData})
+        res.render('users/profile',{userData})
         
     }catch(error){
         console.log(error.message);
@@ -922,8 +891,7 @@ const loadProfileAddress = async (req,res) => {
         const userId = req.session.user_id
         const userData = await User.findOne({_id:userId})
         const address = await Address.findOne({userId:userId})
-        console.log(address)
-        res.render('profileAdress',{address,userData})
+        res.render('users/profileAdress',{address,userData})
         
     }catch(error){
         console.log(error.message);
@@ -936,7 +904,6 @@ const updateUserData = async(req,res) => {
         const email = req.body.email
         const mobileNumber = req.body.phone
         const updateUser = await User.updateOne({userId},{$set:{name:name,email:email,mobile:mobileNumber}})
-        console.log(updateUser);
         res.redirect('/profile')
 
     }catch(error){ 
@@ -947,8 +914,7 @@ const orderList = async (req,res) => {
     try{
         const id = req.session.user_id
         const orders = await Order.find({userId:id}).populate({path:'items',populate:{path:'productId',model:'Product'}})
-        console.log("hai"+orders);
-        res.render('orderList',{orders})
+        res.render('users/orderList',{orders})
     }catch(error){
         console.log(error.message);
     }
@@ -957,7 +923,7 @@ const orderedProducts = async(req,res) => {
      try{
         const orderId  =req.query.id
         const orderProduct = await Order.findOne({_id:orderId}).populate({path:'items',populate:{path:'productId',model:'Product'}})
-        res.render('orderedProductView',{orderProduct})
+        res.render('users/orderedProductView',{orderProduct})
 
      }catch(error){
         console.log(error.message);
@@ -969,7 +935,6 @@ const cancelOrder =  async(req,res) => {
         const order = await Order.findById(orderId)
         if(order.paymentMethod == "Online Payment" && order.orderStatus == 'placed'){
             const refund = await User.findOneAndUpdate({_id:order.userId},{$inc:{wallet:order.totalAmount}})
-            console.log(refund,"refund");
             order.orderStatus = 'cancelled'
             order.save()
             res.redirect('/profile-order')
@@ -1010,7 +975,6 @@ const insertAddress = async(req,res) => {
             }
             const userAddress= await Address.findOne({userId:userId})
             if(userAddress){
-                console.log("addred to exist address");
                 const newAddress=await Address.findOne({userId:userId}).populate('userId').exec()
                 newAddress.userAddresses.push(AddressObj)
                 await newAddress .save().then((resp)=>{
@@ -1021,7 +985,6 @@ const insertAddress = async(req,res) => {
                 console.log(userAdrs);
                 
             }else{
-                console.log("added to new address ");
                 let userAddressObj ={
                     userId:userId,
                     userAddresses:[AddressObj]
@@ -1045,7 +1008,7 @@ const editAddress = async(req,res) => {
         const addressData = await Address.findOne({address})
         const addressIndex = await addressData.userAddresses.findIndex(data=> data.id == addresses)
         const editAddress = addressData.userAddresses[addressIndex]
-        res.render('profileAddressEdit',{editAddress,addressIndex})
+        res.render('users/profileAddressEdit',{editAddress,addressIndex})
 
 
     }catch(error){
@@ -1054,7 +1017,6 @@ const editAddress = async(req,res) => {
 }
 const updateAddress = async(req,res) =>{
     try{
-        // const userAddresses = req.params.id
         const addressIndex = req.params.addressIndex
         const editData = { ...req.body }
         const userId = req.session.user_id
@@ -1090,7 +1052,7 @@ const loadOrderHistory = async(req,res) => {
         const userId = req.session.user_id
         const userData = await User.findOne({_id:userId})
         const orderData = await Order.find({userId:userId})
-        res.render('profileOrder',{orderData,userData})
+        res.render('users/profileOrder',{orderData,userData})
 
     }catch(error){
         console.log(error.message);
@@ -1104,16 +1066,14 @@ const loadSingleProduct = async(req,res) => {
             const product = await Product.findOne({_id:id}).populate('category').exec()
             const categoryId = product.category
             const relatedProduct = await Product.find({category:categoryId})
-            console.log(relatedProduct);
-            res.render('singleProductView',{product,relatedProduct,user})
+            res.render('users/singleProductView',{product,relatedProduct,user})
         }else{
             const user = false
             const id=req.params.id
         const product = await Product.findOne({_id:id}).populate('category').exec()
         const categoryId = product.category
         const relatedProduct = await Product.find({category:categoryId})
-        console.log(relatedProduct);
-        res.render('singleProductView',{product,relatedProduct,user})
+        res.render('users/singleProductView',{product,relatedProduct,user})
         }
         
 
@@ -1123,7 +1083,6 @@ const loadSingleProduct = async(req,res) => {
 }
 const placeOrder = async(req,res) => {
     try{
-        console.log("get place order");
         const userId = req.session.user_id
         const index = req.body.address
         const discount = req.body.couponDiscount
@@ -1160,14 +1119,12 @@ const placeOrder = async(req,res) => {
             if(payment == 'COD'){
                 const userData = await User.findOne({_id:userId})
                 const cartData = userData.cart
-                console.log(cartData);
                 for(let i=0;i<cartData.length;i++){
                     const productStock = await Product.findById(cartData[i].productId)
                     productStock.quantity -= cartData[i].qty
                     await productStock.save()
                 }
                 await User.updateOne({_id:userId},{$set:{cart:[],cartTotalPrice:0}})
-                console.log(data);
                 res.json({status:true})
             }else if(payment == 'WALLET'){
 
@@ -1181,7 +1138,6 @@ const placeOrder = async(req,res) => {
                 }
                 await User.updateOne({_id:userId},{$set:{cart:[],cartTotalPrice:0}})
                 await Order.updateOne({_id:orderId},{$set:{paymentMethod:'Wallet',orderStatus:'placed'}})
-                console.log(data);
                 res.json({status:true})
 
                 }else{
@@ -1210,18 +1166,13 @@ const placeOrder = async(req,res) => {
 }
 const verifyPayment = async(req,res)=>{
     try{
-        console.log("inside verifypayment ");
-        console.log(req.body);
         const userId = req.session.user_id
             const details = req.body
-            console.log(details.payment); 
             let hmac = crypto.createHmac('sha256', process.env.KEY_SECRET);
             hmac.update(details.payment.razorpay_order_id + '|' + details.payment.razorpay_payment_id);
             hmac = hmac.digest('hex')   
             const orderId = details.order.receipt
-            console.log(orderId);
             if (hmac == details.payment.razorpay_signature) {
-                console.log('order Successfull')
                 const userData = await User.findOne({_id:userId})
                 const cartData = userData.cart
                 console.log(cartData);
@@ -1251,7 +1202,7 @@ const orderSuccess = async(req,res) => {
         const userData = await User.findOne({_id:userId})
         const catrData  = await User.findOne({_id:userId})
         const orderData = await Order.findOne({userId:userId}).populate({path:'items',populate:{path:'productId',model:'Product'}}).sort({createdAt:-1}).limit(1)
-        res.render('orderSuccess',{orderData})
+        res.render('users/orderSuccess',{orderData})
     }catch(error){
         console.log(error.message);
     }

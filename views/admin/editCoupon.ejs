@@ -169,14 +169,14 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Start date</label>
-                                <input type="date" class="form-control border pe-2 ps-2" id="" placeholder="start date" name="startdate" value="<%=couponData.startDate%>" required>
+                                <input type="date" class="form-control border pe-2 ps-2" id="" placeholder="start date" name="startdate" value="<%=couponData.startDate.toLocaleDateString() %>" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                               <%console.log(couponData.expiryDate)%>
                                 <label for="">Expiry date</label>
-                                <input type="date" class="form-control border pe-2 ps-2" id="" placeholder="expiry date" name="expirydate" value="<%=couponData.expiryDate%>" required>
+                                <input type="date" class="form-control border pe-2 ps-2" id="" placeholder="expiry date" name="expirydate" value="<%=couponData.expiryDate.toLocaleDateString() %>" required>
                             </div>
                         </div>
                     </div>

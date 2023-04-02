@@ -27,7 +27,7 @@ const securePassword = async (password) => {
 
 const loadLogin= async (req,res)=>{
     try{
-        res.render('login')
+        res.render('admin/login')
     }catch(error){
         console.log(error.message);
     }
@@ -37,28 +37,21 @@ const verifyLogin = async (req,res)=>{
     try{
         const email=req.body.email
         const password=req.body.password;
-
         const userData=await User.findOne({email:email})
-
         if(userData){
-
             const passwordMatch = await bcrypt.compare(password,userData.password)
             if(passwordMatch){
-
                 if(userData.is_admin === 0){
-                    res.render('login',{message:"Email and Password Is Inccorect"})
+                    res.render('admin/login',{message:"Email and Password Is Inccorect"})
                 }else{
                     req.session.admin_id = userData._id
-                    console.log(req.session.admin_id);
                     res.redirect('/admin/home')
                 }
-
             }else{
-                res.render('login',{message:"Email and Password is Inccorect"})
+                res.render('admin/login',{message:"Email and Password is Inccorect"})
             }
-
         }else{
-            res.render('login',{message:"Email and Password is Inccorect"})
+            res.render('admin/login',{message:"Email and Password is Inccorect"})
         }
 
     }catch(error){
@@ -69,24 +62,15 @@ const verifyLogin = async (req,res)=>{
 const loadDashboard = async (req,res)=>{
     try{
         const salesCount = await Order.find({}).count()
-        console.log(salesCount);
         const users = await User.find({}).count()
-        console.log(users);
         const online = await Order.find({paymentMethod:'Online Payment'}).count()
-        console.log(online);
         const cod = await Order.find({paymentMethod:'COD'}).count()
-        console.log(cod);
         const wallet = await Order.find({paymentMethod:'WALLET'}).count()
-        console.log(wallet,"wallwt");
-
         const ord = await Order.find().populate({path:'items',populate:{path:'productId',model:'Product',populate:{path:'category'}}})
-        console.log(ord);
         const categoryCount  = {};
         ord.forEach(order => { 
             order.items.forEach(product => { 
                 const category = product.productId.category.categoryName
-
-                console.log(category);
                 if(category in categoryCount){
                     categoryCount[category] += 1
                 }else{
@@ -94,17 +78,11 @@ const loadDashboard = async (req,res)=>{
                 }
             })
         })
-        console.log(categoryCount);
         const sortedCategoryCount  = Object.entries(categoryCount).sort((a,b) => b[1]-a[1])
         const numbersOnly  = sortedCategoryCount.map(innerArray => innerArray[1])
         const categoryNames = sortedCategoryCount.map((categoryCount) => { 
             return categoryCount[0]
         })
-        console.log(numbersOnly);
-        console.log(categoryNames);
-
-
-
         const weeklyRevenueOf = await Order.aggregate([
             {
                 $match:{
@@ -122,13 +100,9 @@ const loadDashboard = async (req,res)=>{
                 }
             }
         ]);
-        console.log(weeklyRevenueOf);
         const weeklyRevenue = weeklyRevenueOf.map((item) => {
             return item.Revenue
         });
-        console.log("aaaa");
-        console.log(weeklyRevenue);
-
         const weeklySales = await Order.aggregate([
             {
                 $match:{
@@ -152,17 +126,13 @@ const loadDashboard = async (req,res)=>{
             },
             
         ])
-        console.log(weeklySales);
         const date = weeklySales.map((item) => { 
             return item._id
         })
         const Sales = weeklySales.map((item) => { 
             return item.sales
         })
-
-
-        // const userData = await User.find({is_admin:0})
-        res.render('home',{
+        res.render('admin/home',{
             salesCount:salesCount,
             userCount:users,
             weeklyRevenue:weeklyRevenue,
@@ -180,7 +150,7 @@ const loadDashboard = async (req,res)=>{
 const loadUserManagement = async(req,res)=>{
     try{
         const userData = await User.find({is_admin:0})
-        res.render('userManagement',{users:userData})
+        res.render('admin/userManagement',{users:userData})
 
     }catch(error){
         console.log(error.message);
@@ -188,9 +158,8 @@ const loadUserManagement = async(req,res)=>{
 }
 const blockUser = async(req,res)=>{
     try{
-        console.log(req.query.id);
         const id = req.query.id
-        const userData = await User.findOne({_id:id},{block:1,_id:id})
+        const userData = await User.findOne({_id:id})
         if(userData.block == false){
             const wait = await User.updateOne({_id:id},{$set:{block:true}})
             req.session.user_id=false
@@ -211,7 +180,7 @@ const blockUser = async(req,res)=>{
 const loadBrand  = async (req,res) => {
     try{
         const materialData =await Material.find({})
-        res.render('brandManagement',{materialData})
+        res.render('admin/brandManagement',{materialData})
 
     }catch(error){
         console.log(error.messaeg);
@@ -219,7 +188,7 @@ const loadBrand  = async (req,res) => {
 }
 const addBrand  = async (req,res) => {
     try{
-        res.render('addBrand')
+        res.render('admin/addBrand')
 
     }catch(error){
         console.log(error.messaeg);
@@ -227,41 +196,29 @@ const addBrand  = async (req,res) => {
 }
 const insertBrand  = async (req,res) => {
     try{
-        
-        console.log("helllodjsb");
         if(req.body.name =='' ){
-            res.render('addBrand',{message:'fill all field'})
-
+            res.render('admin/addBrand',{message:'fill all field'})
         }else{
         const cat = req.body.name
-        console.log(cat);
         const catUP = cat.toUpperCase()
-        console.log(catUP);
         let exist = await Material.findOne({materialName:catUP})
-        console.log(exist);
         if(exist){
-            res.render('addBrand',{message:'This Category already Exist'})
+            res.render('admin/addBrand',{message:'This Category already Exist'})
             exist=null
         }else{
-            console.log(catUP);
             const filename=req.file.filename
             let material = {
                 materialName:catUP,
                 image:filename
             }
             const materialData =await Material.create(material)
-            console.log(materialData);
             if(materialData){
-                res.render('addBrand',{message2:'type insert successfully'})
-                // console.log("sucsess added");
-                
+                res.render('admin/addBrand',{message2:'type insert successfully'})
             }else{
                 
-                res.render('addBrand',{message:'type did not inserted'})
-                // console.log(brandData);
+                res.render('admin/addBrand',{message:'type did not inserted'})
             }
         }
-        
     }
 
     }catch(error){
@@ -273,9 +230,9 @@ const loadEditBrand  = async (req,res) => {
         const id =req.query.id
         const materialData = await Material.findById({_id:id})
         if(materialData){
-            res.render('updateBrand',{category:materialData})
+            res.render('admin/updateBrand',{category:materialData})
         }else{
-            res.render('brandManagement')
+            res.render('admin/brandManagement')
         }
 
     }catch(error){
@@ -309,13 +266,13 @@ const deleteBrand  = async (req,res) => {
 const loadCategory = async(req,res)=>{
     try{
         const categoryData =await Category.find({})
-        res.render('categoryManagement',{categoryData})
+        res.render('admin/categoryManagement',{categoryData})
 
     }catch(error){
         console.log(error.message);
     }
 }
-const AddCategorry = async (req,res)=>{
+const AddCategorry =(req,res)=>{
     try{
         res.render('addCategory')
     }catch(error){
@@ -325,41 +282,29 @@ const AddCategorry = async (req,res)=>{
 const insertCategory = async (req,res)=>{
     try{
         if(req.body.categoryName=='' || req.body.description==''){
-            res.render('addCategory',{message:'fill all field'})
+            res.render('admin/addCategory',{message:'fill all field'})
 
         }else{
         const cat = req.body.categoryName
         const catUP = cat.toUpperCase()
         let exist = await Category.findOne({categoryName:catUP})
         if(exist){
-            res.render('addCategory',{message:'This Category already Exist'})
+            res.render('admin/addCategory',{message:'This Category already Exist'})
             exist=null
         }else{
-            console.log(catUP);
-
             const filename=req.file.filename
-            console.log(filename);
             const category = new Category({
                 categoryName:catUP,
                 description:req.body.description,
                 image:req.file.filename
-                
-                
             })
             const categoryData = await category.save()
             if(categoryData){
-                res.render('addCategory',{message2:'category insert successfully'})
-                console.log("sucsess fullsdfahwescvfuylwH;O");
+                res.render('admin/addCategory',{message2:'category insert successfully'})
             }else{
-                res.render('addCategory',{message:'category did not inserted'})
+                res.render('admin/addCategory',{message:'category did not inserted'})
             }
         }
-        
-        
-        // const categoryData = await category.save()
-
-        
-        
     }
     }catch(error){
         console.log(error.message);
@@ -370,9 +315,6 @@ const DeleteCategory = async (req,res)=>{
         const id = req.query.id
         await Category.deleteOne({_id:id})
         res.redirect('/admin/category')
-
-
-
     }catch(error){
         console.log(error.message);
     }
@@ -382,9 +324,9 @@ const UpdateCategory = async(req,res)=>{
         const id =req.query.id
         const categoryData = await Category.findById({_id:id})
         if(categoryData){
-            res.render('updateCategory',{category:categoryData})
+            res.render('admin/updateCategory',{category:categoryData})
         }else{
-            res.render('category')
+            res.render('admin/category')
         }
 
     }catch(error){
@@ -399,8 +341,6 @@ const UpdatedCategory=async(req,res)=>{
         if(UpdatedCategory){
             res.redirect('/admin/category')
         }
-
-
     }catch(error){
         console.log(error.message);
     }
@@ -410,12 +350,7 @@ const AddProduct = async(req,res)=>{
     try{
         const categoryData=await Category.find()
         const materialData = await Material.find()
-        // if(req.session.admin){
-        res.render('addProduct',{categoryData,materialData})
-        // }else{
-        //     res.redirect('/admin')
-        // }
-
+        res.render('admin/addProduct',{categoryData,materialData})
     }catch(error){
         console.log(error.message);
     }
@@ -426,7 +361,6 @@ const InertProduct = async (req,res)=>{
         for(file of req.files){
             images.push(file.filename)
         }
-        console.log(images,"haiii");
         const productData = new Product({
             product_name:req.body.product_name,
             category:req.body.category,
@@ -450,9 +384,7 @@ const InertProduct = async (req,res)=>{
 const loadProduct = async (req,res)=>{
     try{
     const productData= await Product.find({}).populate('category').exec()
-    console.log(productData);
-  
-    res.render("products",{productData})
+    res.render("admin/products",{productData})
 
     }catch(error){
         console.log(error.message);
@@ -462,7 +394,7 @@ const EditProduct = async (req,res)=>{
     try{
         const productData = await  Product.findOne({_id:req.params.id}).populate('category')
         const categoryData = await  Category.find()
-        res.render("edit-product",{productData,categoryData})
+        res.render("admin/edit-product",{productData,categoryData})
    
     }catch(error){
         console.log(error.message);
@@ -471,8 +403,6 @@ const EditProduct = async (req,res)=>{
 const UpdateProduct = async (req,res)=>{
     try{
         const id = req.params.id
-        // const id = mongoose.Types.ObjectId(idTemp)
-        // console.log("product"+id);
         const productData = await Product.updateOne({_id:id},{$set:{
             product_name:req.body.productname,
             category:req.body.categoryName,
@@ -480,7 +410,6 @@ const UpdateProduct = async (req,res)=>{
             quantity:req.body.quantity,
             price:req.body.price
         }})
-        // console.log("udpdate"+productData);
         if(productData){
             res.redirect('/admin/product')
         }
@@ -492,9 +421,7 @@ const UpdateProduct = async (req,res)=>{
 const updateImage = async(req,res)=>{
     try{
         const id =req.params.id
-        console.log(id);
         const proData = await Product.findOne({_id:id})
-        console.log(proData);
         const imglength = proData.image.length
         if(imglength <=4){
             let images=[]
@@ -507,13 +434,11 @@ const updateImage = async(req,res)=>{
             }else{
                 const productData = await  Product.findOne({_id:id})
                 const categoryData = await  Category.find()
-                res.render("edit-product",{productData,categoryData,imgFull:true})
+                res.render("admin/edit-product",{productData,categoryData,imgFull:true})
             }
-
         }else{
             res.redirect('/admin/edit-product/')
         }
-
     }catch(error){
         console.log(error.message);
     }
@@ -524,8 +449,6 @@ const deleteImage = async(req,res) =>{
         const prodid = req.params.prodid
         fs.unlink(path.join(__dirname,'../public/products',imgid),()=>{})
         const productImg = await Product.updateOne({_id:prodid},{$pull:{image:imgid}})
-
-
     }catch(error){
         console.log(error.message);
     }
@@ -541,14 +464,13 @@ const DeleteProduct = async (req,res)=>{
    
     }catch(error){
         console.log(error.message);
-        console.log("from delete product");
     }
 }
 const ViewProduct = async (req,res)=>{
     try{
         const id = req.query.id
         const data = await Product.findOne({_id:id})
-        res.render('view-product',{data})
+        res.render('admin/view-product',{data})
    
     }catch(error){
         console.log(error.message);
@@ -557,19 +479,17 @@ const ViewProduct = async (req,res)=>{
 const loadOrderlist = async(req,res) => { 
     try{
         const order = await Order.find()
-        console.log(order);
-        res.render('order',{order})
+        res.render('admin/order',{order})
 
     }catch(error){
         console.log(error.message);
-        console.log("hellojksnx");
     }
 }
 const loadOrderProduct = async (req,res) => { 
     try{
         const orderId = req.query.id
         const orderProduct = await Order.findOne({_id:orderId}).populate({path:'items',populate:{path:'productId',model:'Product'}})
-        res.render('orderProductView',{orderProduct})
+        res.render('admin/orderProductView',{orderProduct})
     }catch(error){
         console.log(error.messaeg);
     }
@@ -577,9 +497,7 @@ const loadOrderProduct = async (req,res) => {
 const placedOrder  = async(req,res) => { 
     try{
         const orderId = req.query.id
-        console.log(orderId);
         const update = await Order.updateOne({_id:orderId},{$set:{orderStatus:'placed'}})
-        console.log(update);
         res.redirect('/admin/order')
 
     }catch(error){
@@ -590,7 +508,6 @@ const shipedOrder  = async(req,res) => {
     try{
         const orderId = req.query.id
         const update = await Order.updateOne({_id:orderId},{$set:{orderStatus:'shiped'}})
-        console.log(update);
         res.redirect('/admin/order')
 
     }catch(error){
@@ -601,7 +518,6 @@ const deliveredOrder  = async(req,res) => {
     try{
         const orderId = req.query.id
         const update = await Order.updateOne({_id:orderId},{$set:{orderStatus:'delivered'}})
-        console.log(update);
         res.redirect('/admin/order')
 
     }catch(error){
@@ -613,21 +529,14 @@ const orderReturnSuccess  = async(req,res) => {
         const orderId = req.query.id
         const update = await Order.updateOne({_id:orderId},{$set:{orderStatus:'return success'}})
         const orderData = await Order.findOne({_id:orderId})
-        console.log(orderData,"oredrDAta");
         if(orderData.paymentMethod == 'Online Payment'){
             const refund = await User.updateOne({_id:orderData.userId},{$inc:{wallet:orderData.totalAmount}})
-            console.log(refund,"refund");
         }
         const itemsData = orderData.items
-        console.log(itemsData,"items");
             for(let i=0;i< itemsData.length;i++){
                 const productStock = await Product.updateOne({_id:itemsData[i].productId},{$inc:{quantity:itemsData[i].qty}})
-                console.log(productStock,"productUpdate");
                 res.redirect('/admin/order')
             }
-
-
-       
 
     }catch(error){
         console.log(error.message);
@@ -637,7 +546,6 @@ const orderReturnCancelled  = async(req,res) => {
     try{
         const orderId = req.query.id
         const update = await Order.updateOne({_id:orderId},{$set:{orderStatus:'return cancelled'}})
-        console.log(update);
         res.redirect('/admin/order')
 
     }catch(error){
@@ -647,7 +555,7 @@ const orderReturnCancelled  = async(req,res) => {
 const loadcoupon = async(req,res) => {
     try{
         const couponsData  = await Coupon.find({disable:false})
-        res.render('coupon',{couponsData})
+        res.render('admin/coupon',{couponsData})
 
     }catch(error){
         console.log(error.message);
@@ -655,10 +563,7 @@ const loadcoupon = async(req,res) => {
 }
 const addCoupon = async(req,res) => { 
     try{
-        console.log(req.body);
         const couponData = {...req.body}
-        console.log( "asim"+couponData.radeemamount);
-        console.log( "adhil"+couponData.expirydate);
         const couponAdd = new Coupon({
             couponCode: couponData.coupon_code,
             couponAmountType: couponData.fixedandpercentage,
@@ -670,9 +575,7 @@ const addCoupon = async(req,res) => {
             limit: couponData.usagelimit,
         })
         const insert  = await couponAdd.save()
-        console.log(couponAdd);
-        console.log(insert);
-        res.send('success')
+        res.redirect('/admin/coupon')
 
     }catch(error){
         console.log(error.message);
@@ -682,7 +585,7 @@ const editCoupon = async(req,res) => {
     try{
         const couponId = req.params.id
         const couponData = await Coupon.findOne({_id:couponId})
-        res.render('editCoupon',{couponData})
+        res.render('admin/editCoupon',{couponData})
 
     }catch(error){
         console.log(error.message);
@@ -701,7 +604,6 @@ const updateCoupon = async(req,res) => {
             expiryDate: req.body.expirydate,
             limit: req.body.usagelimit,
         }})
-        console.log(update);
         res.redirect('/admin/coupon')
         
 
@@ -722,7 +624,7 @@ const DeleteCoupon = async(req,res) => {
  const loadOfferBanner = async(req,res) => {
     try{
         const banner =await Banner.find()
-        res.render('OfferBanner',{banner})
+        res.render('admin/OfferBanner',{banner})
 
     }catch(error){
         console.log(error.message);
@@ -732,7 +634,6 @@ const DeleteCoupon = async(req,res) => {
     try{
         const filename=req.file.filename
         const bannerData = new Banner({
-            // prodName:req.body.prodname,
             offerName:req.body.offername,
             subTitle:req.body.subTitle,
             description:req.body.description,
@@ -753,7 +654,7 @@ const DeleteCoupon = async(req,res) => {
     try{
         const bannerId  = req.query.id
         const banner  = await Banner.findOne({_id:bannerId})
-        res.render('edit-banner',{banner})
+        res.render('admin/edit-banner',{banner})
     }catch(error){
         console.log(error.message);
     }
@@ -763,7 +664,6 @@ const DeleteCoupon = async(req,res) => {
         const bannerId = req.query.id
         const filename=req.file.filename
         const bannerData = await Banner.updateOne({_id:bannerId},{$set:{
-            // prodName:req.body.prodname,
             offerName:req.body.offername,
             subTitle:req.body.subTitle,
             description:req.body.description,
@@ -779,7 +679,6 @@ const DeleteCoupon = async(req,res) => {
  }
  const deleteBanner = async(req,res) => { 
     try{
-        // console.log(req.query.id);
         const id = req.query.id
         const bannerData = await Banner.findOne({_id:id},{status:1,_id:id})
         if(bannerData.status == false){
@@ -798,29 +697,20 @@ const DeleteCoupon = async(req,res) => {
         console.log(error.message);
     }
  }
- const loadSales = async (req,res) => {
+ const loadSales =  (req,res) => {
     try{
-        res.render('salesReport')
+        res.render('admin/salesReport')
     }catch(error){
         console.log(error.message);
     }
  }
  const listSalesReport = async(req,res) => { 
     try{
-        // console.log(req.body);
-        
-        const currentDate = new Date(req.body.to)
-        console.log(currentDate);
+        const currentDate = new Date(req.body.to);
         const newDate = new Date(currentDate)
-        newDate.setDate(currentDate.getDate() + 1)
-        
-        // console.log(currentDate);
-        console.log("hiiiii");
-        console.log(newDate);
-        console.log("kooi");
-        
+        newDate.setDate(currentDate.getDate() + 1)     
         if(req.body.from.trim() == '' ||req.body.to.trim() == ''){
-            res.render('salesReport',{message:'all field required'})
+            res.render('admin/salesReport',{message:'all field required'})
         }else{
             const saleData = await Order.find({
                 orderStatus:'delivered',
@@ -828,8 +718,7 @@ const DeleteCoupon = async(req,res) => {
                 
             })
             .populate({path:'items',populate:{path:'productId',model:'Product'}})
-            console.log(saleData);
-            res.render('listSalesReport',{saleData})
+            res.render('admin/listSalesReport',{saleData})
         }
 
     }catch(error){

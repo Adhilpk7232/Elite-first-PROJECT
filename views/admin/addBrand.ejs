@@ -164,26 +164,74 @@
       </div>
     </nav>
     <!-- End Navbar -->
+   
     <div class="container mt-5">
         <h1 class="text-center">Enter Category Details</h1>
-        <form action="/admin/addBrand" method="post"  enctype="multipart/form-data">
+        
+        
+        <form action="/admin/addBrand" method="post" enctype="multipart/form-data">
+          
           <div class="form-group">
-            <label for="username">Brand Name:</label>
-            <input type="text" class="form-control" id="typeName" name="name" style="border: 1px solid #000;" required>
+              <label for="username">Brand Name:</label>
+              <input type="text" class="form-control" id="brandName"  name="name" style="border: 1px solid #000;" >
+              <div id="brandNameError" class="error-message" style="color: red;"></div>
           </div>
           
+          
           <div>
-            <div class="mb-3">
-              <label class="form-label" for="basic-default-message">image</label>
-             <input type="file" name="image" style="border: 1px solid #495057;" required>
-            </div>
-            
+              <div class="mb-3 mt-4">
+                  <label class="form-label" for="basic-default-message">Image:</label>
+                  <input type="file" name="image" style="border: 1px solid #495057;" accept=".jpg, .jpeg, .png, .gif, .webp" >
+                  <div id="imageError" class="error-message" style="color: red;"></div>
+              </div>
           </div>
+          
           <div class="text-center">
-            <a href="/admin/brand" class="btn btn-secondary">Back</a>
-            <input type="submit" class="btn btn-primary" value="Submit">
+              <a href="/admin/category" class="btn btn-secondary">Back</a>
+              <input type="submit" class="btn btn-primary" value="Submit">
           </div>
-        </form>
+      </form>
+      
+      <script>
+          // client-side validation
+          const form = document.querySelector('form');
+          const brandName = document.getElementById('brandName');
+          const image = document.querySelector('input[type="file"]');
+          
+          form.addEventListener('submit', (event) => {
+              let error = false;
+              
+              if (!brandName.value.trim()) {
+                  brandName.style.borderColor = 'red';
+                  document.getElementById('brandNameError').textContent = 'Please enter a category name.';
+                  error = true;
+              } else {
+                  brandName.style.borderColor = '';
+                  document.getElementById('brandNameError').textContent = '';
+              }
+              
+             
+              
+              if (!image.value) {
+                  image.style.borderColor = 'red';
+                  document.getElementById('imageError').textContent = 'Please select an image.';
+                  error = true;
+              } else if (!/\.(jpg|jpeg|png|gif|webp)$/i.test(image.value)) {
+                  image.style.borderColor = 'red';
+                  document.getElementById('imageError').textContent = 'Please select an image in JPG, JPEG, PNG, GIF, or WebP format.';
+                  error = true;
+              } else {
+                  image.style.borderColor = '';
+                  document.getElementById('imageError').textContent = '';
+              }
+              
+              if (error) {
+                  event.preventDefault();
+              }
+          });
+      </script>
+      
+        
         <% if(typeof message !=='undefined') { %>
 
             <div class="alert alert-danger text-center" role="alert">

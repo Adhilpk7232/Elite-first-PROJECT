@@ -248,9 +248,7 @@
                         <% if (couponsData.length >0) { %>
                          
                         <% for( let i = 0; i < couponsData.length; i++ ) { %>
-                          <% console.log(couponsData[i].minRedeemAmount) %>
-                          <% console.log(couponsData[i].expiryDate ) %>
-                        
+                          
                         
                         <tbody>
                           <tr>
@@ -282,11 +280,11 @@
                                 <!-- <p class="text-xs text-secondary mb-0">Organization</p> -->
                             </td>
                             <td class="align-middle text-center">
-                              <span class="text-secondary text-xs font-weight-bold"><%=couponsData[i].startDate %> </span>
+                              <span class="text-secondary text-xs font-weight-bold"><%=couponsData[i].startDate.toLocaleDateString(); %> </span>
                             </td>
         
                             <td class="align-middle text-center">
-                              <span class="text-secondary text-xs font-weight-bold"><%=couponsData[i].expiryDate%> </span>
+                              <span class="text-secondary text-xs font-weight-bold"><%=couponsData[i].expiryDate.toLocaleDateString(); %> </span>
                             </td>
         
                             <td class="align-middle text-center">

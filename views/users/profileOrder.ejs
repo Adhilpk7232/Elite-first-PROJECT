@@ -337,7 +337,7 @@
                                             #2257
                                         </th>
                                         <td>
-                                            <%= orderData[i].date.toLocaleString({day:'2-digit',month:'2-digit',year:'2-digit'}) %>
+                                            <%= orderData[i].date.toLocaleDateString(); %>
                                         </td>
                                         <td>
                                             <span class="fas fa-circle text-primary small mr-1"></span> <%= orderData[i].orderStatus %>
@@ -366,9 +366,9 @@
                                 <% } 
                             }%>
                             </table>
-                        </div>
+                        <!-- </div>
                         <a class="butn-style2 mt-3" href="#"><span>Show All Orders</span></a>
-                        </div>
+                        </div> -->
 
                     </div>
                     <!-- end right panel -->

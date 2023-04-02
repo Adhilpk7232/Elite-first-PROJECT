@@ -1,177 +1,14 @@
 <%-include('../layouts/adminHeader') %>
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="apple-touch-icon" sizes="76x76" href="/assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="/assets/img/favicon.png">
-  <title>
-    Material Dashboard 2 by Creative Tim
-  </title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-  <!--     Fonts and icons     -->
-  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
-  <!-- Nucleo Icons -->
-  <link href="/assets/css/nucleo-icons.css" rel="stylesheet" />
-  <link href="/assets/css/nucleo-svg.css" rel="stylesheet" />
-  <!-- Font Awesome Icons -->
-  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-  <!-- Material Icons -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-  <!-- CSS Files -->
-  <link id="pagestyle" href="/assets/css/material-dashboard.css?v=3.0.0" rel="stylesheet" />
 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <!-- jquery -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<!-- UIkit CSS -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.2.0/css/uikit.min.css">
-	<!-- UIkit JS -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.2.0/js/uikit.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.2.0/js/uikit-icons.min.js"></script>
-	<!-- cropzee.js -->
-	<script src="https://cdn.jsdelivr.net/gh/BossBele/cropzee@v2.0/dist/cropzee.js" defer></script>
-	<!-- google code-prettify -->
-	<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/google/code-prettify@master/styles/sunburst.css">
-	<!-- fonts -->
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Reenie+Beanie">
-	<!-- jQuery throttle-debounce -->
-	<script src="https://cdn.jsdelivr.net/gh/cowboy/jquery-throttle-debounce/jquery.ba-throttle-debounce.js" defer></script>
-	<!-- sanitize.css -->
-	<link href="https://unpkg.com/sanitize.css" rel="stylesheet">
-	<script>
-				$(document).ready(function(){
-					$("#input").cropzee();
-				    $.each($("input[name='enable']"), function(){
-				   		if ($(this).is(":checked")) {
-				   			$(this).closest("div.uk-position-relative").find("textarea").removeAttr("disabled");
-				   		} else {
-				    		$(this).closest("div.uk-position-relative").find("textarea").attr("disabled", "disabled");
-				    	}
-			        });
-				    $("input, select, textarea").on( "keyup change", $.debounce(300, function() {
-				    	destroyPlugin($("#input"));
-					    $.each($("input[name='enable']"), function(){
-					   		if ($(this).is(":checked")) {
-					   			$(this).closest("div.uk-position-relative").find("textarea").removeAttr("disabled");
-					   		} else {
-					    		$(this).closest("div.uk-position-relative").find("textarea").attr("disabled", "disabled");
-					    	}
-				        });
-					    var aspectRatio = "";
-					    $.each($("input[name='aspectRatio']"), function(){
-			                aspectRatio += $(this).val();
-			            });
-					    var maxSize = [];
-					    $.each($("input[name='maxSize'], select[name='maxSize']"), function(){
-			                maxSize.push($(this).val());
-			            });
-			            var minSize = [];
-					    $.each($("input[name='minSize'], select[name='minSize']"), function(){
-			                minSize.push($(this).val());
-			            });
-			            var startSize = [];
-					    $.each($("input[name='startSize'], select[name='startSize']"), function(){
-			                startSize.push($(this).val());
-			            });
-					    var allowedInputs = [];
-			            $.each($("input[name='allowedInputs']:checked"), function(){
-			                allowedInputs.push($(this).val());
-			            });
-			            var imageExtension = "";
-			            $.each($("input[name='imageExtension']:checked"), function(){
-			                imageExtension += $(this).val();
-			            });
-			            var returnImageMode = "";
-			            $.each($("input[name='returnImageMode']:checked"), function(){
-			                returnImageMode += $(this).val();
-			            });
-			            var modalAnimation = "";
-			            $.each($("select[name='modalAnimation']"), function(){
-			                modalAnimation += $(this).val();
-			            });
-			            var onCropStart = null;
-			            $.each($("textarea[name='onCropStart']"), function(){
-			            	if (!$(this).is(":disabled")) {
-			            		onCropStart = $(this).val();
-			            	}
-			            });
-				        var onCropMove = null;
-				        $.each($("textarea[name='onCropMove']"), function(){
-			                if (!$(this).is(":disabled")) {
-				                onCropMove = $(this).val();
-				            }
-			            });
-				        var onCropEnd = null;
-				        $.each($("textarea[name='onCropEnd']"), function(){
-			                if (!$(this).is(":disabled")) {
-				                onCropEnd = $(this).val();
-				            }
-			            });
-				        var onInitialize = null;
-				        $.each($("textarea[name='onInitialize']"), function(){
-				        	if (!$(this).is(":disabled")) {
-				                onInitialize = $(this).val();
-				            }
-			            });
-			            window.options = {
-			            	aspectRatio: aspectRatio,
-					        maxSize: maxSize,
-					        minSize: minSize,
-					        startSize: startSize,
-					        onCropStart: onCropStart,
-					        onCropMove: onCropMove,
-					        onCropEnd: onCropEnd,
-					        onInitialize: onInitialize,
-					        modalAnimation: modalAnimation,
-					        allowedInputs: allowedInputs,
-					        imageExtension: imageExtension,
-					        returnImageMode: returnImageMode,
-			            }
-					    // alert(JSON.stringify(options));
-					    $("#input").cropzee(options);
-					}));
-				});
-				var destroyPlugin = function($elem, eventNamespace) {
-					var isInstantiated  = !! $.data($elem.get(0));
-					if (isInstantiated) {
-						$.removeData($elem.get(0));
-						$elem.off(eventNamespace);
-						$elem.unbind('.' + eventNamespace);
-					}
-				};
-			</script>
 	<style>
-		* {
-			font-family: sans-serif;
-		}
-		.image-previewer {
-			height: 300px;
-			width: 300px;
-			display: flex;
-			border-radius: 10px;
-			border: 1px solid lightgrey;
-		}
-		li {
-			font-size: 11px;
-		}
-		.dependencies {
-			font-family: 'Reenie Beanie', cursive;
-			font-size: 28px;
-			text-decoration: none;
-		}
-		textarea {
-			resize: none;
-			min-height: 50px;
-		}
-		pre, code {
-			user-select: all;
-		}
+		.invalid-feedback {
+  display: none;
+  color: red;
+  margin-top: 5px;
+}
 	</style>
-</head>
+
 <body class="g-sidenav-show  bg-gray-200">
   <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
     <div class="sidenav-header">
@@ -294,7 +131,7 @@
     <!-- End Navbar -->
     <div class="container mt-5">
         <h1 class="text-center">Enter Category Details</h1>
-        <form action="/admin/addcategory" method="post"  enctype="multipart/form-data">
+        <!-- <form action="/admin/addcategory" method="post"  enctype="multipart/form-data">
           <div class="form-group">
             <label for="username">Category Name:</label>
             <input type="text" class="form-control" id="categoryName" name="categoryName" style="border: 1px solid #000;" required>
@@ -315,7 +152,82 @@
             <a href="/admin/category" class="btn btn-secondary">Back</a>
             <input type="submit" class="btn btn-primary" value="Submit">
           </div>
-        </form>
+        </form> -->
+        
+        <form action="/admin/addcategory" method="post" enctype="multipart/form-data">
+          <div class="form-group">
+              <label for="username">Category Name:</label>
+              <input type="text" class="form-control" id="categoryName" name="categoryName" style="border: 1px solid #000;" >
+              <div id="categoryNameError" class="error-message" style="color: red;"></div>
+          </div>
+          <div class="form-group">
+              <label for="description">Description:</label>
+              <input type="text" class="form-control" id="description" name="description" style="border: 1px solid #000;" >
+              <div id="descriptionError" class="error-message" style="color: red;"></div>
+          </div>
+          
+          <div>
+              <div class="mb-3">
+                  <label class="form-label" for="basic-default-message">Image:</label>
+                  <input type="file" name="image" style="border: 1px solid #495057;" accept=".jpg, .jpeg, .png, .gif, .webp" >
+                  <div id="imageError" class="error-message" style="color: red;"></div>
+              </div>
+          </div>
+          
+          <div class="text-center">
+              <a href="/admin/category" class="btn btn-secondary">Back</a>
+              <input type="submit" class="btn btn-primary" value="Submit">
+          </div>
+      </form>
+      
+      <script>
+          // client-side validation
+          const form = document.querySelector('form');
+          const categoryName = document.getElementById('categoryName');
+          const description = document.getElementById('description');
+          const image = document.querySelector('input[type="file"]');
+          
+          form.addEventListener('submit', (event) => {
+              let error = false;
+              
+              if (!categoryName.value.trim()) {
+                  categoryName.style.borderColor = 'red';
+                  document.getElementById('categoryNameError').textContent = 'Please enter a category name.';
+                  error = true;
+              } else {
+                  categoryName.style.borderColor = '';
+                  document.getElementById('categoryNameError').textContent = '';
+              }
+              
+              if (!description.value.trim()) {
+                  description.style.borderColor = 'red';
+                  document.getElementById('descriptionError').textContent = 'Please enter a description.';
+                  error = true;
+              } else {
+                  description.style.borderColor = '';
+                  document.getElementById('descriptionError').textContent = '';
+              }
+              
+              if (!image.value) {
+                  image.style.borderColor = 'red';
+                  document.getElementById('imageError').textContent = 'Please select an image.';
+                  error = true;
+              } else if (!/\.(jpg|jpeg|png|gif|webp)$/i.test(image.value)) {
+                  image.style.borderColor = 'red';
+                  document.getElementById('imageError').textContent = 'Please select an image in JPG, JPEG, PNG, GIF, or WebP format.';
+                  error = true;
+              } else {
+                  image.style.borderColor = '';
+                  document.getElementById('imageError').textContent = '';
+              }
+              
+              if (error) {
+                  event.preventDefault();
+              }
+          });
+      </script>
+      
+      
         <% if(typeof message !=='undefined') { %>
 
             <div class="alert alert-danger text-center" role="alert">

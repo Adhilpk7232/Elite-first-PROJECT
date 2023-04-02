@@ -1,27 +1,10 @@
 const express= require('express')
 const route = express()
 const path = require('path')
-const bodyparser = require('body-parser')
-route.use(bodyparser.json())
-route.use(bodyparser.urlencoded({extended:true}))
-
-route.set('view engine','ejs')
-route.set('views','./views/users')
 const auth = require('../middleware/auth')
 const config = require('../config/config')
-
-const nocache =require('nocache')
-route.use(nocache())
-const session = require('express-session')
-
-route.use(session({secret:config.sessionSecret,
-    saveUninitialized:true,
-    cookie:{maxAge:60000*1000},
-    resave:false    
-}))
-
 const userController = require('../controller/userController')
-const  sessionSecret  = require('../config/config')
+
 
 //Landing Page
 route.get('/',auth.isLogout,userController.loadLandingPage)
@@ -29,8 +12,6 @@ route.get('/',auth.isLogout,userController.loadLandingPage)
 route.get('/register',auth.isLogout ,userController.loadSignup)
 route.post('/register',userController.insertUser)
 route.get('/verify',userController.verifyMail)
-
-
 ///otp mobile verification
 route.get('/mobileCheck',auth.isLogout,userController.mobileCheck)
 route.post('/mobileCheck',userController.verifyPhone)
@@ -38,13 +19,11 @@ route.post('/otp',userController.verifyOtp)
 //user login
 route.get('/login',auth.isLogout,userController.loginLoad)
 route.post('/login',userController.verifyLogin)
-
 ///login OTP
 route.get('/loginOtp',userController.loginOtp)
 route.post('/loginOtp',userController.verifyNum)
 route.get('/loginOtpverify',userController.loadOtp)
 route.post('/loginOtpverify',userController.verifyNumOtp)
-
 route.get('/logout',userController.userLogout)
 //user forgot password
 route.get('/forget',auth.isLogout,userController.forgetLoad)
@@ -68,7 +47,6 @@ route.post('/wishlistToCart',auth.isLogin,userController.wishlistToCart)
 ///produvt views
 route.get('/shop',userController.loadShop)
 route.get('/material-shop/:id',userController.loadMaterialShop)
-
 route.get('/shopCategory/:id',userController.loadShopCategory)
 route.get('/single-product/:id',auth.isLogin,userController.loadSingleProduct)
 //user profile 
@@ -79,7 +57,6 @@ route.get('/profile-address',auth.isLogin,userController.loadProfileAddress)
 route.post('/add-address',auth.isLogin,userController.insertAddress)
 route.post('/edit-update-address/:addressIndex',auth.isLogin,userController.updateAddress)
 route.get('/delete-address/:id/:adrsId',userController.DeleteAddress)
-
 route.get('/edit-address/:id/:adrsId',auth.isLogin,auth.isLogin,userController.editAddress)
 route.post('/add-address-checkOut',auth.isLogin,userController.addAddressCheckout)
 //profile order
