@@ -1,8 +1,8 @@
 const express= require('express')
 const route = express.Router()
-const path = require('path')
+// const path = require('path')
 const auth = require('../middleware/auth')
-const config = require('../config/config')
+// const config = require('../config/config')
 const userController = require('../controller/userController')
 //Landing Page
 route.get('/',auth.isLogout,userController.loadLandingPage)
