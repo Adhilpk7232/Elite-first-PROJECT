@@ -14,6 +14,7 @@ const { log } = require("console")
 const mongoose = require('mongoose')
 const { disable } = require("../routes/adminRoute")
 
+// admin side  
 const AddProduct = async(req,res)=>{
     try{
         const categoryData=await Category.find()
@@ -153,7 +154,171 @@ const ViewProduct = async (req,res)=>{
         console.log(error.message);
     }
 }
+// user side 
+const AddToCart = async(req,res) => {
+    try{ 
+        const productId = req.body.productId
+        const _id = req.session.user_id
+        let exist =await User.findOne({id:req.session.user_id,'cart.productId':productId})
+        if(exist){
+            
+              res.send(false)
+        }else{
+            const product =await Product.findOne({_id:req.body.productId})        
+            const userData = await User.findOne({_id})
+            const result = await User.updateOne({_id},{$push:{cart:{productId:product._id,qty:1,price:product.price,productTotalPrice:product.price}}})
+            if(result){
+                res.send(true)
+            }else{
+                console.log('not addeed to cart');
+            }
+        }
+    }catch(error){
+        console.log(error.message);
+        res.render('uses/500')
+    }
+}
 
+const loadCart = async(req,res) => {
+    try{
+        const userId = req.session.user_id
+        const temp = mongoose.Types.ObjectId(req.session.user_id)
+        const usercart =  await User.aggregate([ { $match: { _id: temp } }, { $unwind: '$cart' },{ $group: { _id: null, totalcart: { $sum: '$cart.productTotalPrice' } } }])
+        if(usercart.length >0){
+            const cartTotal =usercart[0].totalcart
+            const cartTotalUpdate = await User.updateOne({_id:userId},{$set:{cartTotalPrice:cartTotal}})
+            const userData = await User.findOne({_id:userId}).populate('cart.productId').exec()
+            res.render('users/cart',{userData})
+
+        }else{
+            const userData = await User.findOne({userId})
+            res.render('users/cart',{userData})
+        }
+        
+
+    }catch(error){
+        console.log(error.message);
+        res.render('uses/500')
+    }
+}
+const deleteCartProduct = async(req,res) => { 
+    try{
+        const userId = req.body.userId
+        const deleteProId = req.body.deleteProId
+        const userData = await User.findByIdAndUpdate({_id:userId},{$pull:{cart:{productId:deleteProId}}})
+        if(userData){
+            res.json({success:true})
+        }
+    }catch(error){
+        console.log(error.message);
+        res.render('uses/500')
+    }
+}
+const change_Quantities = async(req,res) => {
+    try{
+        const {user,product,count,Quantity,proPrice} =req.body
+        const producttemp=mongoose.Types.ObjectId(product)
+        const usertemp=mongoose.Types.ObjectId(user)
+        const updateQTY = await User.findOneAndUpdate({_id:usertemp,'cart.productId':producttemp},{$inc:{'cart.$.qty':count}})
+        const currentqty = await User.findOne({_id:usertemp,'cart.productId':producttemp},{_id:0,'cart.qty.$':1})
+        const qty = currentqty.cart[0].qty
+        const productSinglePrice =proPrice*qty
+        await User.updateOne({_id:usertemp,'cart.productId':producttemp},{$set:{'cart.$.productTotalPrice':productSinglePrice}})
+        const cart = await User.findOne({_id:usertemp})
+        let sum=0
+        for(let i=0;i<cart.cart.length;i++){
+            sum=sum + cart.cart[i].productTotalPrice
+        }
+        const update =await User.updateOne({_id:usertemp},{$set:{cartTotalPrice:sum}})
+        .then(async(response)=>{
+            res.json({ response: true,productSinglePrice,sum })
+            })
+                
+    }catch(error){
+        console.log(error.message);
+        res.render('uses/500')
+    }
+}
+const loadWhishlist = async(req,res) => { 
+    try{
+        const id = req.session.user_id
+        const userData = await User.findOne({_id:id}).populate('whishlist.product').exec()
+        res.render('users/wishlist',{userData})
+
+    }catch(error){
+        res.render('uses/500')
+        console.log(error.message);
+    }
+}
+
+const AddToWishlist  =async(req,res) => { 
+    try{
+        const productId = req.body.productId
+        // console.log(req.session.user_id);
+        let exist =await User.findOne({id:req.session.user_id,'whishlist.product':productId})
+        // console.log(exist);
+        if(exist){
+            res.json({status:false})
+        }else{
+            const product =await Product.findOne({_id:req.body.productId})
+            const _id = req.session.user_id
+            const userData = await User.findOne({_id})
+            const result = await User.updateOne({_id},{$push:{whishlist:{product:product._id}}})
+            if(result){
+                res.json({status:true})
+            }else{
+                console.log('not addeed to wishlist');
+            }
+        }
+
+    }catch(error){
+        res.render('uses/500')
+        console.log(error.message);
+    }
+}
+const wishlistToCart = async(req,res)=>{
+    try{
+        const productId = req.body.productId
+        const _id = req.session.user_id
+        let exist =await User.findOne({id:req.session.user_id,'cart.productId':productId})
+        if(exist){
+            const user = await User.findOne({_id:req.session.user_id})
+            const index =await user.cart.findIndex(data=>data.productId._id == req.body.productId );
+                user.cart[index].qty +=1;
+                user.cart[index].productTotalPrice= user.cart[index].qty * user.cart[index].price
+                await user.save();
+                const remove = await User.updateOne({_id},{$pull:{whishlist:{product:productId}}})
+              res.send(true)
+        }else{
+            const product =await Product.findOne({_id:req.body.productId})
+            const userData = await User.findOne({_id})
+            const result = await User.updateOne({_id},{$push:{cart:{productId:product._id,qty:1,price:product.price,productTotalPrice:product.price}}})
+            if(result){
+                const remove = await User.updateOne({_id},{$pull:{whishlist:{product:productId}}})
+                res.redirect('/home')
+            }else{
+                console.log('not addeed to cart');
+            }
+        }
+
+    }catch(error){
+        res.render('uses/500')
+        console.log(error.message);
+    }
+}
+const deleteWishlistProduct = async(req,res) => { 
+    try{
+        const id = req.session.user_id
+        const deleteProId=req.body.productId
+        const deleteWishlist = await User.findByIdAndUpdate({_id:id},{$pull:{whishlist:{product:deleteProId}}})
+        if(deleteWishlist){
+            res.json({success:true})
+        }
+    }catch(error){
+        res.render('uses/500')
+        console.log(error.message);
+    }
+}
 module.exports = {
     AddProduct,
     InertProduct,
@@ -164,4 +329,12 @@ module.exports = {
     ViewProduct,
     updateImage,
     deleteImage,
+    AddToCart,
+    loadCart,
+    change_Quantities,
+    deleteCartProduct,
+    AddToWishlist,
+    loadWhishlist,
+    deleteWishlistProduct,
+    wishlistToCart,
 }

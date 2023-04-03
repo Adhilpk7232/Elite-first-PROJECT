@@ -105,7 +105,285 @@ const orderReturnCancelled  = async(req,res) => {
         console.log(error.message);
     }
 }
+// user side 
+const loadOrderHistory = async(req,res) => { 
+    try{
+        const userId = req.session.user_id
+        const userData = await User.findOne({_id:userId})
+        const orderData = await Order.find({userId:userId})
+        res.render('users/profileOrder',{orderData,userData})
 
+    }catch(error){
+        res.render('uses/500')
+        console.log(error.message);
+    }
+}
+const orderList = async (req,res) => { 
+    try{
+        const id = req.session.user_id
+        const orders = await Order.find({userId:id}).populate({path:'items',populate:{path:'productId',model:'Product'}})
+        res.render('users/orderList',{orders})
+    }catch(error){
+        res.render('uses/500')
+        console.log(error.message);
+    }
+}
+const orderedProducts = async(req,res) => { 
+     try{
+        const orderId  =req.query.id
+        const orderProduct = await Order.findOne({_id:orderId}).populate({path:'items',populate:{path:'productId',model:'Product'}})
+        res.render('users/orderedProductView',{orderProduct})
+
+     }catch(error){
+        res.render('uses/500')
+        console.log(error.message);
+     }
+}
+const cancelOrder =  async(req,res) => { 
+     try{
+        const orderId = req.query.id
+        const order = await Order.findById(orderId)
+        if(order.paymentMethod == "Online Payment" && order.orderStatus == 'placed'){
+            const refund = await User.findOneAndUpdate({_id:order.userId},{$inc:{wallet:order.totalAmount}})
+            order.orderStatus = 'cancelled'
+            order.save()
+            res.redirect('/profile-order')
+        }else{
+            order.orderStatus = 'cancelled'
+            order.save()
+            res.redirect('/profile-order')
+        }
+     }catch(error){
+        res.render('uses/500')
+        console.log(error.message);
+     }
+}
+const returnOrder =  async(req,res) => { 
+    try{
+       const orderId = req.query.id
+       const order = await Order.findById(orderId)
+       order.orderStatus = 'return requested'
+       order.save()
+       res.redirect('/profile-order')
+
+    }catch(error){
+        res.render('uses/500')
+       console.log(error.message);
+    }
+}
+const loadCheckout = async(req,res) => {
+    try{
+        const userId = req.session.user_id
+        const userData = await User.findOne({_id:userId}).populate('cart.productId').exec()
+        const addressData = await Address.findOne({userId:userId})
+        res.render('users/checkout',{userData,addressData})
+
+    }catch(error){
+        res.render('uses/500')
+        console.log(error.message);
+    }
+
+}
+
+const couponApply = async (req, res) => {
+    try {
+        const userId = req.session.user_id
+        const user = await User.findOne({ _id:userId });
+        let cartTotal = user.cartTotalPrice;
+    const exist = await Coupon.findOne(
+        { couponCode: req.body.code, used: userId },
+        { used: { $elemMatch: { $eq: userId } } }
+      );
+      if (exist) {
+        console.log("ubhayokichu");
+        return res.json({ used: true });
+      } else {
+        const couponData = await Coupon.findOne({ couponCode: req.body.code });
+        if (couponData) {
+          if (couponData.expiryDate >= new Date()) {
+            if (couponData.limit !== 0) {
+              if (couponData.minCartAmount <= cartTotal) {
+                if (couponData.couponAmountType === "fixed") {
+                  let discountValue = couponData.couponAmount;
+                  let value = Math.round(cartTotal - couponData.couponAmount);
+                  return res.json({
+                    amountokey: true,
+                    value,
+                    discountValue,
+                    code: req.body.code,
+                  });
+                } else if (couponData.couponAmountType === "percentage") {
+                  const discountPercentage = (cartTotal * couponData.couponAmount) / 100;
+                  if (discountPercentage >= couponData.minRedeemAmount) {
+                    let discountValue = discountPercentage;
+                    let value = Math.round(cartTotal - discountPercentage);
+                    return res.json({
+                      amountokey: true,
+                      value,
+                      discountValue,
+                      code: req.body.code,
+                    });
+                  } else {
+                    let discountValue = couponData.minRedeemAmount;
+                    let value = Math.round(cartTotal - couponData.minRedeemAmount);
+                    return res.json({
+                      amountokey: true,
+                      value,
+                      discountValue,
+                      code: req.body.code,
+                    });
+                  }
+                }
+              } else {
+                res.json({ minimum: true });
+              }
+            } else {
+              res.json({ limit: true });
+            }
+          } else {
+            res.json({ datefailed: true });
+          }
+        } else {
+          res.json({ invalid: true });
+        }
+      }
+    } catch (error) {
+        res.render('uses/500')
+      console.log(error.message);
+    }
+  };
+
+
+
+const placeOrder = async(req,res) => {
+    try{
+        const userId = req.session.user_id
+        const index = req.body.address
+        const discount = req.body.couponDiscount
+        const totel = req.body.total1
+        const coupon = req.body.couponC
+        const couponUpdate = await Coupon.updateOne({couponCode:coupon},{$push:{used:userId}})     
+        const address= await Address.findOne({userId:userId})
+        const userAddress = address.userAddresses[index]
+        const cartData = await User.findOne({_id:userId}).populate('cart.productId')
+        const total = cartData.cartTotalPrice
+        const payment = req.body.payment
+        let status  =payment === 'COD'?'placed':'pending'
+        let orderObj = { 
+            userId:userId,
+            address:{
+                fullName:userAddress.fullname,
+                mobileNumber:userAddress.mobileNumber,
+                pincode:userAddress.pincode,
+                houseAddress:userAddress.houseAddress,
+                streetAddress:userAddress.streetAddress,
+                landMark:userAddress.landMark,
+                cityName:userAddress.cityName,
+                state:userAddress.state
+            },
+            paymentMethod:payment,
+            orderStatus:status,
+            items:cartData.cart,
+            totalAmount:total,
+            discount:discount
+        }
+         await Order.create(orderObj)
+        .then(async(data) => {
+            const orderId = data._id.toString()
+            if(payment == 'COD'){
+                const userData = await User.findOne({_id:userId})
+                const cartData = userData.cart
+                for(let i=0;i<cartData.length;i++){
+                    const productStock = await Product.findById(cartData[i].productId)
+                    productStock.quantity -= cartData[i].qty
+                    await productStock.save()
+                }
+                await User.updateOne({_id:userId},{$set:{cart:[],cartTotalPrice:0}})
+                res.json({status:true})
+            }else if(payment == 'WALLET'){
+
+                const userData = await User.findOne({_id:userId})
+                if(userData.wallet >= total){
+                    const cartData = userData.cart
+                for(let i=0;i<cartData.length;i++){
+                    const productStock = await Product.findById(cartData[i].productId)
+                    productStock.quantity -= cartData[i].qty
+                    await productStock.save()
+                }
+                await User.updateOne({_id:userId},{$set:{cart:[],cartTotalPrice:0}})
+                await Order.updateOne({_id:orderId},{$set:{paymentMethod:'Wallet',orderStatus:'placed'}})
+                res.json({status:true})
+
+                }else{
+                    res.json({walletBalance:true})
+                }
+            }else{
+                var instance = new Razorpay({
+                    key_id: process.env.KEY_ID,
+                    key_secret: process.env.KEY_SECRET,
+                })
+                let amount  = total
+                instance.orders.create({
+                    amount:amount*100,
+                    currency:"INR",
+                    receipt:orderId,
+                },(err,order) => {
+                    console.log(order);
+                    res.json({status:false,order})
+                })
+            }
+        })
+
+    }catch(error){
+        res.render('uses/500')
+        console.log(error.message);
+    }
+}
+const verifyPayment = async(req,res)=>{
+    try{
+        const userId = req.session.user_id
+            const details = req.body
+            let hmac = crypto.createHmac('sha256', process.env.KEY_SECRET);
+            hmac.update(details.payment.razorpay_order_id + '|' + details.payment.razorpay_payment_id);
+            hmac = hmac.digest('hex')   
+            const orderId = details.order.receipt
+            if (hmac == details.payment.razorpay_signature) {
+                const userData = await User.findOne({_id:userId})
+                const cartData = userData.cart
+                console.log(cartData);
+                for(let i=0;i<cartData.length;i++){
+                    const productStock = await Product.findById(cartData[i].productId)
+                    productStock.quantity -= cartData[i].qty
+                    await productStock.save()
+                }
+                await User.updateOne({_id:userId},{$set:{cart:[],cartTotalPrice:0}})
+                await Order.findByIdAndUpdate(orderId, { $set: { orderStatus: 'placed' } }).then((data) => {
+                    res.json({ status: true, data })
+                }).catch((err) => {
+                    console.log(err);
+                    res.data({ status: false, err })
+                })   
+            } else {
+                res.json({ status: false })
+                console.log('payment failed');
+            }
+    }catch(error){
+        res.render('uses/500')
+        console.log(error.message);
+    }
+}
+const orderSuccess = async(req,res) => {
+    try{
+        const userId = req.session.user_id
+        const userData = await User.findOne({_id:userId})
+        const catrData  = await User.findOne({_id:userId})
+        const orderData = await Order.findOne({userId:userId}).populate({path:'items',populate:{path:'productId',model:'Product'}}).sort({createdAt:-1}).limit(1)
+        res.render('users/orderSuccess',{orderData})
+    }catch(error){
+        res.render('uses/500')
+        console.log(error.message);
+    }
+}
 module.exports = {
     loadOrderlist,
     placedOrder,
@@ -114,4 +392,15 @@ module.exports = {
     orderReturnSuccess,
     orderReturnCancelled,
     loadOrderProduct,
+
+    loadCheckout,
+    couponApply,
+    placeOrder,
+    verifyPayment,
+    orderSuccess,
+    loadOrderHistory,
+    orderList,
+    orderedProducts,
+    cancelOrder,
+    returnOrder,
 }

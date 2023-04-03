@@ -4,6 +4,9 @@ const route = express.Router()
 const auth = require('../middleware/auth')
 // const config = require('../config/config')
 const userController = require('../controller/userController')
+const productController = require('../controller/productController')
+
+
 //Landing Page
 route.get('/',auth.isLogout,userController.loadLandingPage)
 //user registeration
@@ -33,15 +36,15 @@ route.get('/home',auth.isLogin,userController.loadHome)
 
 route.post('/getProducts',userController.searchProducts)
 ///Cart
-route.post('/add-to-cart',auth.isLogin,userController.AddToCart)
-route.get('/cart',auth.isLogin,userController.loadCart)
-route.post('/delete-cart-product',userController.deleteCartProduct)
-route.post('/change-quantity',userController.change_Quantities)
+route.post('/add-to-cart',auth.isLogin,productController.AddToCart)
+route.get('/cart',auth.isLogin,productController.loadCart)
+route.post('/delete-cart-product',productController.deleteCartProduct)
+route.post('/change-quantity',productController.change_Quantities)
 //Wishlist
-route.get('/wishlist',auth.isLogin,userController.loadWhishlist)
-route.post('/add-to-wishlist',auth.isLogin,userController.AddToWishlist)
-route.post('/remove-wishlist',auth.isLogin,userController.deleteWishlistProduct)
-route.post('/wishlistToCart',auth.isLogin,userController.wishlistToCart)
+route.get('/wishlist',auth.isLogin,productController.loadWhishlist)
+route.post('/add-to-wishlist',auth.isLogin,productController.AddToWishlist)
+route.post('/remove-wishlist',auth.isLogin,productController.deleteWishlistProduct)
+route.post('/wishlistToCart',auth.isLogin,productController.wishlistToCart)
 ///produvt views
 route.get('/shop',userController.loadShop)
 route.get('/material-shop/:id',userController.loadMaterialShop)
