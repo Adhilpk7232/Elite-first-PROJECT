@@ -14,7 +14,7 @@ const { log } = require("console")
 const mongoose = require('mongoose')
 const { disable } = require("../routes/adminRoute")
 
-
+// ADMIN SIDE 
 const loadCategory = async(req,res)=>{
     try{
         const categoryData =await Category.find({})

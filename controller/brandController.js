@@ -19,7 +19,7 @@ const { disable } = require("../routes/adminRoute")
 
 
 
-
+// ADMIN SIDE 
 const loadBrand  = async (req,res) => {
     try{
         const materialData =await Material.find({})

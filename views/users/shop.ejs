@@ -174,22 +174,23 @@
 
                     <!-- sidebar panel -->
                     <div class="col-lg-3 col-12 side-bar order-2 order-lg-1">
+                        
                         <div class="widget">
+
                             <div class="widget-title">
-                                <h5>Categories</h5>
+                                <h5>Select by Category</h5>
                             </div>
-                            <div id="accordion" class="accordion-style2">
+
+                            <ul class="list-discount list-unstyled">
                                 <% categoryData.forEach((value) => {%>
-                                <div class="card">
-                                    <div class="card-header" id="headingOne">
-                                        <a href="/shopCategory/<%= value._id %>"><%= value.categoryName %></a>
-                                        
-                                    </div>
-                                    
-                                </div>
+                                <li class="form-check text-start">
+                                    <input class="form-check-input" type="checkbox" value="<%= value._id %>" id="ten_pecentage">
+                                    <label class="form-check-label" for="ten_pecentage"><%= value.categoryName %></label>
+                                </li>
+
+                                
                                 <% }) %>
-                               
-                            </div>
+                            </ul>
                         </div>
 
                         <div class="widget">
@@ -202,24 +203,20 @@
 
                         <!-- materialshow -->
                         <div class="widget">
+
                             <div class="widget-title">
-                                <h5>Materials</h5>
+                                <h5>Select by Materials</h5>
                             </div>
-                            <div id="accordion" class="accordion-style2">
+
+                            <ul class="list-discount list-unstyled">
                                 <% materialData.forEach((value) => {%>
-                                <div class="card">
-                                    <div class="card-header" id="headingOne">
-                                        <a href="/material-shop/<%= value._id %>"><%= value.materialName %></a>
-                                        
-                                    </div>
-                                    
-                                </div>
+                                <li class="form-check text-start">
+                                    <input class="form-check-input" type="checkbox" value="<%= value._id %>" id="ten_pecentage">
+                                    <label class="form-check-label" for="ten_pecentage"><%= value.materialName %></label>
+                                </li>
                                 <% }) %>
-                            </div>
+                            </ul>
                         </div>
-
-                        
-
                         
                     </div>
                     <!-- end sidebar panel -->
@@ -244,7 +241,6 @@
                                     <div class="col-auto my-1 my-md-0">
                                         <label class="m-0" id="sort">Sort By:</label>
                                         <select class="w-auto d-inline-block form-select">
-                                            
                                             <option value="#?sort=p.price&amp;order=ASC" selected="">Price (Low &gt; High)</option>
                                             <option value="#?sort=p.price&amp;order=DESC">Price (High &gt; Low)</option>
                                             
@@ -288,10 +284,6 @@
                                         </div>
                                     </div>
                                     <% })} %>
-                            
-
-                            
-
                         </div>
 
                         <!-- pagination -->

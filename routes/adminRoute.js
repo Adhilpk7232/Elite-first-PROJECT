@@ -22,7 +22,7 @@ router.get('/logout',adminController.adminLogout)
 router.get('/brand',auth.isLogin,brandController.loadBrand)
 router.get('/addBrand',auth.isLogin,brandController.addBrand)
 router.post('/addBrand',auth.isLogin,categoryMulter.single('image'),brandController.insertBrand)
-router.delete('/deleteBrand',auth.isLogin,brandController.deleteBrand)
+router.get('/deleteBrand',auth.isLogin,brandController.deleteBrand)
 router.get('/updateBrand',auth.isLogin,brandController.loadEditBrand)
 router.post('/updateBrand',auth.isLogin,brandController.UpdatedBrand)
 

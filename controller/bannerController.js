@@ -15,7 +15,7 @@ const { log } = require("console")
 const mongoose = require('mongoose')
 const { disable } = require("../routes/adminRoute")
 
-
+// ADMIN SIDE 
 const loadOfferBanner = async(req,res) => {
     try{
         const banner =await Banner.find()

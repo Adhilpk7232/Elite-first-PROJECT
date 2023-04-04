@@ -14,7 +14,7 @@ const mongoose = require('mongoose')
 const { disable } = require("../routes/adminRoute")
 
 
-
+// ADMIN SIDE 
 const loadcoupon = async(req,res) => {
     try{
         const couponsData  = await Coupon.find({disable:false})
@@ -89,10 +89,82 @@ const DeleteCoupon = async(req,res) => {
         console.log(error.message);
     }
 }
+
+// USER SIDE  
+const couponApply = async (req, res) => {
+    try {
+        const userId = req.session.user_id
+        const user = await User.findOne({ _id:userId });
+        let cartTotal = user.cartTotalPrice;
+    const exist = await Coupon.findOne(
+        { couponCode: req.body.code, used: userId },
+        { used: { $elemMatch: { $eq: userId } } }
+      );
+      if (exist) {
+        console.log("ubhayokichu");
+        return res.json({ used: true });
+      } else {
+        const couponData = await Coupon.findOne({ couponCode: req.body.code });
+        if (couponData) {
+          if (couponData.expiryDate >= new Date()) {
+            if (couponData.limit !== 0) {
+              if (couponData.minCartAmount <= cartTotal) {
+                if (couponData.couponAmountType === "fixed") {
+                  let discountValue = couponData.couponAmount;
+                  let value = Math.round(cartTotal - couponData.couponAmount);
+                  return res.json({
+                    amountokey: true,
+                    value,
+                    discountValue,
+                    code: req.body.code,
+                  });
+                } else if (couponData.couponAmountType === "percentage") {
+                  const discountPercentage = (cartTotal * couponData.couponAmount) / 100;
+                  if (discountPercentage >= couponData.minRedeemAmount) {
+                    let discountValue = discountPercentage;
+                    let value = Math.round(cartTotal - discountPercentage);
+                    return res.json({
+                      amountokey: true,
+                      value,
+                      discountValue,
+                      code: req.body.code,
+                    });
+                  } else {
+                    let discountValue = couponData.minRedeemAmount;
+                    let value = Math.round(cartTotal - couponData.minRedeemAmount);
+                    return res.json({
+                      amountokey: true,
+                      value,
+                      discountValue,
+                      code: req.body.code,
+                    });
+                  }
+                }
+              } else {
+                res.json({ minimum: true });
+              }
+            } else {
+              res.json({ limit: true });
+            }
+          } else {
+            res.json({ datefailed: true });
+          }
+        } else {
+          res.json({ invalid: true });
+        }
+      }
+    } catch (error) {
+        res.render('uses/500')
+      console.log(error.message);
+    }
+  };
+
+
 module.exports ={
     loadcoupon,
     addCoupon,
     editCoupon,
     updateCoupon,
     DeleteCoupon,
+    couponApply,
 }

@@ -202,7 +202,9 @@ const blockUser = async(req,res)=>{
  const listSalesReport = async(req,res) => { 
     try{
         const currentDate = new Date(req.body.to);
+        console.log(currentDate);
         const newDate = new Date(currentDate)
+        console.log(newDate);
         newDate.setDate(currentDate.getDate() + 1)     
         if(req.body.from.trim() == '' ||req.body.to.trim() == ''){
             res.render('admin/salesReport',{message:'all field required'})
