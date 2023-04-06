@@ -80,9 +80,9 @@ const updateCoupon = async(req,res) => {
 }
 const DeleteCoupon = async(req,res) => { 
     try{
-        const couponId = req.params.id
+        const couponId = req.body.couponId
         const update = await Coupon.updateOne({_id:couponId},{$set:{disable:true}})
-        res.redirect('/admin/coupon')
+        res.json({success:true})
 
     }catch(error){
         res.render('admin/500')

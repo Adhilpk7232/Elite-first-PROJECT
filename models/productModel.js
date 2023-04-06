@@ -45,6 +45,23 @@ const productSchema = new mongoose.Schema({
     },
     createdAt:{
         type:Date
+    },
+    offerPrice:{
+        type:Number,
+        require:true,
+        default:0
+    },
+    offer:{
+        offerStatus:{
+            type:Boolean,
+            require:true,
+            default:false
+        },
+        offerPercentage:{
+            type:Number,
+            require:true,
+            default:0
+        }
     }
 })
 

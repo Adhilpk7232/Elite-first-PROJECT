@@ -131,11 +131,10 @@ const deleteImage = async(req,res) =>{
 }
 const DeleteProduct = async (req,res)=>{
     try{
-        
-        const imgId =req.query.id
+        const imgId =req.body.productId
    fs.unlink(path.join(__dirname,'../public/products',imgId),()=>{})
-    Product.deleteOne({_id:req.query.id}).then(()=>{
-        res.redirect('/admin/product')
+    Product.deleteOne({_id:imgId}).then(()=>{
+        res.json({success:true})
     })
    
     }catch(error){
@@ -154,6 +153,98 @@ const ViewProduct = async (req,res)=>{
         console.log(error.message);
     }
 }
+
+const loadOfferManagement = async(req,res) => { 
+    try{
+        const productData= await Product.find({}).populate('category').exec()
+        res.render("admin/offermanagement",{productData})
+
+
+    }catch(error){
+        res.render('admin/500')
+        console.log(error.message);
+    }
+}
+
+const addOfferManagement = async(req,res) => { 
+    try{
+        const productId = req.params.id
+        const offerPercentage = req.body.offerPercentage
+        const productData = await Product.findOne({_id:productId})
+        let amount = productData.price -((productData.price/ 100)* offerPercentage)
+        const update = await Product.findOneAndUpdate({_id:productId},{$set:{
+            offer:{
+                offerStatus:true,
+                offerPercentage:offerPercentage
+            },
+            offerPrice:productData.price,
+            price:amount
+        }})
+        res.redirect('/admin/offerManagement')
+
+    }catch(error){
+        res.render('admin/500')
+        console.log(error.message);
+    }
+}
+
+const deleteOfferManagement = async(req,res) => { 
+    try{
+        const productId = req.body.productId
+        const productData = await Product.findOne({_id:productId})
+        if(productData.offer.offerStatus == false){
+            const wait = await Product.updateOne({_id:productId},{$set:{'offer.offerStatus':true}})
+            res.json({success:true})
+        }else{
+            const wait = await Product.updateOne({_id:productId},{$set:{'offer.offerStatus':false}})
+            res.json({success:true})
+
+        }
+
+    }catch(error){
+        res.render('admin/500')
+        console.log(error.message);
+    }
+}
+
+const editOfferManagement = async(req,res) => { 
+    try{
+        const productId = req.params.id
+        console.log(productId);
+        const productData = await Product.findOne({_id:productId})
+        res.render("admin/editOfferManagement",{productData})
+
+    }catch(error){
+        res.render('admin/500')
+        console.log(error.message);
+    }
+}
+
+const updatedOfferManagement = async(req,res) => { 
+    try{
+        const productId = req.params.id
+        const offerPercentage = req.body.offerPercentage
+        const productData = await Product.findOne({_id:productId})
+        const originalPrice = productData.offerPrice
+        let amount = productData.offerPrice -((productData.offerPrice/ 100)* offerPercentage)
+        const update = await Product.findOneAndUpdate({_id:productId},{$set:{
+            offer:{
+                offerStatus:true,
+                offerPercentage:offerPercentage
+            },
+            offerPrice:originalPrice,
+            price:amount
+        }})
+        res.redirect('/admin/offerManagement')
+
+    }catch(error){
+        res.render('admin/500')
+        console.log(error.message);
+    }
+}
+
+
+
 // user side 
 const AddToCart = async(req,res) => {
     try{ 
@@ -337,4 +428,9 @@ module.exports = {
     loadWhishlist,
     deleteWishlistProduct,
     wishlistToCart,
+    loadOfferManagement,
+    addOfferManagement,
+    deleteOfferManagement,
+    editOfferManagement,
+    updatedOfferManagement
 }

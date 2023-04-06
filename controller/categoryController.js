@@ -27,7 +27,7 @@ const loadCategory = async(req,res)=>{
 }
 const AddCategorry =(req,res)=>{
     try{
-        res.render('addCategory')
+        res.render('admin/addCategory')
     }catch(error){
         res.render('admin/500')
         console.log(error.message);
@@ -43,20 +43,28 @@ const insertCategory = async (req,res)=>{
         const catUP = cat.toUpperCase()
         let exist = await Category.findOne({categoryName:catUP})
         if(exist){
-            res.render('admin/addCategory',{message:'This Category already Exist'})
+            // res.render('admin/addCategory',{message:'This Category already Exist'})
+            res.send({message:'This Category already Exist'})
             exist=null
         }else{
-            const filename=req.file.filename
+            console.log(req.body.image);
+            const img = req.body.image
+            const file = path.basename(img);
+            console.log(file);
+            // const filename=req.file.filename
             const category = new Category({
                 categoryName:catUP,
                 description:req.body.description,
-                image:req.file.filename
+                image:file
+                // image:req.file.filename
             })
             const categoryData = await category.save()
             if(categoryData){
-                res.render('admin/addCategory',{message2:'category insert successfully'})
+                // res.render('admin/addCategory',{message2:'category insert successfully'})
+                res.send({message:'category insert successfully'})
             }else{
-                res.render('admin/addCategory',{message:'category did not inserted'})
+                res.send({message:'category did not inserted'})
+                // res.render('admin/addCategory',{message:'category did not inserted'})
             }
         }
     }
@@ -67,9 +75,9 @@ const insertCategory = async (req,res)=>{
 }
 const DeleteCategory = async (req,res)=>{
     try{
-        const id = req.query.id
+        const id = req.body.categoryId
         await Category.deleteOne({_id:id})
-        res.redirect('/admin/category')
+        res.json({success:true})
     }catch(error){
         res.render('admin/500')
         console.log(error.message);

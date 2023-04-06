@@ -53,7 +53,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-primary" href="/admin/product">
+          <a class="nav-link text-white" href="/admin/product">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">view_in_ar</i>
             </div>
@@ -85,13 +85,13 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="/admin/offerManagement">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">receipt_long</i>
-            </div>
-            <span class="nav-link-text ms-1">Offer Mangement</span>
-          </a>
-        </li>
+            <a class="nav-link text-white active bg-gradient-primary" href="/admin/offerManagement">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i class="material-icons opacity-10">receipt_long</i>
+              </div>
+              <span class="nav-link-text ms-1">Offer Mangement</span>
+            </a>
+          </li>
         <li class="nav-item mt-3">
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
         </li>
@@ -121,14 +121,14 @@
       <div class="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
           
-          <h6 class="font-weight-bolder mb-0">Product Management</h6>
+          <h6 class="font-weight-bolder mb-0">Offer Management</h6>
         </nav>
         
       </div>
     </nav>
     <!-- End Navbar -->
     <!-- product table -->
-    <a href="/admin/addProduct"> <button class="btn btn-primary mr-3">Add Product</button></a>
+    
 <table class="table table-bordered my-3" id="table">
     <thead>
       <tr>
@@ -138,8 +138,10 @@
         <th scope="col">PRICE</th>
         <th scope="col">STOCK</th>
         <th scope="col">STATUS</th>
+        <th scope="col">OfferStatus</th>
         <th scope="col">IMAGE</th>
         <th scope="col">QUANTITY</th>
+        <th scope="col">offer</th>
         <th scope="col">MORE</th>
       </tr>
     </thead>
@@ -159,17 +161,68 @@
                     <% } %>
         </td>
         <td> <%=value.list %></td>
+        <td><%= value.offer.offerStatus %></td>
         <td> <img src="/products/<%= value.image[0] %>" alt="" style="width: 80px; height: 80px;"> </td>
          <td> <%= value.quantity %></td>
+         <td>
+            <%if(value.offer.offerStatus == false){%>
+                <div class="">
+            <!-- Button trigger modal -->
+            <a class="btn btn-primary text-white" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+                Add Product Offer
+              </a>
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+              aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Product Offer details</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <!-- form-start -->
+        
+                    <form  action="/admin/addOfferManagement/<%= value._id%>" method="post" >
+                      <div class="form-group">
+                        <h4>Product Name : <%= value.product_name %></h4>
+                        <h6>Previous Price :₹  <%= value.price %></h6>
+                      </div>
+                      
+        
+                      <div class="form-group">
+                          <label for="">Offer percentage</label>
+                          <input type="number" class="form-control border pe-2 ps-2" id="" placeholder="Offer amount" name="offerPercentage" required>
+                      </div>
+                      
+                      
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+            <% }else{
+             } %>
+            </td>
         <td style="padding: 0;width: 50px;"> 
           <div class="btn-group dropstart" style="width: 100%;height: 100px;" >
          <a href=""   data-bs-toggle="dropdown" aria-expanded="false" class="m-auto " style="width: 100%;" >
           <i style="font-size:24px" class="fa m-4">&#xf142;</i>
          </a>
             <ul class="dropdown-menu">
-              <li> <a href="/admin/view-product?id=<%= value._id %>" class="btn btn-secondary d-block my-1">View</a></li>
-              <li> <a href="/admin/edit-product/<%= value._id %>" class="btn btn-primary d-block my-1" >EDIT</a></li>
-              <li> <a onclick="deleteProduct('<%= value._id %>')" class="btn btn-danger d-block my-1">DELETE</a></li>
+              <li> <a href="/admin/editOfferManagement/<%= value._id %>" class="btn btn-primary d-block my-1" >EDIT Offer</a></li>
+              <% if(value.offer.offerStatus == false){ %>
+                <li> <a onclick="activeOffer('<%= value._id %>')" class="btn btn-danger d-block my-1">Activate Offer</a></li>
+              <% }else{ %>
+                <li> <a onclick="deleteOffer('<%= value._id %>')" class="btn btn-danger d-block my-1">DELETE Offer</a></li>
+              <% } %>
             </ul>
           </div>
         </td>
@@ -181,20 +234,20 @@
     </tbody>
   </table>
   <script>
-    function deleteProduct (productId) {
+    function deleteOffer (productId) {
   
   Swal.fire({
       title: 'Are you sure?',
-      text: "You want to delete Product!",
+      text: "You want to delete ProductOffer!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'yes, Delete!'
+      confirmButtonText: 'Yes, Delete!'
   }).then((result) => {
       if (result.isConfirmed) {
           $.ajax({
-              url: '/admin/delete-product',
+              url: '/admin/deleteOfferManagement',
               data: {
                 productId:productId,
                 
@@ -203,11 +256,11 @@
               success: (response) => {
                   console.log("waoring")
                   if(response.success){
-                    $('#table').load('/admin/product #table')
+                    $('#table').load('/admin/offerManagement #table')
                   console.log(response);
                   Swal.fire({
-                      title: 'Deleted Product!',
-                      text: 'Your deleted Product',
+                      title: 'Deleted ProductOffer!',
+                      text: 'Your deleted ProductOffer',
                       icon: 'success',
                       showConfirmButton: false,
                       timer:1000
@@ -216,7 +269,7 @@
                     Swal.fire({
                       icon: 'error',
                       title: 'Oops...',
-                      text: 'something error in Product delete!',
+                      text: 'something error in ProductOffer delete!',
                
                     })
                   }
@@ -232,32 +285,58 @@
   }
   
   </script>
-  <!-- <div id="pagination" >
-    <ul>
-      <li><a href="#" class="prev">Prev</a></li>
-      <li><a href="#" class="page active">1</a></li>
-      <li><a href="#" class="page">2</a></li>
-      <li><a href="#" class="page">3</a></li>
-      <li><a href="#" class="page">4</a></li>
-      <li><a href="#" class="page">5</a></li>
-      <li><a href="#" class="next">Next</a></li>
-    </ul>
-  </div> -->
-  <!-- <script>
-    const deleteBtn = document.querySelector('.btn-danger');
-
-    deleteBtn.addEventListener('click', (event) => {
-      event.preventDefault(); // prevent the default behavior of the button
-
-      const confirmDelete = confirm('Are you sure you want to delete this product?');
-
-      if (confirmDelete) {
-        window.location.href = event.target.href; // if the user confirms, go ahead with the deletion
+  <script>
+    function activeOffer (productId) {
+  
+  Swal.fire({
+      title: 'Are you sure?',
+      text: "You want to Activate ProductOffer!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Activate!'
+  }).then((result) => {
+      if (result.isConfirmed) {
+          $.ajax({
+              url: '/admin/deleteOfferManagement',
+              data: {
+                productId:productId,
+                
+              },
+              method: 'delete',
+              success: (response) => {
+                  console.log("waoring")
+                  if(response.success){
+                    $('#table').load('/admin/offerManagement #table')
+                  console.log(response);
+                  Swal.fire({
+                      title: 'Activated ProductOffer!',
+                      text: 'Your Activated ProductOffer',
+                      icon: 'success',
+                      showConfirmButton: false,
+                      timer:1000
+                  })
+                  }else{
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Oops...',
+                      text: 'something error in ProductOffer Activation!',
+               
+                    })
+                  }
+  
+                  
+                  
+  
+              }
+  
+          })
       }
-    });
-
-  </script> -->
-
+  })
+  }
+  
+  </script>
   
   
 

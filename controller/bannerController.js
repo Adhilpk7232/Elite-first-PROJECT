@@ -78,16 +78,16 @@ const loadOfferBanner = async(req,res) => {
  }
  const deleteBanner = async(req,res) => { 
     try{
-        const id = req.query.id
+        const id = req.body.bannerId
         const bannerData = await Banner.findOne({_id:id},{status:1,_id:id})
         if(bannerData.status == false){
             const wait = await Banner.updateOne({_id:id},{$set:{status:true}})
             
-            res.redirect('/admin/offer-banner')
+            res.json({success:true})
         }else{
             const wait = await Banner.updateOne({_id:id},{$set:{status:false}})
             
-            res.redirect('/admin/offer-banner')
+            res.json({success:true})
 
         }
         

@@ -102,9 +102,9 @@ const UpdatedBrand  = async (req,res) => {
 }
 const deleteBrand  = async (req,res) => {
     try{
-        const id = req.query.id
+        const id = req.body.brandId
         await Material.deleteOne({_id:id})
-        res.redirect('/admin/brand')
+        res.json({success:true})
 
     }catch(error){
         res.render('admin/500')

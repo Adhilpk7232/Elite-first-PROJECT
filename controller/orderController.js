@@ -148,10 +148,20 @@ const cancelOrder =  async(req,res) => {
             const refund = await User.findOneAndUpdate({_id:order.userId},{$inc:{wallet:order.totalAmount}})
             order.orderStatus = 'cancelled'
             order.save()
-            res.redirect('/profile-order')
+            const itemsData = order.items
+            for(let i=0;i< itemsData.length;i++){
+                const productStock = await Product.updateOne({_id:itemsData[i].productId},{$inc:{quantity:itemsData[i].qty}})
+                res.redirect('/profile-order')
+            }
+            
         }else{
             order.orderStatus = 'cancelled'
             order.save()
+            const itemsData = order.items
+            for(let i=0;i< itemsData.length;i++){
+                const productStock = await Product.updateOne({_id:itemsData[i].productId},{$inc:{quantity:itemsData[i].qty}})
+                res.redirect('/profile-order')
+            }
             res.redirect('/profile-order')
         }
      }catch(error){
@@ -247,7 +257,8 @@ const placeOrder = async(req,res) => {
                     productStock.quantity -= cartData[i].qty
                     await productStock.save()
                 }
-                await User.updateOne({_id:userId},{$set:{cart:[],cartTotalPrice:0}})
+                const walletBalance = userData.wallet - userData.cartTotalPrice ;
+                await User.updateOne({_id:userId},{$set:{wallet:walletBalance,cart:[],cartTotalPrice:0}})
                 await Order.updateOne({_id:orderId},{$set:{paymentMethod:'Wallet',orderStatus:'placed'}})
                 res.json({status:true})
 

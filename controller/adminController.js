@@ -171,16 +171,16 @@ const loadUserManagement = async(req,res)=>{
 }
 const blockUser = async(req,res)=>{
     try{
-        const id = req.query.id
+        const id = req.body.userId
         const userData = await User.findOne({_id:id})
         if(userData.block == false){
             const wait = await User.updateOne({_id:id},{$set:{block:true}})
             req.session.user_id=false
-            res.redirect('/admin/user')
+            res.json({success:true})
         }else{
             const wait = await User.updateOne({_id:id},{$set:{block:false}})
             req.session.user_id=true
-            res.redirect('/admin/user')
+            res.json({success:true})
 
         }
         

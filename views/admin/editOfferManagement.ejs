@@ -53,7 +53,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="/admin/product">
+          <a class="nav-link text-white" href="/admin/product">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">view_in_ar</i>
             </div>
@@ -61,7 +61,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-primary" href="/admin/order">
+          <a class="nav-link text-white " href="/admin/order">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">format_textdirection_r_to_l</i>
             </div>
@@ -85,13 +85,13 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="/admin/offerManagement">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">receipt_long</i>
-            </div>
-            <span class="nav-link-text ms-1">Offer Mangement</span>
-          </a>
-        </li>
+            <a class="nav-link text-white active bg-gradient-primary" href="/admin/offerManagement">
+              <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                <i class="material-icons opacity-10">receipt_long</i>
+              </div>
+              <span class="nav-link-text ms-1">Offer Mangement</span>
+            </a>
+          </li>
         <li class="nav-item mt-3">
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
         </li>
@@ -121,90 +121,48 @@
       <div class="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
           
-          <h6 class="font-weight-bolder mb-0">Order Management</h6>
+          <h6 class="font-weight-bolder mb-0">Offer Management</h6>
         </nav>
         
       </div>
     </nav>
     <!-- End Navbar -->
-   <!-- user mangement table -->
+    <!-- product table -->
+    <div class="">
+        <!-- form-start -->
 
-   <div class="container mt-5">
-    <table class="table" id="productTables">
-      <thead>
-        <tr>
-          <th>sl.no</th>
+        <form  action="/admin/updateOffermanagement/<%= productData._id%>" method="post" >
+          <div class="form-group">
+            <h4>Product Name : <%= productData.product_name %></h4>
+            <h6>Previous Price :₹  <%= productData.price %></h6>
+          </div>
           
-          <th>Date</th>
-          <th>Address</th>
-          <th>payment Method</th>
-          <th>order Status</th>
-          <th>totalAmount</th>
-          <th>Action</th>
-          <th>view</th>
 
-          <!-- <th>Action</th> -->
-         
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% for (var i = 0; i < order.length; i++) { %>
-          <tr>
-            <td><%= i+1 %></td>
-            
-            <td><%= order[i].date.toLocaleString({day:'2-digit',month:'2-digit',year:'2-digit'}) %></td>
-            <td><p><%=order[i].address.fullName %><br><%=order[i].address.mobileNumber %><br><%=order[i].address.pincode %><br>
-              <%=order[i].address.houseAddress %><br><%=order[i].address.streetAddress %><%=order[i].address.landMark%>,<%=order[i].address.cityName %>,<%=order[i].address.state %>
-          </p></td>
-            <td><%= order[i].paymentMethod %></td>
-            <td><%= order[i].orderStatus %></td>
-            <td><%= order[i].totalAmount %></td>
-            <td>
-              <div class="dropdown">
-                <button class="btn  dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <%= order[i].orderStatus %>
-                </button>
-                <ul class="dropdown-menu">
-                  <% if(order[i].orderStatus == 'pending') { %>
-                  <li><a class="dropdown-item" href="/admin/orderStatus-placed?id=<%= order[i]._id %>">placed</a></li>
-                  <li><a class="dropdown-item" href="/admin/orderStatus-shiped?id=<%= order[i]._id %>">Shiped</a></li>
-                  <li><a class="dropdown-item" href="/admin/orderStatus-delivered?id=<%= order[i]._id %>">Delivered</a></li>
-                  <% } else if(order[i].orderStatus == 'placed') { %>
-                  <li><a class="dropdown-item" href="/admin/orderStatus-shiped?id=<%= order[i]._id %>">Shiped</a></li>
-                  <li><a class="dropdown-item" href="/admin/orderStatus-delivered?id=<%= order[i]._id %>">Delivered</a></li>
-                  <% } else if(order[i].orderStatus == 'shiped') { %>
-                  <li><a class="dropdown-item" href="/admin/orderStatus-delivered?id=<%= order[i]._id %>">Delivered</a></li>
-                  <% } else if(order[i].orderStatus == 'delivered') { %>
-                  <!-- <li><a class="dropdown-item" href="#">Delivered</a></li> -->
-                  <% } else if(order[i].orderStatus == 'return requested') { %>
-                    <li><a class="dropdown-item" href="/admin/orderStatus-returnSuccess?id=<%= order[i]._id %>">Return Success</a></li>
-                    <li><a class="dropdown-item" href="/admin/orderStatus-returnCancelled?id=<%= order[i]._id %>">Return Cancelled</a></li>
-
-                  <% } else if(order[i].orderStatus == 'return success'||order[i].orderStatus == 'return cancelled') {%>
-                  <% } %>
-                </ul>
-              </div>
-            </td>
-            <td><a href="/admin/order-view?id=<%= order[i]._id %>"><i class="fa-solid fa-eye"></i></a></td>
-            
-          </tr>
-          <% } %>
-        </tbody>
-    </table>
-  </div>
-  
-  
+          <div class="form-group">
+              <label for="">Offer percentage</label>
+              <input type="number" class="form-control border pe-2 ps-2" id="" placeholder="Offer amount" name="offerPercentage" value="<%= productData.offer.offerPercentage%>" required>
+          </div>
+          
+          
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+          </div>
+        </form>
+      </div>
     
+
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+
+
   <!--   Core JS Files   -->
   <script src="/assets/js/core/popper.min.js"></script>
   <script src="/assets/js/core/bootstrap.min.js"></script>
   <script src="/assets/js/plugins/perfect-scrollbar.min.js"></script>
   <script src="/assets/js/plugins/smooth-scrollbar.min.js"></script>
   <script src="/assets/js/plugins/chartjs.min.js"></script>
-  <script>
  
-  </script>
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->

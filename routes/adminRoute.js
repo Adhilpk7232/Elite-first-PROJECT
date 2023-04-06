@@ -21,18 +21,18 @@ router.get('/logout',adminController.adminLogout)
 /////brand
 router.get('/brand',auth.isLogin,brandController.loadBrand)
 router.get('/addBrand',auth.isLogin,brandController.addBrand)
-router.post('/addBrand',auth.isLogin,categoryMulter.single('image'),brandController.insertBrand)
-router.get('/deleteBrand',auth.isLogin,brandController.deleteBrand)
+router.put('/addBrand',auth.isLogin,categoryMulter.single('image'),brandController.insertBrand)
+router.delete('/deleteBrand',auth.isLogin,brandController.deleteBrand)
 router.get('/updateBrand',auth.isLogin,brandController.loadEditBrand)
 router.post('/updateBrand',auth.isLogin,brandController.UpdatedBrand)
 
 router.get('/user',auth.isLogin,adminController.loadUserManagement)
-router.get('/block-user',auth.isLogin,auth.isLogin,adminController.blockUser)
+router.patch('/block-user',auth.isLogin,auth.isLogin,adminController.blockUser)
 // category 
 router.get('/category',auth.isLogin,categoryController.loadCategory)
 router.get('/addCategory',auth.isLogin,categoryController.AddCategorry)
-router.post('/addcategory',auth.isLogin,categoryMulter.single('image'),categoryController.insertCategory)
-router.get('/deleteCategory',auth.isLogin,categoryController.DeleteCategory)
+router.put('/addcategory',auth.isLogin,categoryMulter.single('image'),categoryController.insertCategory)
+router.delete('/deleteCategory',auth.isLogin,categoryController.DeleteCategory)
 router.get('/updateCategory',auth.isLogin,categoryController.UpdateCategory)
 router.post('/updateCategory',auth.isLogin,categoryController.UpdatedCategory)
 // product 
@@ -44,14 +44,14 @@ router.post('/edit-product/:id',auth.isLogin,productController.UpdateProduct)
 
 router.post('/edit-image/:id',auth.isLogin,upload.array('image'),productController.updateImage)
 router.get('/delete-product-image/:imgid/:prodid',auth.isLogin,productController.deleteImage)
-router.get('/delete-product',auth.isLogin,productController.DeleteProduct)
+router.delete('/delete-product',auth.isLogin,productController.DeleteProduct)
 router.get('/view-product',auth.isLogin,productController.ViewProduct)
 // offer banner 
 router.get('/offer-banner',auth.isLogin,bannerController.loadOfferBanner)
 router.post('/addbanner',auth.isLogin,bannerMult.single('bannerimage'),bannerController.insertBanner)
 router.get('/edit-banner',auth.isLogin,bannerController.editBanner)
 router.post('/edit-banner',auth.isLogin,bannerMult.single('bannerimage'),bannerController.updateBanner)
-router.get('/delete-banner',auth.isLogin,bannerController.deleteBanner)
+router.delete('/delete-banner',auth.isLogin,bannerController.deleteBanner)
 ///order
 router.get('/order',auth.isLogin,orderConstroller.loadOrderlist)
 router.get('/order-view',auth.isLogin,orderConstroller.loadOrderProduct)
@@ -65,10 +65,17 @@ router.get('/coupon',auth.isLogin,couponController.loadcoupon)
 router.post('/add-coupon',auth.isLogin,couponController.addCoupon)
 router.get('/editCoupon/:id',auth.isLogin,couponController.editCoupon)
 router.post('/editCoupon/:id',auth.isLogin,couponController.updateCoupon)
-router.get('/deleteCoupon/:id',auth.isLogin,couponController.DeleteCoupon)
+router.delete('/deleteCoupon',auth.isLogin,couponController.DeleteCoupon)
 ///sales report
 router.get('/sales-report',auth.isLogin,adminController.loadSales)
 router.post('/show-salesreprot',auth.isLogin, adminController.listSalesReport)
+
+// OFFER MANAGEMENT
+router.get('/offerManagement',auth.isLogin,productController.loadOfferManagement)
+router.post('/addOfferManagement/:id',auth.isLogin,productController.addOfferManagement)
+router.delete('/deleteOfferManagement',auth.isLogin,productController.deleteOfferManagement)
+router.get('/editOfferManagement/:id',auth.isLogin,productController.editOfferManagement)
+router.post('/updateOffermanagement/:id',auth.isLogin,productController.updatedOfferManagement)
 
 
 
