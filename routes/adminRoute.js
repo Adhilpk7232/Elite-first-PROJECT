@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 // const path = require('path')
-const auth = require("../middleware/adminAuth")
+const auth = require("../middleware/adminauth")
 // const config = require("../config/config")
 // const multer =require('multer')
 const{upload,categoryMulter,bannerMult}=require('../multers/multer')
