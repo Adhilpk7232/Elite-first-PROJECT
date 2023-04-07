@@ -129,286 +129,111 @@
     <!-- End Navbar -->
     <div class="container mt-5">
         <h1 class="text-center">Enter Category Details</h1>
-        <form action="" method="post">
+        <!-- <form action="/admin/updateCategory" method="post" enctype="multipart/form-data">
           <div class="form-group">
             <label for="username">Category Name:</label>
-            <input type="text" class="form-control" id="categoryName" name="categoryName" value="<%=category.categoryName %>">
+            <input type="text" class="form-control" id="categoryName" name="categoryName" value="<%=category.categoryName %>" style="border: 1px solid #000;">
           </div>
           <div class="form-group" >
             <label for="description">Description:</label>
-            <input type="text" class="form-control " id="description" name="description" value="<%=category.description %>">
+            <input type="text" class="form-control " id="description" name="description" value="<%=category.description %>" style="border: 1px solid #000;">
           </div>
+          <div>
+            <div class="mb-3 mt-4">
+                <label class="form-label" for="basic-default-message">Image:</label>
+                <img src="/category-img/<%= category.image %>" alt="" style="width: 100px;height: auto;" id="imgView">
+                <input type="file" name="image" style="border: 1px solid #495057;" accept=".jpg, .jpeg, .png, .gif, .webp"  onchange="viewImage(event)" style="border: 1px solid #000;">
+                <div id="imageError" class="error-message" style="color: red;"></div>
+            </div>
+        </div>
           <input type="hidden" name="id" value="<%= category._id%>">
           <div class="text-center">
             <a href="/admin/category" class="btn btn-secondary">Back</a>
             <input type="submit" class="btn btn-primary" value="Submit">
           </div>
-        </form>
+        </form> -->
+
+        <form action="/admin/updateCategory" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+          <div class="form-group">
+              <label for="username">Category Name:</label>
+              <input type="text" class="form-control" id="categoryName" name="categoryName" value="<%=category.categoryName %>" style="border: 1px solid #000;" >
+              <div id="categoryNameError" class="error-message" style="color: red;"></div>
+          </div>
+          <input type="hidden" name="id" value="<%= category._id%>">
+          <div class="form-group">
+              <label for="description">Description:</label>
+              <input type="text" class="form-control" id="description" name="description" style="border: 1px solid #000;"  value="<%=category.description %>">
+              <div id="descriptionError" class="error-message" style="color: red;"></div>
+          </div>
+          
+           <div>
+        <div class="mb-3">
+          
+            <label class="form-label" for="basic-default-message">Image:</label>
+            <img src="/category-img/<%= category.image %>" alt="" style="width: 100px;height: auto;" id="imgView">
+            <input type="file" name="image" id="image" style="border: 1px solid #495057;" accept=".jpg, .jpeg, .png, .gif, .webp" onchange="viewImage(event)" >
+            <div id="imageError" class="error-message" style="color: red;"></div>
+        </div>
+        
+      </div>
+          
+          <div class="text-center">
+              <a href="/admin/category" class="btn btn-secondary">Back</a>
+              <input type="submit" class="btn btn-primary" value="Submit">
+          </div>
+      </form>
         
             
       </div>
   <!--   Core JS Files   -->
+  <script>
+    function validateForm() {
+        var categoryName = document.getElementById("categoryName").value.trim();
+        var description = document.getElementById("description").value.trim();
+        var image = document.getElementById("image").value.trim();
+        var isValid = true;
+        var categoryNameError = document.getElementById("categoryNameError");
+        var descriptionError = document.getElementById("descriptionError");
+        var imageError = document.getElementById("imageError");
+        
+        // Validate Category Name
+        if (categoryName == "") {
+            categoryNameError.innerHTML = "Please enter a category name";
+            isValid = false;
+        } else {
+            categoryNameError.innerHTML = "";
+        }
+        
+        // Validate Description
+        if (description == "") {
+            descriptionError.innerHTML = "Please enter a description";
+            isValid = false;
+        } else {
+            descriptionError.innerHTML = "";
+        }
+        
+        // Validate Image
+        if (image == "") {
+            imageError.innerHTML = "Please select an image";
+            isValid = false;
+        } else {
+            imageError.innerHTML = "";
+        }
+        
+        return isValid;
+    }
+</script>
+  <script>
+    function viewImage(event){
+        document.getElementById('imgView').src=URL.createObjectURL(event.target.files[0])
+    }
+  </script>
   <script src="/assets/js/core/popper.min.js"></script>
   <script src="/assets/js/core/bootstrap.min.js"></script>
   <script src="/assets/js/plugins/perfect-scrollbar.min.js"></script>
   <script src="/assets/js/plugins/smooth-scrollbar.min.js"></script>
   <script src="/assets/js/plugins/chartjs.min.js"></script>
-  <script>
-    var ctx = document.getElementById("chart-bars").getContext("2d");
-
-    new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: ["M", "T", "W", "T", "F", "S", "S"],
-        datasets: [{
-          label: "Sales",
-          tension: 0.4,
-          borderWidth: 0,
-          borderRadius: 4,
-          borderSkipped: false,
-          backgroundColor: "rgba(255, 255, 255, .8)",
-          data: [50, 20, 10, 22, 50, 10, 40],
-          maxBarThickness: 6
-        }, ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          }
-        },
-        interaction: {
-          intersect: false,
-          mode: 'index',
-        },
-        scales: {
-          y: {
-            grid: {
-              drawBorder: false,
-              display: true,
-              drawOnChartArea: true,
-              drawTicks: false,
-              borderDash: [5, 5],
-              color: 'rgba(255, 255, 255, .2)'
-            },
-            ticks: {
-              suggestedMin: 0,
-              suggestedMax: 500,
-              beginAtZero: true,
-              padding: 10,
-              font: {
-                size: 14,
-                weight: 300,
-                family: "Roboto",
-                style: 'normal',
-                lineHeight: 2
-              },
-              color: "#fff"
-            },
-          },
-          x: {
-            grid: {
-              drawBorder: false,
-              display: true,
-              drawOnChartArea: true,
-              drawTicks: false,
-              borderDash: [5, 5],
-              color: 'rgba(255, 255, 255, .2)'
-            },
-            ticks: {
-              display: true,
-              color: '#f8f9fa',
-              padding: 10,
-              font: {
-                size: 14,
-                weight: 300,
-                family: "Roboto",
-                style: 'normal',
-                lineHeight: 2
-              },
-            }
-          },
-        },
-      },
-    });
-
-
-    var ctx2 = document.getElementById("chart-line").getContext("2d");
-
-    new Chart(ctx2, {
-      type: "line",
-      data: {
-        labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        datasets: [{
-          label: "Mobile apps",
-          tension: 0,
-          borderWidth: 0,
-          pointRadius: 5,
-          pointBackgroundColor: "rgba(255, 255, 255, .8)",
-          pointBorderColor: "transparent",
-          borderColor: "rgba(255, 255, 255, .8)",
-          borderColor: "rgba(255, 255, 255, .8)",
-          borderWidth: 4,
-          backgroundColor: "transparent",
-          fill: true,
-          data: [50, 40, 300, 320, 500, 350, 200, 230, 500],
-          maxBarThickness: 6
-
-        }],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          }
-        },
-        interaction: {
-          intersect: false,
-          mode: 'index',
-        },
-        scales: {
-          y: {
-            grid: {
-              drawBorder: false,
-              display: true,
-              drawOnChartArea: true,
-              drawTicks: false,
-              borderDash: [5, 5],
-              color: 'rgba(255, 255, 255, .2)'
-            },
-            ticks: {
-              display: true,
-              color: '#f8f9fa',
-              padding: 10,
-              font: {
-                size: 14,
-                weight: 300,
-                family: "Roboto",
-                style: 'normal',
-                lineHeight: 2
-              },
-            }
-          },
-          x: {
-            grid: {
-              drawBorder: false,
-              display: false,
-              drawOnChartArea: false,
-              drawTicks: false,
-              borderDash: [5, 5]
-            },
-            ticks: {
-              display: true,
-              color: '#f8f9fa',
-              padding: 10,
-              font: {
-                size: 14,
-                weight: 300,
-                family: "Roboto",
-                style: 'normal',
-                lineHeight: 2
-              },
-            }
-          },
-        },
-      },
-    });
-
-    var ctx3 = document.getElementById("chart-line-tasks").getContext("2d");
-
-    new Chart(ctx3, {
-      type: "line",
-      data: {
-        labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        datasets: [{
-          label: "Mobile apps",
-          tension: 0,
-          borderWidth: 0,
-          pointRadius: 5,
-          pointBackgroundColor: "rgba(255, 255, 255, .8)",
-          pointBorderColor: "transparent",
-          borderColor: "rgba(255, 255, 255, .8)",
-          borderWidth: 4,
-          backgroundColor: "transparent",
-          fill: true,
-          data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
-          maxBarThickness: 6
-
-        }],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          }
-        },
-        interaction: {
-          intersect: false,
-          mode: 'index',
-        },
-        scales: {
-          y: {
-            grid: {
-              drawBorder: false,
-              display: true,
-              drawOnChartArea: true,
-              drawTicks: false,
-              borderDash: [5, 5],
-              color: 'rgba(255, 255, 255, .2)'
-            },
-            ticks: {
-              display: true,
-              padding: 10,
-              color: '#f8f9fa',
-              font: {
-                size: 14,
-                weight: 300,
-                family: "Roboto",
-                style: 'normal',
-                lineHeight: 2
-              },
-            }
-          },
-          x: {
-            grid: {
-              drawBorder: false,
-              display: false,
-              drawOnChartArea: false,
-              drawTicks: false,
-              borderDash: [5, 5]
-            },
-            ticks: {
-              display: true,
-              color: '#f8f9fa',
-              padding: 10,
-              font: {
-                size: 14,
-                weight: 300,
-                family: "Roboto",
-                style: 'normal',
-                lineHeight: 2
-              },
-            }
-          },
-        },
-      },
-    });
-  </script>
-  <script>
-    var win = navigator.platform.indexOf('Win') > -1;
-    if (win && document.querySelector('#sidenav-scrollbar')) {
-      var options = {
-        damping: '0.5'
-      }
-      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
-    }
-  </script>
+  
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->

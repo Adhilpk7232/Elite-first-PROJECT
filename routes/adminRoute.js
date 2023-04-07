@@ -21,20 +21,20 @@ router.get('/logout',adminController.adminLogout)
 /////brand
 router.get('/brand',auth.isLogin,brandController.loadBrand)
 router.get('/addBrand',auth.isLogin,brandController.addBrand)
-router.put('/addBrand',auth.isLogin,categoryMulter.single('image'),brandController.insertBrand)
+router.post('/addBrand',auth.isLogin,categoryMulter.single('image'),brandController.insertBrand)
 router.delete('/deleteBrand',auth.isLogin,brandController.deleteBrand)
 router.get('/updateBrand',auth.isLogin,brandController.loadEditBrand)
-router.post('/updateBrand',auth.isLogin,brandController.UpdatedBrand)
+router.post('/updateBrand',auth.isLogin,categoryMulter.single('image'),brandController.UpdatedBrand)
 
 router.get('/user',auth.isLogin,adminController.loadUserManagement)
 router.patch('/block-user',auth.isLogin,auth.isLogin,adminController.blockUser)
 // category 
 router.get('/category',auth.isLogin,categoryController.loadCategory)
 router.get('/addCategory',auth.isLogin,categoryController.AddCategorry)
-router.put('/addcategory',auth.isLogin,categoryMulter.single('image'),categoryController.insertCategory)
+router.post('/addcategory',auth.isLogin,categoryMulter.single('image'),categoryController.insertCategory)
 router.delete('/deleteCategory',auth.isLogin,categoryController.DeleteCategory)
 router.get('/updateCategory',auth.isLogin,categoryController.UpdateCategory)
-router.post('/updateCategory',auth.isLogin,categoryController.UpdatedCategory)
+router.post('/updateCategory',auth.isLogin,categoryMulter.single('image'),categoryController.UpdatedCategory)
 // product 
 router.get('/addProduct',auth.isLogin,productController.AddProduct)
 router.post('/addProduct',auth.isLogin,upload.array('image'),productController.InertProduct)
@@ -76,7 +76,5 @@ router.post('/addOfferManagement/:id',auth.isLogin,productController.addOfferMan
 router.delete('/deleteOfferManagement',auth.isLogin,productController.deleteOfferManagement)
 router.get('/editOfferManagement/:id',auth.isLogin,productController.editOfferManagement)
 router.post('/updateOffermanagement/:id',auth.isLogin,productController.updatedOfferManagement)
-
-
 
 module.exports = router

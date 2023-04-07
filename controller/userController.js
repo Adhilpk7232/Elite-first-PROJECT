@@ -30,7 +30,7 @@ const securePassword = async (password) => {
         return passwordHash
 
     }catch(error){
-        res.render('uses/500')
+        res.render('users/500')
         console.log(error.message);
     }
 }
@@ -66,7 +66,7 @@ const sendVerifyMail = async(name,email,user_id)=>{
         console.log(user_id);
         console.log(email);
     }catch(error){
-        res.render('uses/500')
+        res.render('users/500')
         console.log(error.message);
         console.log("send mail section");
     }
@@ -102,7 +102,7 @@ const sendResetMail = async(name, email,token)=>{
 
     }catch(error){
         console.log(error.message);
-        res.render('uses/500')
+        res.render('users/500')
 
     }
 
@@ -114,7 +114,7 @@ const loadSignup = async(req,res)=>{
 
     }catch(error){
         console.log(error.message);
-        res.render('uses/500')
+        res.render('users/500')
 
     }
 }
@@ -155,7 +155,7 @@ const verifyMail = async(req,res)=>{
         res.render('users/email-verified')
     }catch(error){
         console.log(error.message);
-        res.render('uses/500')
+        res.render('users/500')
 
     }
     
@@ -172,7 +172,7 @@ const loadLandingPage = async(req,res)=>{
         res.render('users/home',{categoryData,productData,user,bannerData,materialData})
     }catch(error){
         console.log(error.message);
-        res.render('uses/500')
+        res.render('users/500')
 
     }
 }
@@ -192,7 +192,7 @@ const loadHome = async (req,res)=>{
         }
     }catch(error){
         console.log(error.message);
-        res.render('uses/500')
+        res.render('users/500')
 
     }
 }
@@ -211,7 +211,7 @@ const searchProducts  = async (req,res) => {
 
     }catch(error){
         console.log(error.message);
-        res.render('uses/500')
+        res.render('users/500')
 
     }
 }
@@ -221,7 +221,7 @@ const loginLoad = async (req,res)=>{
         res.render('users/login')
     }catch(error){
         console.log(error.message);
-        res.render('uses/500')
+        res.render('users/500')
 
     }
 }
@@ -259,7 +259,7 @@ const verifyLogin = async(req,res)=>{
     }
     }catch(error){
         console.log(error.message);
-        res.render('uses/500')
+        res.render('users/500')
 
     }
     
@@ -270,7 +270,7 @@ const mobileCheck = async(req,res)=>{
         res.render('users/mobileCheck',{message:""})
     }catch(error){
         console.log(error.message);
-        res.render('uses/500')
+        res.render('users/500')
 
     }
 }
@@ -296,7 +296,7 @@ const verifyPhone = async(req,res)=>{
             res.render('users/mobileCheck',{message:"Did not register this mobile number"})
         }
     }catch(error){
-        res.render('uses/500')
+        res.render('users/500')
         console.log(error.message);
         console.log("from error of phone verify");
     }
@@ -325,7 +325,7 @@ const verifyOtp = async(req,res)=>{
                     console.log("false otp");
                 }
     }catch(error){
-        res.render('uses/500')
+        res.render('users/500')
         console.log(error.message);
         console.log("veriftotp section");
     }
@@ -337,7 +337,7 @@ const loginOtp = async(req,res) => {
 
     }catch(error){
         console.log(error.message);
-        res.render('uses/500')
+        res.render('users/500')
 
     }
 }
@@ -362,7 +362,7 @@ const verifyNum = async(req,res) => {
 
     }catch(error){
         console.log(error.message);
-        res.render('uses/500')
+        res.render('users/500')
 
     }
 }
@@ -372,7 +372,7 @@ const loadOtp = async(req,res) => {
 
     }catch(error){
         console.log(error.message);
-        res.render('uses/500')
+        res.render('users/500')
 
     }
 }
@@ -401,7 +401,7 @@ const verifyNumOtp = async(req,res)=>{
                 }
     }catch(error){
         console.log(error.message);
-        res.render('uses/500')
+        res.render('users/500')
         console.log("veriftotp section");
     }
 }
@@ -412,7 +412,7 @@ const userLogout = async (req,res)=>{
 
     }catch(error){
         console.log(error.message);
-        res.render('uses/500')
+        res.render('users/500')
 
     }
 }
@@ -421,7 +421,7 @@ const forgetLoad = async(req,res)=>{
         res.render('users/forgotpassword')
     }catch(error){
         console.log(error.message);
-        res.render('uses/500')
+        res.render('users/500')
     }
 }
 const forgetVerify = async(req,res)=>{
@@ -446,7 +446,7 @@ const forgetVerify = async(req,res)=>{
 
     }catch(error){
         console.log(error.message);
-        res.render('uses/500')
+        res.render('users/500')
     }
 }
 
@@ -463,7 +463,7 @@ const forgetPasswordLoad = async(req,res)=>{
 
     }catch(error){
         console.log(error.message);
-        res.render('uses/500')
+        res.render('users/500')
 
     }
 }
@@ -481,204 +481,448 @@ const resetPassword = async (req,res)=>{
 
     }catch(error){
         console.log(error.message);
-        res.render('uses/500')
+        res.render('users/500')
     }
 }
+const loadShop = async (req, res) => {
+    try {
+      const category = req.query.categoryId;
+      const search = req.query.search || "";
+      const sort = req.query.sort || "";
+      console.log(category + " - " + search + " - " + sort);
+      let isRender = false;
+  
+      if (req.query.isRender) {
+        isRender = true;
+      }
+  
+      const searchData = new String(search).trim();
+  
+      const query = {
+        is_delete: false,
+      };
+  
+      let sortQuery = { price: 1 };
+      if (sort == "high-to-low") {
+        sortQuery = { price: -1 };
+      }
+  
+      if (search) {
+        query["$or"] = [
+          { product_name: { $regex: ".*" + searchData + ".*", $options: "i" } },
+        //   { description: { $regex: searchData, $options: "i" } },
+        ];
+      }
+      console.log(category);
+      if (category) {
+ 
+            query["$or"] = [{ category: category }];
+        
+      }
+  
+      const product = await Product.find(query).sort(sortQuery);
+  
+      //console.log(product);
+  
+      const productsPerPage = 3;
+      const page = req.query.page || 1;
+      const startIndex = (page - 1) * productsPerPage;
+      const endIndex = startIndex + productsPerPage;
+      const pageProducts = product.slice(startIndex, endIndex);
+      const totalPages = Math.ceil(product.length / productsPerPage);
+      // console.log(
+      //   page +
+      //     " - " +
+      //     startIndex +
+      //     " - " +
+      //     endIndex +
+      //     " - " +
+      //     pageProducts +
+      //     " - " +
+      //     totalPages
+      // );
+      // -----------Category finding
+      const categoryData = await Category.find({});
+      const materialData = await Material.find()
+  
+      // ----------------------
+  
+      if (isRender == true) {
+        res.json({
+          pageProducts,
+          totalPages,
+          currentPage: parseInt(page, 10),
+          product,
+          // cartCount,
+          // wishListCount
+        });
+      } else {
+        res.render("users/shop1", {
+          pageProducts,
+          totalPages,
+          currentPage: parseInt(page, 10),
+          product,
+          categoryData,
+          materialData,
+        });
+      }
+    } catch (error) {
+        res.render('users/500')
+      console.log(error.message);
+      console.log("------------------Product Page Section-----------");
+    }
+  };
 
-const loadShop = async(req,res) => { 
-    try{
-        // const category = req.query.categoryId;
-        // const search = req.query.search || "";
-        // const sort = req.query.sort || "";
-        // console.log(category + "-" +search + "-" + sort);
+// const loadShop = async(req,res) => { 
+//     try{
+//         console.log("'hai");
+//         const category = req.query.categoryId;
+//         const search = req.query.search || "";
+//         const sort = req.query.sort || "";
+//         console.log(category + "-" +search + "-" + sort);
+//         console.log("hoi");
+//         let isRender = false;
 
-        // let isRender = false;
+//         if(req.query.isRender) {
+//             isRender = true ;
+//         }
+//         const searchData = new stringify(search).trim()
+//         const query = {
+//             is_delete:false,
+//         };
+//         let sortQuery = {price: 1};
+//         if(sort == "high-to-low"){
+//             sortQuery = { price: -1};
+//         }
+//         if (search) {
+//             query["$or"] = [
+//                 {product_name:{ $regex: ".*" + searchData + ".*", $options: "i"} },
+//                 {description:{$regex: searchData , $options: "i"} },
+//             ];
+//         }
 
-        // if(req.query.isRender) {
-        //     isRender = true ;
-        // }
-        // const searchData = new stringify(search).trim()
-        // const query = {
-        //     is_delete:false,
-        // };
-        // let sortQuery = {price: 1};
-        // if(sort == "high-to-low"){
-        //     sortQuery = { price: -1};
-        // }
-        // if (search) {
-        //     query["$or"] = [
-        //         {product_name:{ $regex: ".*" + searchData + ".*", $options: "i"} },
-        //         {description:{$regex: searchData , $options: "i"} },
-        //     ];
-        // }
+//         if(category) {
+//             query["$or"] = [{ mainCategory: category }]
+//         }
+//         const productData = await Product.find(query).sort(sortQuery);
 
-        // if(category) {
-        //     query["$or"] = [{ mainCategory: category }]
-        // }
-        // const product = await Product.find(query).sort(sortQuery);
-
-        // const productsPerPage = 5;
-        // const page = req.query.page || 1;
-        // const startIndex = (page - 1) * productsPerPage;
-        // const endIndex = startIndex + productsPerPage;
-        // const pageProducts = product.slice(startIndex,endIndex);
-        // const totalPages = Math.ceil(product.length/productPerPage)
-        // const categoryData = await Category.find({})
+//         const productsPerPage = 5;
+//         const page = req.query.page || 1;
+//         const startIndex = (page - 1) * productsPerPage;
+//         const endIndex = startIndex + productsPerPage;
+//         const pageProducts = productData.slice(startIndex,endIndex);
+//         const countProduct = Math.ceil(productData.length/productsPerPage)
+//         const categoryData = await Category.find({})
+//         const materialData = await Material.find()
 
 
-        // if (isRender == ture){
-        //     res.json({
-        //         pageProducts,
-        //         totalPages,
-        //         currentPage : parseInt(page,10),
-        //         producta
-        //     })
-        // }else{
-        //     res.render("shop",{
-        //         pageProducts,
-        //         totalPages,
-        //         cuurentPage: parseInt(page,10),
-        //         product,
-        //         categoryData
-        //     })
-        // }
-        if(req.session.user_id){
-            const user = true
-            let page = 1
-        if(req.query.page){
-            page = req.query.page
-        }
-        let limit = 3
 
-        const categoryData = await Category.find()
-        const productData = await Product.find()
-            .limit(limit*1)
-            .skip((page - 1)* limit)
-            .exec()
-        const productCount = await Product.find().countDocuments()
-        let countProduct = Math.ceil(productCount/limit)
-        const materialData = await Material.find()
-        res.render('users/shop',{categoryData,productData,materialData,countProduct,user})
-        }else{
-            const user = false
-            let page = 1
-        if(req.query.page){
-            page = req.query.page
-        }
-        let limit = 3
+//         if (isRender == ture){
+//             res.json({
+//                 pageProducts,
+//                 countProduct,
+//                 currentPage : parseInt(page,10),
+//                 productData
+//             })
+//         }else{
+//             res.render("users/shop",{
+//                 pageProducts,
+//                 countProduct,
+//                 cuurentPage: parseInt(page,10),
+//                 productData,
+//                 categoryData
+//             })
+//         }
+//         if(req.session.user_id){
+//             const user = true
+//             let page = 1
+//         if(req.query.page){
+//             page = req.query.page
+//         }
+//         let limit = 3
 
-        const categoryData = await Category.find()
-        const productData = await Product.find()
-            .limit(limit*1)
-            .skip((page - 1)* limit)
-            .exec()
-        const productCount = await Product.find().countDocuments()
-        let countProduct = Math.ceil(productCount/limit)
-        const materialData = await Material.find()
-        res.render('users/shop',{categoryData,productData,materialData,countProduct,user})
-        }
+//         const categoryData = await Category.find()
+//         const productData = await Product.find()
+//             .limit(limit*1)
+//             .skip((page - 1)* limit)
+//             .exec()
+//         const productCount = await Product.find().countDocuments()
+//         let countProduct = Math.ceil(productCount/limit)
+//         const materialData = await Material.find()
+//         res.render('users/shop1',{categoryData,productData,materialData,countProduct,user})
+//         }else{
+//             const user = false
+//             let page = 1
+//         if(req.query.page){
+//             page = req.query.page
+//         }
+//         let limit = 3
+
+//         const categoryData = await Category.find()
+//         const productData = await Product.find()
+//             .limit(limit*1)
+//             .skip((page - 1)* limit)
+//             .exec()
+//         const productCount = await Product.find().countDocuments()
+//         let countProduct = Math.ceil(productCount/limit)
+//         const materialData = await Material.find()
+//         res.render('users/shop1',{categoryData,productData,materialData,countProduct,user})
+//         }
         
 
-    }catch(error){
-        res.render('uses/500')
-        console.log(error.mesage);
-    }
-}
+//     }catch(error){
+//         res.render('users/500')
+//         console.log(error.mesage);
+//     }
+// }
 const loadMaterialShop= async (req,res) =>{
     try{
-        if(req.session.user_id){
-            const user = true
-            const materialId=req.params.id
-        let page = 1
-        if(req.query.page){
-            page = req.query.page
+        const material = req.query.categoryId;
+        const search = req.query.search || "";
+        const sort = req.query.sort || "";
+        const materialId = req.params.id
+        console.log(materialId);
+        console.log(material + " - " + search + " - " + sort);
+        let isRender = false;
+    
+        if (req.query.isRender) {
+            console.log(isRender);
+          isRender = true;
         }
-        let limit = 3
+    
+        const searchData = new String(search).trim();
+        console.log(searchData,"data");
+        console.log("hello");
+        const query = {
+          list: false,
+          material:materialId
+  
+        };
+    
+        let sortQuery = { price: 1 };
+        if (sort == "high-to-low") {
+          sortQuery = { price: -1 };
+        }
+    
+        if (search) {
+          query["$or"] = [
+            { product_name: { $regex: ".*" + searchData + ".*", $options: "i" } }
+          //   { description: { $regex: searchData, $options: "i" } },
+          ];
+        }
+        console.log(material);
+        if (material) {
+   
+              query["$or"] = [{ material: material }];
+          
+        }
+        console.log(query);
+        const product = await Product.find(query).sort(sortQuery);
+    
+        console.log(product,"h");
+    
+        const productsPerPage = 3;
+        const page = req.query.page || 1;
+        const startIndex = (page - 1) * productsPerPage;
+        const endIndex = startIndex + productsPerPage;
+        const pageProducts = product.slice(startIndex, endIndex);
+        const totalPages = Math.ceil(product.length / productsPerPage);
+  
+        // -----------Category finding
+        const categoryData = await Category.find({});
+        const materialData = await Material.find()
+    
+        // ----------------------
+    
+        if (isRender == true) {
+            console.log("kooi");
+          res.json({
+            pageProducts,
+            totalPages,
+            currentPage: parseInt(page, 10),
+            product,
+          });
+        } else {
+          res.render("users/materialShop1", {
+            pageProducts,
+            totalPages,
+            currentPage: parseInt(page, 10),
+            product,
+            categoryData,
+            materialData,
+          });
+        }
+
+
+
+        // if(req.session.user_id){
+        //     const user = true
+        //     const materialId=req.params.id
+        // let page = 1
+        // if(req.query.page){
+        //     page = req.query.page
+        // }
+        // let limit = 3
 
         
-        const productMaterial = await Product.find({material:materialId})
-            .limit(limit*1)
-            .skip((page - 1)* limit)
-            .exec()
-        const productCount = await Product.find({material:materialId}).countDocuments()
-        let countProduct = Math.ceil(productCount/limit)
-        const categoryData = await Category.find()
-        const materialData = await Material.find()
-        res.render('users/materialShop',{productMaterial,categoryData,materialData,countProduct,user})
-        }else{
-            const user = false
-            const materialId=req.params.id
-        let page = 1
-        if(req.query.page){
-            page = req.query.page
-        }
-        let limit = 3
+        // const productMaterial = await Product.find({material:materialId})
+        //     .limit(limit*1)
+        //     .skip((page - 1)* limit)
+        //     .exec()
+        // const productCount = await Product.find({material:materialId}).countDocuments()
+        // let countProduct = Math.ceil(productCount/limit)
+        // const categoryData = await Category.find()
+        // const materialData = await Material.find()
+        // res.render('users/materialShop',{productMaterial,categoryData,materialData,countProduct,user})
+        // }else{
+        //     const user = false
+        //     const materialId=req.params.id
+        // let page = 1
+        // if(req.query.page){
+        //     page = req.query.page
+        // }
+        // let limit = 3
 
         
-        const productMaterial = await Product.find({material:materialId})
-            .limit(limit*1)
-            .skip((page - 1)* limit)
-            .exec()
-        const productCount = await Product.find({material:materialId}).countDocuments()
-        let countProduct = Math.ceil(productCount/limit)
-        const categoryData = await Category.find()
-        const materialData = await Material.find()
-        res.render('users/materialShop',{productMaterial,categoryData,materialData,countProduct,user})
-        }
+        // const productMaterial = await Product.find({material:materialId})
+        //     .limit(limit*1)
+        //     .skip((page - 1)* limit)
+        //     .exec()
+        // const productCount = await Product.find({material:materialId}).countDocuments()
+        // let countProduct = Math.ceil(productCount/limit)
+        // const categoryData = await Category.find()
+        // const materialData = await Material.find()
+        // res.render('users/materialShop',{productMaterial,categoryData,materialData,countProduct,user})
+        // }
         
 
     }catch(error){
-        res.render('uses/500')
+        res.render('users/500')
         console.log(error.message);
     }
 }
 const loadShopCategory = async (req,res) =>{
     try{
-        if(req.session.user_id){
-            const user = true
-            const catId=req.params.id
-                let page = 1
-            if(req.query.page){
-                page = req.query.page
-            }
-            let limit = 3
+        const category = req.query.categoryId;
+      const search = req.query.search || "";
+      const sort = req.query.sort || "";
+      const categoryId = req.params.id
+      console.log(category + " - " + search + " - " + sort);
+      let isRender = false;
+  
+      if (req.query.isRender) {
+        isRender = true;
+      }
+  
+      const searchData = new String(search).trim();
+  
+      const query = {
+        list: false,
+        category:categoryId
+
+      };
+  
+      let sortQuery = { price: 1 };
+      if (sort == "high-to-low") {
+        sortQuery = { price: -1 };
+      }
+  
+      if (search) {
+        query["$or"] = [
+          { product_name: { $regex: ".*" + searchData + ".*", $options: "i" } },
+        //   { description: { $regex: searchData, $options: "i" } },
+        ];
+      }
+      console.log(category);
+      if (category) {
+ 
+            query["$or"] = [{ category: category }];
+        
+      }
+  
+      const product = await Product.find(query).sort(sortQuery);
+  
+      //console.log(product);
+  
+      const productsPerPage = 3;
+      const page = req.query.page || 1;
+      const startIndex = (page - 1) * productsPerPage;
+      const endIndex = startIndex + productsPerPage;
+      const pageProducts = product.slice(startIndex, endIndex);
+      const totalPages = Math.ceil(product.length / productsPerPage);
+
+      // -----------Category finding
+      const categoryData = await Category.find({});
+      const materialData = await Material.find()
+  
+      // ----------------------
+  
+      if (isRender == true) {
+        res.json({
+          pageProducts,
+          totalPages,
+          currentPage: parseInt(page, 10),
+          product,
+        });
+      } else {
+        res.render("users/categoryShop1", {
+          pageProducts,
+          totalPages,
+          currentPage: parseInt(page, 10),
+          product,
+          categoryData,
+          materialData,
+        });
+      }
+
+
+
+
+        // if(req.session.user_id){
+        //     const user = true
+        //     const catId=req.params.id
+        //         let page = 1
+        //     if(req.query.page){
+        //         page = req.query.page
+        //     }
+        //     let limit = 3
 
             
-            const productCate = await Product.find({category:catId})
-                .limit(limit*1)
-                .skip((page - 1)* limit)
-                .exec()
-            const productCount = await Product.find({category:catId}).countDocuments()
-            let countProduct = Math.ceil(productCount/limit)
-            const categoryData = await Category.find()
-            const materialData = await Material.find()
-            res.render('users/categoryShop',{productCate,categoryData,materialData,user,countProduct})
+        //     const productCate = await Product.find({category:catId})
+        //         .limit(limit*1)
+        //         .skip((page - 1)* limit)
+        //         .exec()
+        //     const productCount = await Product.find({category:catId}).countDocuments()
+        //     let countProduct = Math.ceil(productCount/limit)
+        //     const categoryData = await Category.find()
+        //     const materialData = await Material.find()
+        //     res.render('users/categoryShop',{productCate,categoryData,materialData,user,countProduct})
 
-        }else{
-            const user = false
-            const catId=req.params.id
-            let page = 1
-            if(req.query.page){
-                page = req.query.page
-            }
-            let limit = 3
+        // }else{
+        //     const user = false
+        //     const catId=req.params.id
+        //     let page = 1
+        //     if(req.query.page){
+        //         page = req.query.page
+        //     }
+        //     let limit = 3
 
             
-            const productCate = await Product.find({category:catId})
-                .limit(limit*1)
-                .skip((page - 1)* limit)
-                .exec()
-            const productCount = await Product.find({category:catId}).countDocuments()
-            let countProduct = Math.ceil(productCount/limit)
-        const categoryData = await Category.find()
-        const materialData = await Material.find()
-        res.render('users/categoryShop',{productCate,categoryData,materialData,user,countProduct})
+        //     const productCate = await Product.find({category:catId})
+        //         .limit(limit*1)
+        //         .skip((page - 1)* limit)
+        //         .exec()
+        //     const productCount = await Product.find({category:catId}).countDocuments()
+        //     let countProduct = Math.ceil(productCount/limit)
+        // const categoryData = await Category.find()
+        // const materialData = await Material.find()
+        // res.render('users/categoryShop',{productCate,categoryData,materialData,user,countProduct})
 
-        }
+        // }
         
 
     }catch(error){
-        res.render('uses/500')
+        res.render('users/500')
         console.log(error.message);
     }
 }
@@ -690,7 +934,7 @@ const loadProfile = async (req,res) => {
         res.render('users/profile',{userData})
         
     }catch(error){
-        res.render('uses/500')
+        res.render('users/500')
         console.log(error.message);
     }
 }
@@ -705,7 +949,7 @@ const updateUserData = async(req,res) => {
         res.redirect('/profile')
 
     }catch(error){ 
-        res.render('uses/500')
+        res.render('users/500')
         console.log(error.message);
     }
 }
@@ -730,7 +974,7 @@ const loadSingleProduct = async(req,res) => {
         
 
     }catch(error){
-        res.render('uses/500')
+        res.render('users/500')
         console.log(error.message); 
     }
 }

@@ -140,6 +140,155 @@
               <!-- <small class="text-muted float-end">Default label</small> -->
             </div>
             <div class="card-body">
+              <!-- <form  action="/admin/edit-product/<%= productData._id %>" method="post"  onsubmit="return validateForm()">
+                <div class="mb-3">
+                  <label class="form-label" for="basic-default-fullname">Product Name</label>
+                  <input type="text" value="<%= productData.product_name %>" name="productname" style="border: 1px solid #000;" class="form-control" id="basic-default-fullname" />
+                  <div id="productNameError" class="error-message" style="color: red;"></div>
+                </div>
+                <input type="hidden" value="<%= productData._id %> " name="id">
+                <div class="mb-3">          
+                    <select name="category" class="form-select" aria-label="Default select example" style="border: 1px solid #000;">
+                      <option selected>
+                        <%= productData.category.categoryName %>
+                      </option>
+                      <% categoryData.forEach((value)=>{ %>
+                        <option value="<%= value.categoryName %>">
+                          <%= value.categoryName %>
+                        </option>
+                        <% }) %>
+                  </select>
+                  <div id="categoryError" class="error-message" style="color: red;"></div>
+                </div>
+                <div class="mb-3">          
+                  <select name="material" class="form-select" aria-label="Default select example" style="border: 1px solid #000;">
+                  <option selected><%= productData.material.materialName %></option>
+                  <% materialData.forEach((material) => { %>
+                  <option value="<%= material._id %>"><%= material.materialName %></option>
+                  <% }) %>
+                </select>
+                <div id="materialError" class="error-message" style="color: red;"></div>
+              </div>
+                <div class="mb-3">
+                  <label class="form-label" for="basic-default-email">Price</label>
+                  <div class="input-group input-group-merge">
+                    <input
+                      type="text"
+                      id="basic-default-email"
+                      class="form-control" value="<%- productData.price %>" name="price" style="border: 1px solid #000;" />
+                      
+                  
+                  </div>
+                  <div id="priceError" class="error-message" style="color: red;"></div>
+                 
+                </div>
+    
+                <div class="mb-3">
+                  <label class="form-label" for="basic-default-email" >Quantity</label>
+                  <div class="input-group input-group-merge">
+                    <input
+                      type="number"
+                      id="basic-default-email"
+                      class="form-control"  style="border: 1px solid #000;"  value="<%- productData.quantity %>" name="quantity"/> 
+                                  
+                  </div>
+                  <div id="quantityError" class="error-message" style="color: red;"></div> 
+                </div>
+                <div class="mb-3">             
+                </div>
+                <div class="mb-3">
+                  <label class="form-label" for="basic-default-message">Discription</label>
+                  <textarea
+                    id="basic-default-message"
+                    class="form-control"
+                   name="description"
+                   
+                   style="border: 1px solid #000;"><%- productData.description %></textarea>
+                   <div id="descriptionError" class="error-message" style="color: red;"></div>
+                </div>
+                <div>
+                  <button type="submit" class="btn btn-primary">Send</button>
+                </div>
+                
+
+              </form>
+              <div>
+                <% for(var i=0;i<=3;i++){ %>
+                  <img src="/products/<%=  productData.image[i] %>" alt="" style="width: 100px;">
+                  <% } %>
+              </div>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Edit image
+              </button>
+              <% if(typeof imgFull !== 'undefined' ){ %>
+                <p style="color: red;"> image limit is full</p>
+              <% } %>
+              <script>
+                const form = document.querySelector('form');
+              
+                function validateForm(event) {
+                  event.preventDefault();
+                  let isValid = true;
+              
+                  const productName = form.elements['product_name'].value.trim();
+                  const category = form.elements['category'].value;
+                  const material = form.elements['material'].value;
+                  const price = form.elements['price'].value.trim();
+                  const quantity = form.elements['quantity'].value.trim();
+                  const description = form.elements['description'].value.trim();
+              
+                  if (productName.length < 1 || productName.length > 255) {
+                    document.querySelector('#productNameError').textContent = 'Product name should be between 1 and 255 characters';
+                    isValid = false;
+                  } else {
+                    document.querySelector('#productNameError').textContent = '';
+                  }
+              
+                  if (category === 'Select Catagory') {
+                    document.querySelector('#categoryError').textContent = 'Please select a category';
+                    isValid = false;
+                  } else {
+                    document.querySelector('#categoryError').textContent = '';
+                  }
+              
+                  if (material === 'Select Material') {
+                    document.querySelector('#materialError').textContent = 'Please select a material';
+                    isValid = false;
+                  } else {
+                    document.querySelector('#materialError').textContent = '';
+                  }
+              
+                  if (price.length < 1 || isNaN(price) || price < 1) {
+                    document.querySelector('#priceError').textContent = 'Price should be a valid number greater than 0';
+                    isValid = false;
+                  } else {
+                    document.querySelector('#priceError').textContent = '';
+                  }
+              
+                  if (quantity.length < 1 || isNaN(quantity) || quantity < 1) {
+                    document.querySelector('#quantityError').textContent = 'Quantity should be a valid number greater than 0';
+                    isValid = false;
+                  } else {
+                    document.querySelector('#quantityError').textContent = '';
+                  }
+              
+                  if (description.length < 1 || description.length > 255) {
+                    document.querySelector('#descriptionError').textContent = 'Description should be between 1 and 255 characters';
+                    isValid = false;
+                  } else {
+                    document.querySelector('#descriptionError').textContent = '';
+                  }
+              
+                 
+              
+                  if (isValid) {
+                    form.submit();
+                  }
+                }
+              
+                form.addEventListener('submit', validateForm);
+              </script> -->
+
               <form action="/admin/edit-product/<%= productData._id %>" method="post">
                 <div class="mb-3">
                   <label class="form-label" for="basic-default-fullname">Product Name</label>
@@ -155,7 +304,7 @@
                       <%= productData.category.categoryName %>
                     </option>
                     <% categoryData.forEach((value)=>{ %>
-                      <option value="<%= value.categoryName %>">
+                      <option value="<%= value._id %>">
                         <%= value.categoryName %>
                       </option>
                       <% }) %>
@@ -164,15 +313,15 @@
                 <div class="mb-3">
                   <label class="form-label" for="basic-default-email">Quantity</label>
                   <div class="input-group input-group-merge">
-                    <input value="<%- productData.quantity %>" type="text" id="basic-default-email" class="form-control"
-                      name="quantity" />
+                    <input value="<%- productData.quantity %>" name="quantity" type="text" id="basic-default-email" class="form-control"
+                       />
             
                   </div>
                   <div class="mb-3">
                     <label class="form-label" for="basic-default-email">Price</label>
                     <div class="input-group input-group-merge">
-                      <input value="<%- productData.price %>" type="text" id="basic-default-email" class="form-control"
-                        name="price" />
+                      <input value="<%- productData.price %>" name="price" type="text" id="basic-default-email" class="form-control"
+                         />
                     </div>
                   </div>
                   <div class="mb-3">
@@ -218,7 +367,7 @@
           <div class="modal-body">
           <div>  
             <label class="form-label" for="basic-default-message">Image</label>
-            <input type="file" multiple name="image" style="border: 1px solid #000;">
+            <input type="file" multiple name="image" style="border: 1px solid #000;" accept=".jpg, .jpeg, .png, .gif, .webp">
         </div>
           <br>
 

@@ -323,7 +323,10 @@
 
                             </div>
                             <div class="mb-4">
-                                <span class="me-3 display-26 font-weight-600 offer-price">$21.00</span>
+                                <%if(product.offer.offerStatus == true ){%>
+                                <span class="me-3 display-26 font-weight-600 offer-price">₹<%= product.offerPrice%></span>
+                                <%}else{
+                                } %>
                                 <span class="display-26 font-weight-700 text-primary">₹<%= product.price %></span>
                             </div>
 
@@ -344,8 +347,7 @@
                                            <% } %></a>
                                     
                                 </div>
-                            </div>
-                            
+                            </div>                           
 
                             <div class="row mb-4">
                                 <div class="col-lg-12">
@@ -366,7 +368,6 @@
                                         <li><a href="#"><i class="fab fa-youtube"></i></a></li>
                                         <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
                                     </ul>
-
                                 </div>
 
                             </div>
@@ -636,9 +637,15 @@
                         <div class="product-description">
                             <h3><a href="/single-product/<%= product._id %>"><%= product.product_name %></a></h3>
                             <h4 class="price">
-                                                        <span class="regular-price line-through">$99.00</span>
-                                                        <span class="offer-price">₹<%= product.price %></span>
-                                                    </h4>
+                                <% if(product.offer.offerStatus == true){ %>
+                                    <span class="regular-price line-through">₹<%= product.offerPrice  %></span>
+                                    <span class="offer-price">₹ <%= product.price %></span>
+                                <% }else{%>
+                                    <span class="offer-price">₹<%= product.price %></span>
+                                <% } %>
+                                                        
+                                
+                            </h4>
                         </div>
                         <div class="product-buttons">
                             <ul class="ps-0">

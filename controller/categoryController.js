@@ -43,28 +43,22 @@ const insertCategory = async (req,res)=>{
         const catUP = cat.toUpperCase()
         let exist = await Category.findOne({categoryName:catUP})
         if(exist){
-            // res.render('admin/addCategory',{message:'This Category already Exist'})
-            res.send({message:'This Category already Exist'})
+            res.render('admin/addCategory',{message:'This Category already Exist'})
             exist=null
         }else{
-            console.log(req.body.image);
-            const img = req.body.image
-            const file = path.basename(img);
-            console.log(file);
-            // const filename=req.file.filename
+            
+            
+            const filename=req.file.filename
             const category = new Category({
                 categoryName:catUP,
                 description:req.body.description,
-                image:file
-                // image:req.file.filename
+                image:filename
             })
             const categoryData = await category.save()
             if(categoryData){
-                // res.render('admin/addCategory',{message2:'category insert successfully'})
-                res.send({message:'category insert successfully'})
+                res.render('admin/addCategory',{message2:'category insert successfully'})
             }else{
-                res.send({message:'category did not inserted'})
-                // res.render('admin/addCategory',{message:'category did not inserted'})
+                res.render('admin/addCategory',{message:'category did not inserted'})
             }
         }
     }
@@ -102,7 +96,8 @@ const UpdatedCategory=async(req,res)=>{
     try{
         const cat =req.body.categoryName
         const catUP= cat.toUpperCase()
-        const UpdatedCategory=await Category.findByIdAndUpdate({_id:req.body.id},{$set:{categoryName:catUP,description:req.body.description}})
+        const filename=req.file.filename;
+        const UpdatedCategory=await Category.findByIdAndUpdate({_id:req.body.id},{$set:{categoryName:catUP,description:req.body.description,image:filename}})
         if(UpdatedCategory){
             res.redirect('/admin/category')
         }

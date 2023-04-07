@@ -134,14 +134,12 @@
       <tr>
         <th scope="col">#</th>
         <th scope="col">PRODUCT NAME</th>
-        <th scope="col">CATEGORY</th>
         <th scope="col">PRICE</th>
-        <th scope="col">STOCK</th>
-        <th scope="col">STATUS</th>
+        <th scope="col">OFFER PRICE</th>
+        <th scope="col">OFFER %</th>
         <th scope="col">OfferStatus</th>
         <th scope="col">IMAGE</th>
         <th scope="col">QUANTITY</th>
-        <th scope="col">offer</th>
         <th scope="col">MORE</th>
       </tr>
     </thead>
@@ -150,17 +148,9 @@
       <tr>
         <th scope="row"><%= index +1 %></th> 
         <td> <%= value.product_name %></td>
-        <td> <%= value.category.categoryName %></td>
         <td> <%= value.price %></td>
-        <td> <% if(value.quantity > 5){ %>
-                <p style="color: green">in stock</p>
-                 <% }else if(value.quantity <= 0){ %>
-                  <p style="color: red;">out of stock </p>
-                  <% }else{ %>
-                    <p style="color: rgb(255, 106, 0);">few more left</p>
-                    <% } %>
-        </td>
-        <td> <%=value.list %></td>
+        <td><%= value.offerPrice%></td>
+        <td><%= value.offer.offerPercentage%></td>
         <td><%= value.offer.offerStatus %></td>
         <td> <img src="/products/<%= value.image[0] %>" alt="" style="width: 80px; height: 80px;"> </td>
          <td> <%= value.quantity %></td>
@@ -208,24 +198,22 @@
               </div>
             </div>
           </div>
-            <% }else{
-             } %>
+            <% }else{ %>
+              <div class="btn-group dropstart" style="width: 100%;height: 100px;" >
+                <a href=""   data-bs-toggle="dropdown" aria-expanded="false" class="m-auto " style="width: 100%;" >
+                 <i style="font-size:24px" class="fa m-4">&#xf142;</i>
+                </a>
+                   <ul class="dropdown-menu">
+                     <li> <a href="/admin/editOfferManagement/<%= value._id %>" class="btn btn-primary d-block my-1" >EDIT Offer</a></li>
+                     <% if(value.offer.offerStatus == false){ %>
+                       <li> <a onclick="activeOffer('<%= value._id %>')" class="btn btn-danger d-block my-1">Activate Offer</a></li>
+                     <% }else{ %>
+                       <li> <a onclick="deleteOffer('<%= value._id %>')" class="btn btn-danger d-block my-1">DELETE Offer</a></li>
+                     <% } %>
+                   </ul>
+                 </div>
+             <% } %>
             </td>
-        <td style="padding: 0;width: 50px;"> 
-          <div class="btn-group dropstart" style="width: 100%;height: 100px;" >
-         <a href=""   data-bs-toggle="dropdown" aria-expanded="false" class="m-auto " style="width: 100%;" >
-          <i style="font-size:24px" class="fa m-4">&#xf142;</i>
-         </a>
-            <ul class="dropdown-menu">
-              <li> <a href="/admin/editOfferManagement/<%= value._id %>" class="btn btn-primary d-block my-1" >EDIT Offer</a></li>
-              <% if(value.offer.offerStatus == false){ %>
-                <li> <a onclick="activeOffer('<%= value._id %>')" class="btn btn-danger d-block my-1">Activate Offer</a></li>
-              <% }else{ %>
-                <li> <a onclick="deleteOffer('<%= value._id %>')" class="btn btn-danger d-block my-1">DELETE Offer</a></li>
-              <% } %>
-            </ul>
-          </div>
-        </td>
       </tr>
 
       <% }) %>

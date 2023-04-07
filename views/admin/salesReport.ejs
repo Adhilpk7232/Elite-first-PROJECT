@@ -135,7 +135,7 @@
             
             <div class="card-body">
                  <!-- Vertical Form -->
-            <form class="row g-3" action="/admin/show-salesreprot" method="post">
+            <!-- <form class="row g-3" action="/admin/show-salesreprot" method="post">
                 <div class="col-6">
                   <label for="inputNanme4" class="form-label">Date from</label>
                   <input type="date" class="form-control"  id="from" name="from"  style="border: 1px solid #000;">
@@ -150,7 +150,56 @@
                 <div class="text-center">
                   <button type="submit" class="btn btn-success" style="float:right;   padding-inline: 50px;"> submit</button>
                 </div>
-              </form><!-- Vertical Form -->
+              </form>Vertical Form -->
+
+
+              <form action="/admin/show-salesreprot" method="post">
+                <h1 style="margin-top: 60px;">Sales Report</h1>
+                <div style="display: flex; justify-content: center; margin-top: 80px;">
+                    <label for="from">Start Date:</label>
+                    <input type="date" id="from" name="from"
+                        style="margin: 10px 10px 10px 0px; padding: 10px; border-radius: 5px; border: 1px solid gray; text-align: center;">
+                    <label for="to">End Date:</label>
+                    <input type="date" id="to" name="to"
+                        style="margin: 10px; padding: 10px; border-radius: 5px; border: 1px solid gray; text-align: center;">
+                </div>
+                <% if(typeof message !== 'undefined'){ %>
+                  <p style="color: brown;"><%= message %> </p>
+                  <% } %>
+                <div style="display: flex; justify-content: center; margin-top: 20px;">
+                    <button type="submit" onclick="return validateForm()"
+                        style="margin-top: 10px; padding: 10px; border-radius: 5px; background-color: blue; color: white; border: none; cursor: pointer;">Generate
+                        Report</button>
+                </div>
+                <br>
+                <div id="error-message" class="error" style="color: red;"></div>
+                <script>
+                    function validateForm() {
+                        var startDate = document.getElementById("from").value;
+                        var endDate = document.getElementById("to").value;
+                        var errorMessage = "";
+
+                        if (startDate == "" && endDate == "") {
+                            errorMessage += "Start date and end date are required.<br>";
+                        }
+                        else if (startDate == "") {
+                            errorMessage += "Please enter a start date.<br>";
+                        }
+                        else if (endDate == "") {
+                            errorMessage += "Please enter an end date.<br>";
+                        }
+                        else if (new Date(startDate) > new Date(endDate)) {
+                            errorMessage += "Start date cannot be after end date.<br>";
+                        }
+
+                        if (errorMessage != "") {
+                            document.getElementById("error-message").innerHTML = errorMessage;
+                            return false;
+                        }
+                        return true;
+                    }
+                </script>
+            </form>
             </div>
             </div>
             </div>

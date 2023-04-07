@@ -76,7 +76,7 @@ const loadEditBrand  = async (req,res) => {
         const id =req.query.id
         const materialData = await Material.findById({_id:id})
         if(materialData){
-            res.render('admin/updateBrand',{category:materialData})
+            res.render('admin/updateBrand',{material:materialData})
         }else{
             res.render('admin/brandManagement')
         }
@@ -88,12 +88,22 @@ const loadEditBrand  = async (req,res) => {
 }
 const UpdatedBrand  = async (req,res) => {
     try{
-        const cat =req.body.categoryName
-        const catUP= cat.toUpperCase()
-        const UpdatedCategory=await Material.findByIdAndUpdate({_id:req.body.id},{$set:{categoryName:catUP,description:req.body.description}})
-        if(UpdatedCategory){
-            res.redirect('/admin/brand')
-        }
+        if(req.body.name =='' || req.file.filename == "" ){
+            res.render('admin/updateBrand',{message:'fill all field'})
+        }else{
+            const id = req.query.id
+            const cat = req.body.name
+            const catUP = cat.toUpperCase()  
+            const filename=req.file.filename;
+            const update = await Material.updateOne({_id:id},{$set:{materialName:catUP,image:filename}})
+            if(update){
+                res.redirect('/admin/brand')
+            }else{
+                
+                res.render('admin/updateBrand',{message:'type did not inserted'})
+            }
+        
+    }
 
     }catch(error){
         res.render('admin/500')

@@ -139,8 +139,28 @@
                       <label for="">Coupon code</label>
                       <input type="text" class="form-control border pe-2 ps-2" id="" placeholder="coupon code" name="coupon_code" value="<%=couponData.couponCode%>" required>
                     </div>
-                    
-                    <div class="form-check">
+                    <%if(couponData.couponAmountType=="fixed"){%> 
+                      <label for="discType">Discount Type</label>
+                      <div>
+                          <input type="radio" id="flat" name="discType" value="fixed" checked>
+                          <label for="flat">Flat Discount</label>
+                      </div>
+                      <div>
+                          <input type="radio" id="percentage" name="discType" value="percentage">
+                          <label for="percentage">Percentage Discount</label>
+                      </div>
+                      <%}else{%>
+                          <label for="discType">Discount Type</label>
+                          <div>
+                              <input type="radio" id="flat" name="discType" value="flat">
+                              <label for="flat">Flat Discount</label>
+                          </div>
+                          <div>
+                              <input type="radio" id="percentage" name="discType" value="percentage" checked>
+                              <label for="percentage">Percentage Discount</label>
+                          </div>
+                          <%}%>
+                    <!-- <div class="form-check">
                         <input class="form-check-input" type="radio" name="fixedandpercentage" value="fixed" id="flexRadioDefault1" required>
                         <label class="form-check-label" for="flexRadioDefault1">
                             Fixed
@@ -151,7 +171,7 @@
                         <label class="form-check-label" for="flexRadioDefault2">
                             Percentage
                         </label>
-                    </div>
+                    </div> -->
     
                     <div class="form-group">
                         <label for="">Amount</label>
@@ -177,14 +197,15 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Start date</label>
-                                <input type="date" class="form-control border pe-2 ps-2" id="" placeholder="start date" name="startdate" value="<%=couponData.startDate.toLocaleDateString() %>" required>
+                                <input type="date" class="form-control border pe-2 ps-2" id="startdate" placeholder="start date" name="startdate" value="<%= couponData.startDate ? couponData.startDate.toISOString().substr(0, 10) : '' %>">
+
+                                
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                              <%console.log(couponData.expiryDate)%>
                                 <label for="">Expiry date</label>
-                                <input type="date" class="form-control border pe-2 ps-2" id="" placeholder="expiry date" name="expirydate" value="<%=couponData.expiryDate.toLocaleDateString() %>" required>
+                                <input type="date" class="form-control border pe-2 ps-2" id="expiryDate" placeholder="expiry date" name="expiryDate" value="<%= couponData.expiryDate ? couponData.expiryDate.toISOString().substr(0, 10) : '' %>">
                             </div>
                         </div>
                     </div>

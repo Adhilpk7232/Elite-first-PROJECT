@@ -66,7 +66,8 @@ const EditProduct = async (req,res)=>{
     try{
         const productData = await  Product.findOne({_id:req.params.id}).populate('category')
         const categoryData = await  Category.find()
-        res.render("admin/edit-product",{productData,categoryData})
+        const materialData = await Material.find()
+        res.render("admin/edit-product",{productData,categoryData,materialData})
    
     }catch(error){
         res.render('admin/500')
@@ -78,10 +79,11 @@ const UpdateProduct = async (req,res)=>{
         const id = req.params.id
         const productData = await Product.updateOne({_id:id},{$set:{
             product_name:req.body.productname,
-            category:req.body.categoryName,
+            category:req.body.category,
             description:req.body.description,
             quantity:req.body.quantity,
-            price:req.body.price
+            price:req.body.price,
+            material:req.body.material
         }})
         if(productData){
             res.redirect('/admin/product')
@@ -156,7 +158,7 @@ const ViewProduct = async (req,res)=>{
 
 const loadOfferManagement = async(req,res) => { 
     try{
-        const productData= await Product.find({}).populate('category').exec()
+        const productData= await Product.find({list:false}).populate('category').exec()
         res.render("admin/offermanagement",{productData})
 
 
@@ -178,7 +180,7 @@ const addOfferManagement = async(req,res) => {
                 offerPercentage:offerPercentage
             },
             offerPrice:productData.price,
-            price:amount
+            price: amount
         }})
         res.redirect('/admin/offerManagement')
 
@@ -193,6 +195,7 @@ const deleteOfferManagement = async(req,res) => {
         const productId = req.body.productId
         const productData = await Product.findOne({_id:productId})
         if(productData.offer.offerStatus == false){
+            // let amount = productData.price -((productData.price/ 100)* productData.offer.offerPercentage)
             const wait = await Product.updateOne({_id:productId},{$set:{'offer.offerStatus':true}})
             res.json({success:true})
         }else{
@@ -210,7 +213,7 @@ const deleteOfferManagement = async(req,res) => {
 const editOfferManagement = async(req,res) => { 
     try{
         const productId = req.params.id
-        console.log(productId);
+        // console.log(productId);
         const productData = await Product.findOne({_id:productId})
         res.render("admin/editOfferManagement",{productData})
 
@@ -225,15 +228,15 @@ const updatedOfferManagement = async(req,res) => {
         const productId = req.params.id
         const offerPercentage = req.body.offerPercentage
         const productData = await Product.findOne({_id:productId})
-        const originalPrice = productData.offerPrice
-        let amount = productData.offerPrice -((productData.offerPrice/ 100)* offerPercentage)
+        const originalPrice = productData.price
+        let amount = productData.price -((productData.price/ 100)* offerPercentage)
         const update = await Product.findOneAndUpdate({_id:productId},{$set:{
             offer:{
                 offerStatus:true,
                 offerPercentage:offerPercentage
             },
-            offerPrice:originalPrice,
-            price:amount
+            offerPrice:originalPrice ,
+            price: amount
         }})
         res.redirect('/admin/offerManagement')
 

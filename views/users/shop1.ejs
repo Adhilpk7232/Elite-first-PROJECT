@@ -25,6 +25,7 @@
     <!-- plugins -->
     <link rel="stylesheet" href="/user/css/plugins.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- theme core css -->
     <link href="/user/css/styles.css" rel="stylesheet">
@@ -104,12 +105,9 @@
                                             <ul>
                                                 
                                                 <li><a href="/profile">User Details</a></li>
-                                                <%if(user == true){ %>
+                                                
                                                     <li><a href="/logout">Log OUT</a></li>
-                                                    <% }else{ %>
-                                                        <li><a href="/login">Log In</a></li>
-                    
-                                                        <% } %>
+                                                    
                                                 
                                                 
                                             </ul>
@@ -175,34 +173,44 @@
                     <!-- sidebar panel -->
                     <div class="col-lg-3 col-12 side-bar order-2 order-lg-1">
                         
-                        <div class="widget">
+                        <div class="widget" >
 
                             <div class="widget-title">
                                 <h5>Select by Category</h5>
                             </div>
 
-                            <ul class="list-discount list-unstyled">
-                                <% categoryData.forEach((value) => {%>
-                                <li class="form-check text-start">
-                                    <input class="form-check-input" type="checkbox" value="<%= value._id %>" id="ten_pecentage">
-                                    <label class="form-check-label" for="ten_pecentage"><%= value.categoryName %></label>
-                                </li>
-
-                                
-                                <% }) %>
-                            </ul>
+                            <div class="dropdown ec-select-inner" id="filter">
+                                <select id="category" name="parentCategory">
+                                  <option selected disabled>Category</option>
+                                  <% categoryData.forEach((category)=>{ %>
+                                  <option value="<%= category._id %>" class="dropdown-item"><%= category.categoryName %></option>
+                                  <% }) %>
+                                </select>
+                                <button id="button1" type="button" class="btn btn-primary mr-3 mt-2">
+                                    Select
+                                  </button>
+                              </div>
+                            
                         </div>
 
                         <div class="widget">
                             <div class="widget-title">
                                 <h5>Price Range</h5>
                             </div>
-                            <input type="text" class="price-range" name="my_range" value="">
-                            <a href="#" class="butn-style2 small mt-1-9">Filter</a>
+                            <div class="col-auto my-1 my-md-0">
+                                <span class="sort-by">Sort by</span>
+                                <div class="ec-select-inner">
+                                <select name="sort" id="sort">
+                                    <option selected disabled>Price</option>
+                                    <option value="low-to-high">Low to High</option>
+                                    <option value="high-to-low">High to Low</option>
+                                </select>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- materialshow -->
-                        <div class="widget">
+                        <!-- <div class="widget">
 
                             <div class="widget-title">
                                 <h5>Select by Materials</h5>
@@ -216,7 +224,7 @@
                                 </li>
                                 <% }) %>
                             </ul>
-                        </div>
+                        </div> -->
                         
                     </div>
                     <!-- end sidebar panel -->
@@ -231,21 +239,21 @@
                             <div class="col-12 col-md-auto">
 
                                 <div class="row justify-content-center">
-                                    <div class="col-auto my-1 my-md-0">
-                                        <label class="m-0" id="searchField">Search</label>
-                                        <input type="text" id="searchField" name="search" placeholder="enter the peoduct name">
-                                    </div>
+                                    
+                                    
+                                    <!-- <button type="button" id="button1"></button> -->
+                                    <form action="">
+                                        <div class="col-auto my-1 my-md-0">
+                                            <label class="m-0" >Search</label>
+                                            <input type="text" id="searchField" name="search" placeholder="enter the peoduct name">
+                                        </div>
+                                        <button class="submit" type="submit"></button>
+                                    </form>
+                                    
 
                                     
 
-                                    <div class="col-auto my-1 my-md-0">
-                                        <label class="m-0" id="sort">Sort By:</label>
-                                        <select class="w-auto d-inline-block form-select" name="sort" id="sort">
-                                            <option value="low-to-high" selected="">Price (Low &gt; High)</option>
-                                            <option value="high-to-low">Price (High &gt; Low)</option>
-                                            
-                                        </select>
-                                    </div>
+                                    
 
                                 </div>
 
@@ -254,13 +262,13 @@
                         </div>
 
                         <div class="row justify-content-center" id="product">
-                            <%=console.log(productData.length)%>
-                            <%if(productData.length == 0){ %>
+                            <%=console.log(product.length)%>
+                            <%if(product.length == 0){ %>
                                 
                                 <h1>product is empty</h1>
                                 
                                 <%} else{
-                                    productData.forEach((x) => { 
+                                    product.forEach((x) => { 
                                         %> 
         
                                     <div class="col-11 col-sm-6 col-xl-4 mb-1-9">
@@ -287,17 +295,25 @@
                         </div>
 
                         <!-- pagination -->
+                        
                         <div class="pagination text-small text-uppercase text-extra-dark-gray mt-4">
-                            <ul>
-                                
-                                <% for(let i=1;i<=countProduct;i++){%>
-                                    <li class="active"><a href="?page=<%=i%>">
-                                            <%=i%>
-                                        </a></li>
-                                    <% }%>
-                                        
+                            
+                            <ul class="ec-pro-pagination-inner">
+                              <% for (let i=1; i <=totalPages; i++) { %> <% if (i===currentPage)
+                              { %>
+                              <li>
+                                <a onclick="toAjax('<%= i%>')"><%= i %></a>
+                              </li>
+                              <% } else { %>
+                              <li><a onclick="toAjax('<%=i%>')"><%= i %></a></li>
+                              <% } %> <% } %>
+                              <li>
+                                <!-- <a class="next" href="#"
+                                  >Next <i class="ecicon eci-angle-right"></i
+                                ></a> -->
+                              </li>
                             </ul>
-                        </div>
+                          </div>
                         <!-- end pagination -->
 
                     </div>
@@ -307,17 +323,14 @@
             </div>
         </section>
         <script>
-            var categoryId;
-            var selectedValue;
-            let searchValue;
-        
-            // searching the products
+            let categoryId;
             const searchInput = document.querySelector("#searchField");
+        
             searchInput.addEventListener("input", (event) => {
-                event.preventDefault();
-                const search = event.target.value;
-                searchValue = search;
-                toAjax();
+              const search = event.target.value;
+              const searchValue = search;
+              console.log(searchValue);
+              toAjax();
             });
         
             // Filtering the products
@@ -329,64 +342,74 @@
             // });
         
             $(document).ready(function () {
-                $("#button1").click(function () {
-                    categoryId = $("#category :selected").text();
-                    console.log(categoryId);
-                    toAjax();
-                });
+            
+              $("#button1").click(function () {
+                categoryId = $("#category :selected").val();
+            // $("#button1").click(function () {
+            //     var checked = $("input[type=checkbox]:checked");
+            //     var categoryIds = checked.map(function() {
+            //     return $(this).val();
+            // }).get();
+                console.log(categoryId);
+                toAjax();
+              });
             });
         
-            // sort Products
             const sortSelect = document.getElementById("sort");
-            sortSelect.addEventListener("change", (event) => {
-                selectedValue = event.target.value;
+            console.log(sortSelect);
         
-                toAjax();
+            sortSelect.addEventListener("change", (event) => {
+              const selectedValue = event.target.value;
+              toAjax();
             });
         
             function toAjax(page) {
-                $.ajax({
-                    url: "/shop",
-                    data: {
-                        categoryId: categoryId,
-                        sort: selectedValue,
-                        page: page,
-                        search: searchValue,
-                        isRender: "true",
-                    },
-                    method: "get",
-                    success: (response) => {
-                        if (response.product) {
-                            let html = "";
-                            for (let i = 0; i < response.pageProducts.length; i++) {
-                                html += `
-                            <div class="col-12 col-md-4 col-lg-3">
-                        <div class="box pt-3">
-                        <div class="card" style="width: 18rem; ">
-                        <img height="250px" width="100%" src="/productImage/${response.pageProducts[i].image[0]}" alt="">
-                        <div class="card-body "> 
-                            <div class="text-center">
-                            <span><h6 class="card-title">
-                            ${response.pageProducts[i].productName}
-                            </h6>Rs.${response.pageProducts[i].price}</span>
-                            <p class="card-text">
-                            ${response.pageProducts[i].description}
-                            </p>
-                        </div>
-                        
-                        </div>
-                        </div>
-                        </div>
-                        </div>
-                            `;
-                            }
-                            document.getElementById("product").innerHTML = html;
-                        }
-                    },
-                });
-            }
+              $.ajax({
+                url: "/shop",
+                data: {
+                  categoryId: categoryId,
+                  sort: sortSelect.value,
+                  page: page,
+                  search: searchInput.value,
+                  isRender: "true",
+                },
+                method: "get",
+                success: (response) => {
+                  let html = "";
+                  for (let i = 0; i < response.pageProducts.length; i++) {
+                    html += `
         
-        </script>
+                                    <div class="col-11 col-sm-6 col-xl-4 mb-1-9">
+                                        <div class="product-grid">
+                                            <div class="product-img">
+                                                <a href="/single-product/${response.pageProducts[i]._id}"><img src="/products/${response.pageProducts[i].image[0]}" alt="..."></a>
+                                            </div>
+                                            <div class="product-description">
+                                                <h3><a href="/single-product/${response.pageProducts[i]._id}">${response.pageProducts[i].product_name}</a></h3>
+                                                <h4 class="price">
+                                                                <span class="offer-price">₹${response.pageProducts[i].price} </span>
+                                                            </h4>
+                                            </div>
+                                            <div class="product-buttons">
+                                                <ul class="ps-0">
+                                                    <li><a onclick="addToWishlist('${response.pageProducts[i]._id}')" class="btn-link" title="Add To Wishlist"><i class="far fa-heart"></i></a></li>
+                                                    <li><a onclick="addToCart('${response.pageProducts[i]._id}')" " class="butn-style2" title="Add to Cart">Add to Cart</a></li>
+                                                    <li><a href="/single-product/${response.pageProducts[i]._id}" class="btn-link" title="Add To Compare"><i class="fas fa-random"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                        `;
+                        console.log(response.pageProducts[i]);
+                  }
+                  document.getElementById("product").innerHTML = html;
+                },
+                fail: (error) => {
+                  console.error(error);
+                },
+              });
+            }
+          </script>
         
         <!-- FOOTER
         ================================================== -->

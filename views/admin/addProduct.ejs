@@ -142,10 +142,11 @@
           <!-- <small class="text-muted float-end">Default label</small> -->
         </div>
         <div class="card-body">
-          <form  action="/admin/addproduct" method="post" enctype="multipart/form-data">
+          <form  action="/admin/addproduct" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
             <div class="mb-3">
               <label class="form-label" for="basic-default-fullname">Product Name</label>
-              <input type="text" name="product_name" style="border: 1px solid #000;" class="form-control" id="basic-default-fullname" required />
+              <input type="text" name="product_name" style="border: 1px solid #000;" class="form-control" id="basic-default-fullname" />
+              <div id="productNameError" class="error-message" style="color: red;"></div>
             </div>
             <div class="mb-3">          
                 <select name="category" class="form-select" aria-label="Default select example" style="border: 1px solid #000;">
@@ -154,6 +155,7 @@
                 <option value="<%= value._id %>"><%= value.categoryName %></option>
                 <% }) %>
               </select>
+              <div id="categoryError" class="error-message" style="color: red;"></div>
             </div>
             <div class="mb-3">          
               <select name="material" class="form-select" aria-label="Default select example" style="border: 1px solid #000;">
@@ -162,6 +164,7 @@
               <option value="<%= material._id %>"><%= material.materialName %></option>
               <% }) %>
             </select>
+            <div id="materialError" class="error-message" style="color: red;"></div>
           </div>
             <div class="mb-3">
               <label class="form-label" for="basic-default-email">Price</label>
@@ -169,9 +172,11 @@
                 <input
                   type="text"
                   id="basic-default-email"
-                  class="form-control" name="price" style="border: 1px solid #000;" required/>
+                  class="form-control" name="price" style="border: 1px solid #000;" />
+                  
               
               </div>
+              <div id="priceError" class="error-message" style="color: red;"></div>
              
             </div>
 
@@ -181,8 +186,10 @@
                 <input
                   type="number"
                   id="basic-default-email"
-                  class="form-control" name="quantity" style="border: 1px solid #000;" required/>              
+                  class="form-control" name="quantity" style="border: 1px solid #000;" /> 
+                              
               </div>
+              <div id="quantityError" class="error-message" style="color: red;"></div> 
             </div>
             <div class="mb-3">             
             </div>
@@ -192,19 +199,94 @@
                 id="basic-default-message"
                 class="form-control"
                name="description"
-               required
+               
                style="border: 1px solid #000;"></textarea>
+               <div id="descriptionError" class="error-message" style="color: red;"></div>
             </div>
             <div>  
               <label class="form-label" for="basic-default-message">Image</label>
-              <input id="image-input" type="file" multiple name="image" style="border: 1px solid #000;">
+              <input id="image-input" type="file" multiple name="image" style="border: 1px solid #000;" accept=".jpg, .jpeg, .png, .gif, .webp">
               <div id="image-preview-container"></div>
+              <div id="imageError" class="error-message" style="color: red;"></div>
             </div>
             <button type="submit" class="btn btn-primary">Send</button>
           </form>
         </div>
       </div>
     </div>
+
+    <script>
+      const form = document.querySelector('form');
+    
+      function validateForm(event) {
+        event.preventDefault();
+        let isValid = true;
+    
+        const productName = form.elements['product_name'].value.trim();
+        const category = form.elements['category'].value;
+        const material = form.elements['material'].value;
+        const price = form.elements['price'].value.trim();
+        const quantity = form.elements['quantity'].value.trim();
+        const description = form.elements['description'].value.trim();
+        const image = form.elements['image'].value.trim();
+    
+        if (productName.length < 1 || productName.length > 255) {
+          document.querySelector('#productNameError').textContent = 'Product name should be between 1 and 255 characters';
+          isValid = false;
+        } else {
+          document.querySelector('#productNameError').textContent = '';
+        }
+    
+        if (category === 'Select Catagory') {
+          document.querySelector('#categoryError').textContent = 'Please select a category';
+          isValid = false;
+        } else {
+          document.querySelector('#categoryError').textContent = '';
+        }
+    
+        if (material === 'Select Material') {
+          document.querySelector('#materialError').textContent = 'Please select a material';
+          isValid = false;
+        } else {
+          document.querySelector('#materialError').textContent = '';
+        }
+    
+        if (price.length < 1 || isNaN(price) || price < 1) {
+          document.querySelector('#priceError').textContent = 'Price should be a valid number greater than 0';
+          isValid = false;
+        } else {
+          document.querySelector('#priceError').textContent = '';
+        }
+    
+        if (quantity.length < 1 || isNaN(quantity) || quantity < 1) {
+          document.querySelector('#quantityError').textContent = 'Quantity should be a valid number greater than 0';
+          isValid = false;
+        } else {
+          document.querySelector('#quantityError').textContent = '';
+        }
+    
+        if (description.length < 1 || description.length > 255) {
+          document.querySelector('#descriptionError').textContent = 'Description should be between 1 and 255 characters';
+          isValid = false;
+        } else {
+          document.querySelector('#descriptionError').textContent = '';
+        }
+    
+        if (!image) {
+          document.querySelector('#imageError').textContent = 'Please select an image';
+          isValid = false;
+        } else {
+          document.querySelector('#imageError').textContent = '';
+        }
+    
+        if (isValid) {
+          form.submit();
+        }
+      }
+    
+      form.addEventListener('submit', validateForm);
+    </script>
+    
     
   <!--   Core JS Files   -->
   <script src="/assets/js/core/popper.min.js"></script>
