@@ -3,7 +3,7 @@
 
 
 
-
+const Razorpay = require('razorpay');
 const User = require("../models/userModel")
 const Category =require('../models/categoryModel')
 const Product = require('../models/productModel')
