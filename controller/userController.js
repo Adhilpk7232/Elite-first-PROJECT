@@ -491,7 +491,10 @@ const loadShop = async (req, res) => {
       const sort = req.query.sort || "";
       console.log(category + " - " + search + " - " + sort);
       let isRender = false;
-  
+      let user = false
+      if(req.session.user_id){
+        user=true
+      }
       if (req.query.isRender) {
         isRender = true;
       }
@@ -553,6 +556,7 @@ const loadShop = async (req, res) => {
           totalPages,
           currentPage: parseInt(page, 10),
           product,
+          user,
           // cartCount,
           // wishListCount
         });
@@ -564,6 +568,7 @@ const loadShop = async (req, res) => {
           product,
           categoryData,
           materialData,
+          user,
         });
       }
     } catch (error) {
@@ -684,6 +689,10 @@ const loadMaterialShop= async (req,res) =>{
         console.log(materialId);
         console.log(material + " - " + search + " - " + sort);
         let isRender = false;
+        let user = false
+        if(req.session.user_id){
+          user=true
+        }
     
         if (req.query.isRender) {
             console.log(isRender);
@@ -741,6 +750,7 @@ const loadMaterialShop= async (req,res) =>{
             totalPages,
             currentPage: parseInt(page, 10),
             product,
+            user,
           });
         } else {
           res.render("users/materialShop1", {
@@ -750,6 +760,7 @@ const loadMaterialShop= async (req,res) =>{
             product,
             categoryData,
             materialData,
+            user,
           });
         }
 
@@ -809,6 +820,10 @@ const loadShopCategory = async (req,res) =>{
       const categoryId = req.params.id
       console.log(category + " - " + search + " - " + sort);
       let isRender = false;
+      let user = false
+      if(req.session.user_id){
+        user=true
+      }
   
       if (req.query.isRender) {
         isRender = true;
@@ -863,6 +878,7 @@ const loadShopCategory = async (req,res) =>{
           totalPages,
           currentPage: parseInt(page, 10),
           product,
+          user,
         });
       } else {
         res.render("users/categoryShop1", {
@@ -872,6 +888,7 @@ const loadShopCategory = async (req,res) =>{
           product,
           categoryData,
           materialData,
+          user,
         });
       }
 
